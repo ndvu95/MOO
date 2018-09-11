@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <ImageView
+
+        android:id="@+id/hinhPhim"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/custom_textbox" />
+
+    <LinearLayout
+        android:paddingLeft="5dp"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:text="Princess Mononoke"
+            android:id="@+id/tvtenPhim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+
+            android:textColor="#b3b3b3"
+            android:textSize="18sp"
+            android:text="Hoạt Hình"
+            android:id="@+id/tvtheLoai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+
+            android:textColor="#ececec"
+            android:textSize="16sp"
+            android:text="21654 Lượt xem"
+            android:id="@+id/tvLuotXem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <RatingBar
+            android:progressTint="@color/ratingBar"
+            style="@style/Base.Widget.AppCompat.RatingBar.Small"
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>
