@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.vu.morningofowl.R;
 import com.example.vu.morningofowl.model.Phim;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,7 +50,7 @@ public class Phim_Adapter extends ArrayAdapter<Phim> {
             holder.tvName = (TextView) convertView.findViewById(R.id.tvtenPhim);
             holder.tvCategory = (TextView) convertView.findViewById(R.id.tvtheLoai);
             holder.tvViews = (TextView) convertView.findViewById(R.id.tvLuotXem);
-            holder.ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBar);
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -57,11 +58,14 @@ public class Phim_Adapter extends ArrayAdapter<Phim> {
 
         final Phim phim = phimList.get(position);
 
-        new LoadImageFromInternet(holder.imgHinh).execute(phim.getPosterPhim());
+
+        Picasso.with(getContext()).load(Uri.parse(phim.getPosterPhim()))
+                .placeholder(R.mipmap.ic_launcher_round)
+                .into(holder.imgHinh);
         holder.tvName.setText(phim.getTenPhim());
-        holder.tvCategory.setText(phim.getTheloaiPhim());
-        holder.tvViews.setText(phim.getSoluotXem());
-        holder.ratingBar.setRating(phim.getRatingStar());
+        holder.tvCategory.setText("Thể Loại: "+phim.getTheloaiPhim());
+        holder.tvViews.setText("Views: "+phim.getSoluotXem());
+
         return convertView;
     }
 
@@ -70,40 +74,9 @@ public class Phim_Adapter extends ArrayAdapter<Phim> {
         public TextView tvName;
         public TextView tvCategory;
         public TextView tvViews;
-        public RatingBar ratingBar;
+
     }
-
-    private class LoadImageFromInternet extends AsyncTask<String, Void, Bitmap> {
-        Bitmap bitmapHinh = null;
-        ViewHolder holder;
-        ImageView bmHinh;
-
-        public LoadImageFromInternet(ImageView bmHinh) {
-            this.bmHinh = bmHinh;
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... strings) {
-            try {
-                URL url = new URL(strings[0]);
-                InputStream inputStream = url.openConnection().getInputStream();
-
-                bitmapHinh = BitmapFactory.decodeStream(inputStream);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return bitmapHinh;
-
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
-            bmHinh.setImageBitmap(bitmap);
-        }
-    }
-
-//
 }
+
+
+

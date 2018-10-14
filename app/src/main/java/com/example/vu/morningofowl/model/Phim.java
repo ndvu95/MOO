@@ -10,18 +10,19 @@ public class Phim implements Serializable{
         private String linkPhim;
         private String posterPhim;
         private String theloaiPhim;
+        private String motaPhim;
         private String dienvienPhim;
-        private String soluotXem;
-        private float ratingStar;
+        private int soluotXem;
 
-    public Phim(String tenPhim, String linkPhim, String posterPhim, String theloaiPhim, String dienvienPhim, String soluotXem, float ratingStar) {
+
+    public Phim(String tenPhim, String linkPhim, String posterPhim, String theloaiPhim, String motaPhim, String dienvienPhim, int soluotXem) {
         this.tenPhim = tenPhim;
         this.linkPhim = linkPhim;
         this.posterPhim = posterPhim;
         this.theloaiPhim = theloaiPhim;
+        this.motaPhim = motaPhim;
         this.dienvienPhim = dienvienPhim;
         this.soluotXem = soluotXem;
-        this.ratingStar = ratingStar;
     }
 
     public String getTenPhim() {
@@ -56,6 +57,14 @@ public class Phim implements Serializable{
         this.theloaiPhim = theloaiPhim;
     }
 
+    public String getMotaPhim() {
+        return motaPhim;
+    }
+
+    public void setMotaPhim(String motaPhim) {
+        this.motaPhim = motaPhim;
+    }
+
     public String getDienvienPhim() {
         return dienvienPhim;
     }
@@ -64,19 +73,11 @@ public class Phim implements Serializable{
         this.dienvienPhim = dienvienPhim;
     }
 
-    public String getSoluotXem() {
+    public int getSoluotXem() {
         return soluotXem;
     }
 
-    public void setSoluotXem(String soluotXem) {
+    public void setSoluotXem(int soluotXem) {
         this.soluotXem = soluotXem;
-    }
-
-    public float getRatingStar() {
-        return ratingStar;
-    }
-
-    public void setRatingStar(float ratingStar) {
-        this.ratingStar = ratingStar;
     }
 }

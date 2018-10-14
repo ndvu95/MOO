@@ -46,12 +46,6 @@
             android:textColor="#ececec"
             android:textSize="16sp" />
 
-        <RatingBar
-            android:id="@+id/ratingBar"
-            style="@style/Base.Widget.AppCompat.RatingBar.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:progressTint="@color/ratingBar" />
+
     </LinearLayout>
 </LinearLayout>

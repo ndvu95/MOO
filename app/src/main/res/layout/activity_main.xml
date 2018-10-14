@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/moonlit"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <TextView
         android:id="@+id/tvListName"
@@ -113,7 +113,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="39dp"
             android:layout_toRightOf="@id/imgKid"
-            android:src="@drawable/livestream"
             android:onClick="clickMenu"/>
 
         <TextView
@@ -133,7 +132,6 @@
             android:layout_above="@id/tvMore"
             android:layout_marginLeft="40dp"
             android:layout_toRightOf="@id/imgLive"
-            android:src="@drawable/menu"
             android:onClick="clickMenu"/>
 
         <TextView

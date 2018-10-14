@@ -1,28 +1,33 @@
-package com.example.vu.morningofowl;
+package com.example.vu.morningofowl.activities;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.support.v7.app.AppCompatActivity;
+import android.database.Cursor;
+
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
+
+
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
-import android.view.Window;
+
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Switch;
+
 import android.widget.TextView;
 
+import com.example.vu.morningofowl.R;
 import com.example.vu.morningofowl.adapter.Phim_Adapter;
 import com.example.vu.morningofowl.model.Phim;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MainActivity extends Activity {
-
+public class MainActivity extends FragmentActivity implements android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor> {
+    android.support.v4.content.CursorLoader cursorLoader;
     private ListView lvPhim;
     private ArrayList<Phim> arrayList;
     private Phim_Adapter adapter;
@@ -41,23 +46,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.activity_main);
         Init();
-        lvPhim = (ListView)findViewById(R.id.lvPhim);
-        arrayList = new ArrayList<>();
-        adapter = new Phim_Adapter(MainActivity.this, R.layout.dong_layout,arrayList);
-        lvPhim.setAdapter(adapter);
 
-
-       arrayList.add(new Phim("Princess Mononoke","https://moowlcom.000webhostapp.com/Princess%20Mononoke%20-%20Official%20Trailer.mp4","https://c2.staticflickr.com/2/1865/42471550050_cdea85be44_o.jpg","Hoạt Hình","Matsuda Yōji","21548 Lượt Xem", 3.5f));
-       arrayList.add(new Phim("The Last Airbender","","https://c2.staticflickr.com/2/1873/44280252771_1813bb322c_o.jpg","Hoạt Hình","Noah Ringer","35165 Lượt Xem", 3.5f));
-       arrayList.add(new Phim("Back To The Jurassic","https://moowlcom.000webhostapp.com/Back%20To%20The%20Jurassic%20Official%20Main%20Trailer%20[HD].mp4","https://c2.staticflickr.com/2/1870/42472021840_4cc133e217_o.jpg","Hoạt Hình","Melanie Griffith","15846 Lượt Xem", 3.5f));
-       arrayList.add(new Phim("Minions","https://moowlcom.000webhostapp.com/Minions%20Official%20Trailer%201%20(2015)%20-%20Despicable%20Me%20Prequel%20HD.mp4","https://c2.staticflickr.com/2/1884/43374535035_452843dddd_n.jpg","Hoạt Hình","","21548 Lượt Xem", 3.5f));
-       arrayList.add(new Phim("Sing","https://moowlcom.000webhostapp.com/Sing%20TRAILER%201%20(2016)%20-%20Scarlett%20Johansson%20Matthew%20McConaughey%20Animated%20Movie%20HD.mp4","https://c2.staticflickr.com/2/1845/44231813242_62e9bc45e8_n.jpg","Hoạt Hình","","39842 Lượt Xem", 3.5f));
-
-        adapter.notifyDataSetChanged();
-
+        getSupportLoaderManager().initLoader(1,null,this);
 
         lvPhim.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -77,8 +70,8 @@ public class MainActivity extends Activity {
         imgHome.setImageDrawable(getResources().getDrawable(R.drawable.home));
         imgFeed.setImageDrawable(getResources().getDrawable(R.drawable.feed));
         imgKidz.setImageDrawable(getResources().getDrawable(R.drawable.kid));
-        imgLive.setImageDrawable(getResources().getDrawable(R.drawable.livestream));
-        imgMore.setImageDrawable(getResources().getDrawable(R.drawable.menu));
+        //imgLive.setImageDrawable(getResources().getDrawable(R.drawable.livestream));
+        //imgMore.setImageDrawable(getResources().getDrawable(R.drawable.menu));
 
         tvHome.setTextColor(getResources().getColor(R.color.notselected));
         tvFeed.setTextColor(getResources().getColor(R.color.notselected));
@@ -87,6 +80,7 @@ public class MainActivity extends Activity {
         tvMore.setTextColor(getResources().getColor(R.color.notselected));
     }
     public void Init(){
+        lvPhim = (ListView)findViewById(R.id.lvPhim);
         imgHome = (ImageView)findViewById(R.id.imgHome);
         imgFeed = (ImageView)findViewById(R.id.imgFeed);
         imgKidz = (ImageView)findViewById(R.id.imgKid);
@@ -103,39 +97,70 @@ public class MainActivity extends Activity {
             switch (view.getId()){
                 case R.id.imgHome:
                     clearClick();
-                    imgHome.setImageDrawable(getResources().getDrawable(R.drawable.home_selected));
+                    //imgHome.setImageDrawable(getResources().getDrawable(R.drawable.home_selected));
                     tvHome.setTextColor(getResources().getColor(R.color.selected));
                     break;
                 case R.id.imgFeed:
                     clearClick();
-                    imgFeed.setImageDrawable(getResources().getDrawable(R.drawable.feed_selected));
+                    //imgFeed.setImageDrawable(getResources().getDrawable(R.drawable.feed_selected));
                     tvFeed.setTextColor(getResources().getColor(R.color.selected));
                     break;
                 case R.id.imgKid:
                     clearClick();
-                    imgKidz.setImageDrawable(getResources().getDrawable(R.drawable.kid_selected));
+                   // imgKidz.setImageDrawable(getResources().getDrawable(R.drawable.kid_selected));
                     tvKidz.setTextColor(getResources().getColor(R.color.selected));
                     break;
                 case R.id.imgLive:
                     clearClick();
-                    imgLive.setImageDrawable(getResources().getDrawable(R.drawable.livestream_selected));
+                    //imgLive.setImageDrawable(getResources().getDrawable(R.drawable.livestream_selected));
                     tvLive.setTextColor(getResources().getColor(R.color.selected));
                     break;
                 case R.id.imgMore:
                     clearClick();
-                    imgMore.setImageDrawable(getResources().getDrawable(R.drawable.menu_selected));
+                   // imgMore.setImageDrawable(getResources().getDrawable(R.drawable.menu_selected));
                     tvMore.setTextColor(getResources().getColor(R.color.selected));
                     break;
             }
     }
-//    private void fakeData() {
-//        //Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.princess_mononoke);
-//        for (int i = 0; i < 2; i++) {
-//            Phim p= new Phim("Princess Mononoke","","https://c2.staticflickr.com/2/1889/30409125548_babd086b2c_o.jpg","Hoạt Hình","","21548 Lượt Xem", 3.5f);
-//
-//            arrayList.add(p);
-//        }
-//        //lưu ý: bất kì khi nào thay đổi mảng thì sẽ phải cập nhật lại giao diện
-//        adapter.notifyDataSetChanged();
-//    }
+
+    @NonNull
+    @Override
+    public android.support.v4.content.Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+       cursorLoader = new android.support.v4.content.CursorLoader(this, Uri.parse("content://vund.itplus.vn.appql.DataBase/cte"), null, null, null, null);
+        return cursorLoader;
+
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull android.support.v4.content.Loader<Cursor> loader, Cursor data) {
+        arrayList = new ArrayList<>();
+        adapter = new Phim_Adapter(MainActivity.this, R.layout.dong_layout,arrayList);
+        lvPhim.setAdapter(adapter);
+        data.moveToFirst();
+        String ten1 = data.getString(1);
+        String link1 = data.getString(2);
+        String poster1= data.getString(3);
+        String theloai1= data.getString(4);
+        String mota1 = data.getString(5);
+        String dienvien1= data.getString(6);
+        int views1 = data.getInt(7);
+        arrayList.add(new Phim(ten1,link1,poster1,theloai1,mota1,dienvien1,views1));
+        while(data.moveToNext()){
+            String ten = data.getString(1);
+            String link = data.getString(2);
+            String poster= data.getString(3);
+            String theloai= data.getString(4);
+            String mota = data.getString(5);
+            String dienvien= data.getString(6);
+            int views = data.getInt(7);
+            arrayList.add(new Phim(ten,link,poster,theloai,mota,dienvien,views));
+        }
+
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull android.support.v4.content.Loader<Cursor> loader) {
+
+    }
 }

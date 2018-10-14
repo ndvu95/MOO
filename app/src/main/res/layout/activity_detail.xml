@@ -8,113 +8,137 @@
     android:layout_height="match_parent"
     android:background="@drawable/moonlit"
     android:paddingTop="60dp"
-    tools:context=".DetailActivity">
-
-    <ImageView
-        android:layout_gravity="center"
-        android:id="@+id/imgPoster"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-
-         />
-
-    <TextView
-        android:layout_gravity="center"
-        android:id="@+id/tvName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Tên Phim"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-         />
-
-    <TextView
-        android:layout_gravity="center"
-        android:id="@+id/tvSoLuotXem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Số Lượt Xem"
-        android:textColor="#FFEDE7E7"
-        />
-
-    <TextView
-        android:layout_gravity="center"
-        android:id="@+id/tvDienVien"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Diễn Viên"
-        android:textColor="#FFEDE7E7"
-         />
-
-    <TextView
-        android:layout_gravity="center"
-        android:id="@+id/tvTheLoai"
-        android:layout_width="wrap_content"
-        android:layout_height="22dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Thể Loại"
-        android:textColor="#ede7e7"
-         />
-
-
-    <RatingBar
-        android:id="@+id/ratingBarDetail"
-        style="@style/Base.Widget.AppCompat.RatingBar.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:numStars="5" />
+    tools:context=".activities.DetailActivity">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <LinearLayout
-
-        android:gravity="center"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageButton
-            android:layout_margin="10dp"
-            android:background="@drawable/elip_button_with_opacity"
-            android:src="@drawable/add"
-            android:id="@+id/btnAdd"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:id="@+id/imgPoster"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            />
+
+        <TextView
+            android:layout_gravity="center"
+            android:id="@+id/tvName"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <ImageButton
-            android:layout_margin="10dp"
-            android:src="@drawable/share"
-            android:background="@drawable/elip_button_with_opacity"
-            android:id="@+id/btnShare"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Tên Phim"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:layout_gravity="center"
+            android:id="@+id/tvSoLuotXem"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <ImageButton
-            android:onClick="clickplayPhim"
-            android:layout_margin="10dp"
-            android:src="@drawable/play"
-            android:background="@drawable/elip_button_with_opacity"
-            android:id="@+id/btnPlay"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Số Lượt Xem"
+            android:textColor="#FFEDE7E7"
+            />
+
+        <TextView
+            android:layout_gravity="center"
+            android:id="@+id/tvDienVien"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Diễn Viên"
+            android:textColor="#FFEDE7E7"
+            />
+
+        <TextView
+            android:layout_gravity="center"
+            android:id="@+id/tvTheLoai"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Thể Loại"
+            android:textColor="#ede7e7"
+            />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.ms.square.android.expandabletextview.ExpandableTextView
+                android:id="@+id/expandable_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:maxCollapsedLines="3"
+                app:animDuration="200">
+                <TextView
+                    android:layout_gravity="center"
+                    android:textSize="16sp"
+                    android:textColor="#ede7e7"
+                    android:id="@+id/expandable_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="8dp"/>
+                <ImageButton
+                    android:background="@color/transparent"
+                    android:id="@+id/expand_collapse"
+                    android:layout_gravity="bottom|center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </com.ms.square.android.expandabletextview.ExpandableTextView>
+        </ScrollView>
+
+        <LinearLayout
+
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:layout_margin="10dp"
+                android:background="@drawable/elip_button_with_opacity"
+                android:src="@drawable/add"
+                android:id="@+id/btnAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageButton
+                android:layout_margin="10dp"
+                android:src="@drawable/share"
+                android:background="@drawable/elip_button_with_opacity"
+                android:id="@+id/btnShare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageButton
+                android:onClick="clickplayPhim"
+                android:layout_margin="10dp"
+                android:src="@drawable/play"
+                android:background="@drawable/elip_button_with_opacity"
+                android:id="@+id/btnPlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
+</ScrollView>
+
 </LinearLayout>
