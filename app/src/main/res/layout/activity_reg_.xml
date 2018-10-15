@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.Reg_Activity">
+    <android.support.v7.widget.Toolbar
+        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:onClick="clickBackToStart"
+            android:src="@drawable/ic_arrow_back_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </android.support.v7.widget.Toolbar>
+    <ImageView
+        android:layout_gravity="center"
+        android:src="@drawable/moo"
+        android:layout_width="150dp"
+        android:layout_height="150dp" />
+    <LinearLayout
+
+        android:padding="5dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
+            >
+            <EditText
+                android:drawableLeft="@drawable/ic_assignment_black_24dp"
+                android:id="@+id/edtHoTen"
+                android:hint="Họ Tên"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+            <EditText
+                android:drawableLeft="@drawable/ic_email_black_24dp"
+                android:id="@+id/edtEmail"
+                android:hint="Email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+            <EditText
+                android:drawableLeft="@drawable/ic_lock_black_24dp"
+                android:id="@+id/edtMatKhau"
+                android:inputType="textPassword"
+                android:hint="Mật Khẩu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+            <EditText
+                android:drawableLeft="@drawable/ic_phone_iphone_black_24dp"
+                android:id="@+id/edtSDT"
+                android:inputType="number"
+                android:hint="Số Điện Thoại"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:onClick="clickReg"
+            android:elevation="10dp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button"
+            android:layout_margin="15dp"
+            android:layout_gravity="center"
+            android:textAllCaps="false"
+            android:text="Đăng Ký"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

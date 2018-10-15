@@ -21,6 +21,9 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.google.firebase:firebase-database:16.0.3'
+    implementation 'com.google.firebase:firebase-auth:16.0.4'
+    implementation 'com.google.firebase:firebase-core:16.0.4'
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
@@ -33,3 +36,4 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer:r2.4.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
 }
+apply plugin: 'com.google.gms.google-services'

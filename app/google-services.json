@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "652289655023",
+    "firebase_url": "https://morning-of-owl.firebaseio.com",
+    "project_id": "morning-of-owl",
+    "storage_bucket": "morning-of-owl.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:652289655023:android:0c62e3983486c4e5",
+        "android_client_info": {
+          "package_name": "com.example.vu.morningofowl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "652289655023-tan279vlggj0u2k4rg3136rafer6ugep.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vu.morningofowl",
+            "certificate_hash": "9f05f2b3a098ede3ba2b2b114b596d1e3adf8b87"
+          }
+        },
+        {
+          "client_id": "652289655023-qlsbfn3p73pipuqrouoppslq3r83uv6h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsbFwq5f90VnZ4GFMUEofr5hXZRAQI-XA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "652289655023-qlsbfn3p73pipuqrouoppslq3r83uv6h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
