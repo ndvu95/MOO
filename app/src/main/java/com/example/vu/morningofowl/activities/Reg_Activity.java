@@ -66,7 +66,7 @@ public class Reg_Activity extends AppCompatActivity {
             edtSDT.requestFocus();
             return;
         }
-        progressBar.setVisibility(View.VISIBLE);
+
       mAuth.createUserWithEmailAndPassword(eMail,matKhau).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
           @Override
           public void onComplete(@NonNull Task<AuthResult> task) {
@@ -87,6 +87,7 @@ public class Reg_Activity extends AppCompatActivity {
                             Intent intent = new Intent(Reg_Activity.this,Home_Activity.class);
                             startActivity(intent);
                         }else{
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(Reg_Activity.this, "Có Lỗi Xảy Ra, Vui Lòng Thử Lại", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -105,6 +106,7 @@ public class Reg_Activity extends AppCompatActivity {
     }
 
     public void clickReg(View view) {
+        progressBar.setVisibility(View.VISIBLE);
         DangKy();
     }
 }

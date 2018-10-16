@@ -42,4 +42,9 @@ public class Start_Activity extends AppCompatActivity {
         tvReg.setText(ss);
         tvReg.setMovementMethod(LinkMovementMethod.getInstance());
     }
+
+    public void clickLoginWithEmail(View view) {
+        Intent intent = new Intent(Start_Activity.this, LoginEmail_Activity.class);
+        startActivity(intent);
+    }
 }

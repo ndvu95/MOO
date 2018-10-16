@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.Start_Activity">
+        <activity android:name=".activities.SplashScreen_Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,7 +22,10 @@
         <activity android:name=".activities.ExoPlayerActivity" />
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.Home_Activity" />
-        <activity android:name=".activities.Reg_Activity"></activity>
+        <activity android:name=".activities.Reg_Activity" />
+        <activity android:name=".activities.Start_Activity" />
+        <activity android:name=".activities.LoginEmail_Activity" />
+        <activity android:name=".activities.ForgotPassword_Activity"></activity>
     </application>
 
 </manifest>

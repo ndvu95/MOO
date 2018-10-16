@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".activities.Home_Activity">
     <android.support.v7.widget.Toolbar
+        android:elevation="5dp"
         android:background="@color/gray"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -31,6 +32,7 @@
         android:layout_below="@+id/toolbar"
         android:layout_above="@id/bottom_navigation"></FrameLayout>
     <android.support.design.widget.BottomNavigationView
+        android:elevation="5dp"
         app:itemBackground="@color/gray"
         app:itemIconTint="@color/bnv_tab_item_foreground"
         app:itemTextColor="@color/bnv_tab_item_foreground"
