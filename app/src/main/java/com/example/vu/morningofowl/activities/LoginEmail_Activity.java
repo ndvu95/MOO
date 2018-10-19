@@ -1,5 +1,6 @@
 package com.example.vu.morningofowl.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.nfc.Tag;
 import android.support.annotation.NonNull;
@@ -29,7 +30,7 @@ public class LoginEmail_Activity extends AppCompatActivity {
     EditText edtEmailLogin, edtPasswordLogin;
     CheckBox cbRememberMe;
     TextView tvForgotPassword;
-    ProgressBar pgBar;
+    ProgressDialog pd;
     private FirebaseAuth mAuth;
 
     @Override
@@ -40,7 +41,6 @@ public class LoginEmail_Activity extends AppCompatActivity {
         edtPasswordLogin = (EditText) findViewById(R.id.edtMatKhauLogin);
         cbRememberMe = (CheckBox) findViewById(R.id.cbRememberMe);
         tvForgotPassword = (TextView) findViewById(R.id.tvQuenMatKhau);
-        pgBar = (ProgressBar) findViewById(R.id.pgBarLogin);
         doimau();
 
     }
@@ -62,7 +62,7 @@ public class LoginEmail_Activity extends AppCompatActivity {
     }
 
     public void clickLogin(View view) {
-        pgBar.setVisibility(View.VISIBLE);
+        showProgressDialog();
         Login();
     }
 
@@ -76,11 +76,11 @@ public class LoginEmail_Activity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Intent intent = new Intent(LoginEmail_Activity.this, Home_Activity.class);
-                            pgBar.setVisibility(View.GONE);
+                            closeProgressDialog();
                             startActivity(intent);
                         } else {
                             Toast.makeText(LoginEmail_Activity.this, "Tài Khoản Hoặc Mật Khẩu Không Đúng.", Toast.LENGTH_SHORT).show();
-                            pgBar.setVisibility(View.GONE);
+                            closeProgressDialog();
                         }
 
                     }
@@ -92,5 +92,25 @@ public class LoginEmail_Activity extends AppCompatActivity {
     public void clickBackToStart1(View view) {
         Intent intent = new Intent(LoginEmail_Activity.this, Start_Activity.class);
         startActivity(intent);
+    }
+
+    public void showProgressDialog() {
+        try {
+            if (pd == null) {
+                pd = ProgressDialog.show(this, "Loading", "Đang Xử Lý Dữ Liệu...", true, true);
+            }
+        } catch (Exception e) {
+            Log.e("Error", "" + e.getMessage());
+        }
+    }
+
+    public void closeProgressDialog() {
+        try {
+            if (pd != null) {
+                pd.dismiss();
+            }
+        } catch (Exception e) {
+            Log.e("Error", e.getMessage());
+        }
     }
 }

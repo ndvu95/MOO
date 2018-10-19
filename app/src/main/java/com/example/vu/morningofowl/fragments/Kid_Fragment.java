@@ -72,7 +72,7 @@ public class Kid_Fragment extends android.support.v4.app.Fragment implements Loa
         String mota1 = data.getString(5);
         String dienvien1= data.getString(6);
         int views1 = data.getInt(7);
-        arrayList.add(new Phim(ten1,link1,poster1,theloai1,mota1,dienvien1,views1));
+        arrayList.add(new Phim(ten1,link1,"",poster1,theloai1,mota1,dienvien1,views1));
         while(data.moveToNext()){
             String ten = data.getString(1);
             String link = data.getString(2);
@@ -81,7 +81,7 @@ public class Kid_Fragment extends android.support.v4.app.Fragment implements Loa
             String mota = data.getString(5);
             String dienvien= data.getString(6);
             int views = data.getInt(7);
-            arrayList.add(new Phim(ten,link,poster,theloai,mota,dienvien,views));
+            arrayList.add(new Phim(ten,link,"",poster,theloai,mota,dienvien,views));
         }
 
         adapter.notifyDataSetChanged();

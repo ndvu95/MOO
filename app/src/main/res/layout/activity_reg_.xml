@@ -30,48 +30,56 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center"
             app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
             >
             <EditText
                 android:drawableLeft="@drawable/ic_assignment_black_24dp"
                 android:id="@+id/edtHoTen"
                 android:hint="Họ Tên"
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content" />
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center"
             app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
             <EditText
                 android:drawableLeft="@drawable/ic_email_black_24dp"
                 android:id="@+id/edtEmail"
                 android:hint="Email"
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content" />
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center"
             app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
             <EditText
                 android:drawableLeft="@drawable/ic_lock_black_24dp"
                 android:id="@+id/edtMatKhau"
                 android:inputType="textPassword"
                 android:hint="Mật Khẩu"
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content" />
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center"
             app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
             <EditText
                 android:drawableLeft="@drawable/ic_phone_iphone_black_24dp"
                 android:id="@+id/edtSDT"
                 android:inputType="number"
                 android:hint="Số Điện Thoại"
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content" />
         </android.support.design.widget.TextInputLayout>
 

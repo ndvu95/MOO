@@ -1,6 +1,7 @@
 package com.example.vu.morningofowl.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
@@ -21,6 +22,8 @@ import com.example.vu.morningofowl.fragments.Home_Fragment;
 import com.example.vu.morningofowl.fragments.Kid_Fragment;
 import com.example.vu.morningofowl.fragments.Live_Fragment;
 import com.example.vu.morningofowl.fragments.More_Fragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.lang.reflect.Field;
 
@@ -37,6 +40,7 @@ public class Home_Activity extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.gray_dark));
+
 
         Fragment defaultFragment = new Home_Fragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.flkhung,defaultFragment).commit();

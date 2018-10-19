@@ -20,6 +20,8 @@
         android:layout_margin="10dp"
         app:cardElevation="5dp">
             <TextView
+                android:onClick="loginWithFaceBook"
+                android:id="@+id/loginFacebook"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

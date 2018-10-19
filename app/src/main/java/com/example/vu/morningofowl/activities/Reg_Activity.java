@@ -46,27 +46,6 @@ public class Reg_Activity extends AppCompatActivity {
         String matKhau = edtMatKhau.getText().toString().trim();
         final String SDT = edtSDT.getText().toString().trim();
 
-        if(hoTen.isEmpty()){
-            edtHoTen.setError("Bạn Chưa Nhập Họ Tên");
-            edtHoTen.requestFocus();
-            return;
-        }
-        if(eMail.isEmpty()){
-            edtEmail.setError("Bạn Chưa Nhập Email");
-            edtEmail.requestFocus();
-            return;
-        }
-        if(matKhau.isEmpty()){
-            edtMatKhau.setError("Bạn Chưa Nhập Mật Khẩu");
-            edtMatKhau.requestFocus();
-            return;
-        }
-        if(SDT.length() != 10){
-            edtSDT.setError("Số Điện Thoại Phải Có 10 Số");
-            edtSDT.requestFocus();
-            return;
-        }
-
       mAuth.createUserWithEmailAndPassword(eMail,matKhau).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
           @Override
           public void onComplete(@NonNull Task<AuthResult> task) {
@@ -84,6 +63,7 @@ public class Reg_Activity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             progressBar.setVisibility(View.GONE);
                             Toast.makeText(Reg_Activity.this, "Đăng Ký Thành Công", Toast.LENGTH_SHORT).show();
+
                             Intent intent = new Intent(Reg_Activity.this,Home_Activity.class);
                             startActivity(intent);
                         }else{

@@ -44,7 +44,7 @@ public class ForgotPassword_Activity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(ForgotPassword_Activity.this, "Email đã được gửi, vui lòng xác nhận.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ForgotPassword_Activity.this, "Hoàn Tất Quá Trình, Vui Lòng Kiểm Tra Email.", Toast.LENGTH_SHORT).show();
                         pgBar.setVisibility(View.GONE);
                     }
                 });

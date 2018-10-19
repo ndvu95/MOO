@@ -6,90 +6,102 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activities.LoginEmail_Activity">
+
     <android.support.v7.widget.Toolbar
-        android:elevation="5dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:elevation="5dp">
+
         <ImageView
-            android:onClick="clickBackToStart1"
-            android:src="@drawable/ic_arrow_back_black_24dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:onClick="clickBackToStart1"
+            android:src="@drawable/ic_arrow_back_black_24dp" />
     </android.support.v7.widget.Toolbar>
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="130dp" />
+
     <TextView
-        android:textSize="18sp"
-        android:textColor="@color/owl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Đăng Nhập"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:textColor="@color/owl"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
-            >
-            <EditText
-                android:drawableLeft="@drawable/ic_email_black_24dp"
-                android:id="@+id/edtEmailLogin"
-                android:hint="Email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
+            android:padding="8dp"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+
             <EditText
-                android:inputType="textPassword"
-                android:drawableLeft="@drawable/ic_lock_black_24dp"
-                android:id="@+id/edtMatKhauLogin"
-                android:hint="Mật Khẩu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:id="@+id/edtEmailLogin"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_email_black_24dp"
+                android:hint="Email" />
         </android.support.design.widget.TextInputLayout>
-        <LinearLayout
-            android:orientation="horizontal"
+
+        <android.support.design.widget.TextInputLayout
+            android:gravity="center"
+            android:padding="8dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+
+            <EditText
+                android:id="@+id/edtMatKhauLogin"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_lock_black_24dp"
+                android:hint="Mật Khẩu"
+                android:inputType="textPassword" />
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
             <CheckBox
+                android:layout_marginLeft="10dp"
                 android:id="@+id/cbRememberMe"
-                android:text="Lưu Đăng Nhập"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="Lưu Đăng Nhập" />
+
             <TextView
                 android:id="@+id/tvQuenMatKhau"
-                android:textColor="#000000"
-                android:textSize="15sp"
-                android:layout_marginLeft="30dp"
-                android:text="Quên Mật Khẩu? Nhấn Vào Đây"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Quên Mật Khẩu? Nhấn Vào Đây"
+                android:textColor="#000000"
+                android:textSize="15sp" />
         </LinearLayout>
+
         <Button
-            android:onClick="clickLogin"
-            android:elevation="10dp"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/button"
-            android:layout_margin="15dp"
-            android:layout_gravity="center"
-            android:textAllCaps="false"
-            android:text="Đăng Nhập"
             android:layout_width="150dp"
-            android:layout_height="wrap_content" />
-        <ProgressBar
-            android:visibility="gone"
-            android:id="@+id/pgBarLogin"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_margin="20dp"
+            android:background="@drawable/button"
+            android:elevation="10dp"
+            android:onClick="clickLogin"
+            android:text="Đăng Nhập"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF" />
+
     </LinearLayout>
 
 </LinearLayout>

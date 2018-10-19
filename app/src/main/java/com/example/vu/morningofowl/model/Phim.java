@@ -8,16 +8,20 @@ import java.io.Serializable;
 public class Phim implements Serializable{
         private String tenPhim;
         private String linkPhim;
+        private String linksub;
         private String posterPhim;
         private String theloaiPhim;
         private String motaPhim;
         private String dienvienPhim;
         private int soluotXem;
 
+    public Phim() {
+    }
 
-    public Phim(String tenPhim, String linkPhim, String posterPhim, String theloaiPhim, String motaPhim, String dienvienPhim, int soluotXem) {
+    public Phim(String tenPhim, String linkPhim, String linksub, String posterPhim, String theloaiPhim, String motaPhim, String dienvienPhim, int soluotXem) {
         this.tenPhim = tenPhim;
         this.linkPhim = linkPhim;
+        this.linksub = linksub;
         this.posterPhim = posterPhim;
         this.theloaiPhim = theloaiPhim;
         this.motaPhim = motaPhim;
@@ -39,6 +43,14 @@ public class Phim implements Serializable{
 
     public void setLinkPhim(String linkPhim) {
         this.linkPhim = linkPhim;
+    }
+
+    public String getLinksub() {
+        return linksub;
+    }
+
+    public void setLinksub(String linksub) {
+        this.linksub = linksub;
     }
 
     public String getPosterPhim() {
