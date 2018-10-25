@@ -8,42 +8,62 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.vu.morningofowl.activities.DetailActivity;
 import com.example.vu.morningofowl.R;
 import com.example.vu.morningofowl.adapter.Phim_Adapter;
 import com.example.vu.morningofowl.model.Phim;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-public class Kid_Fragment extends android.support.v4.app.Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    android.support.v4.content.CursorLoader cursorLoader;
-    private ListView lvKid;
+public class Kid_Fragment extends android.support.v4.app.Fragment {
+    DatabaseReference mData;
+    private GridView gridviewKid;
     private ArrayList<Phim> arrayList;
     private Phim_Adapter adapter;
+    private List<String> listKey;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_kid,container,false);
-        getLoaderManager().initLoader(1,null,this);
-        lvKid = (ListView)view.findViewById(R.id.lvKidz);
+        View view = inflater.inflate(R.layout.fragment_kid, container, false);
+        gridviewKid = (GridView) view.findViewById(R.id.gvKidz);
         arrayList = new ArrayList<>();
-        adapter = new Phim_Adapter(getContext(),R.layout.dong_layout,arrayList);
-        lvKid.setAdapter(adapter);
+        listKey = new ArrayList<>();
+        adapter = new Phim_Adapter(getContext(), R.layout.custom_grid_item, arrayList);
 
-        lvKid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gridviewKid.setAdapter(adapter);
+        readData();
+
+
+        gridviewKid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final Phim phim = arrayList.get(position);
                 Intent manhinhDetail = new Intent(getActivity(), DetailActivity.class);
-                for(int i=0; i< arrayList.size(); i++){
-                    manhinhDetail.putExtra("dulieu", (Serializable)phim);
+                for (int i = 0; i < arrayList.size(); i++) {
+                    manhinhDetail.putExtra("dulieu", (Serializable) phim);
+                }
+                String key = listKey.get(position);
+                for (int i = 0; i < listKey.size(); i++) {
+                    manhinhDetail.putExtra("phim_UID",key);
                 }
                 startActivity(manhinhDetail);
             }
@@ -52,43 +72,63 @@ public class Kid_Fragment extends android.support.v4.app.Fragment implements Loa
         return view;
     }
 
-    @NonNull
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        cursorLoader = new android.support.v4.content.CursorLoader(getContext(), Uri.parse("content://vund.itplus.vn.appql.DataBase/cte"), null, null, null, null);
-        return cursorLoader;
-    }
 
-    @Override
-    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        arrayList = new ArrayList<>();
-        adapter = new Phim_Adapter(getContext(),R.layout.dong_layout,arrayList);
-        lvKid.setAdapter(adapter);
-        data.moveToFirst();
-        String ten1 = data.getString(1);
-        String link1 = data.getString(2);
-        String poster1= data.getString(3);
-        String theloai1= data.getString(4);
-        String mota1 = data.getString(5);
-        String dienvien1= data.getString(6);
-        int views1 = data.getInt(7);
-        arrayList.add(new Phim(ten1,link1,"",poster1,theloai1,mota1,dienvien1,views1));
-        while(data.moveToNext()){
-            String ten = data.getString(1);
-            String link = data.getString(2);
-            String poster= data.getString(3);
-            String theloai= data.getString(4);
-            String mota = data.getString(5);
-            String dienvien= data.getString(6);
-            int views = data.getInt(7);
-            arrayList.add(new Phim(ten,link,"",poster,theloai,mota,dienvien,views));
-        }
 
-        adapter.notifyDataSetChanged();
-    }
+    public void readData() {
+        mData = FirebaseDatabase.getInstance().getReference("Phim");
 
-    @Override
-    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        mData.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                final String key = dataSnapshot.getKey().toString();
 
+                mData.child(key).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Map<String, String> map = (Map<String, String>) dataSnapshot.getValue();
+                        Map<Long, Long> mapViews = (Map<Long, Long>) dataSnapshot.getValue();
+                        String tenphim = map.get("tenPhim");
+                        String linkphim = map.get("linkPhim");
+                        String linksub = map.get("linksub");
+                        String posterphim = map.get("posterPhim");
+                        String motaphim = map.get("motaPhim");
+                        String theloai = map.get("theloaiPhim");
+                        String dienvien = map.get("dienvienPhim");
+                        Long luotxem = mapViews.get("soluotXem");
+
+                        listKey.add(key);
+                        arrayList.add(new Phim(tenphim, linkphim, linksub, posterphim, theloai, motaphim, dienvien, luotxem));
+                        adapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

@@ -60,6 +60,7 @@ public class More_Fragment extends Fragment {
                         switch (childPosition){
                             case 0:
                                 Intent intentAccount = new Intent(getContext(),AccountActivity.class);
+                                intentAccount.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 startActivity(intentAccount);
                                 break;
                             case 1:

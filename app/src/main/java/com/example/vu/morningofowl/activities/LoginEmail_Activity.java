@@ -62,7 +62,7 @@ public class LoginEmail_Activity extends AppCompatActivity {
     }
 
     public void clickLogin(View view) {
-        showProgressDialog();
+
         Login();
     }
 
@@ -74,10 +74,17 @@ public class LoginEmail_Activity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        showProgressDialog();
                         if (task.isSuccessful()) {
-                            Intent intent = new Intent(LoginEmail_Activity.this, Home_Activity.class);
-                            closeProgressDialog();
-                            startActivity(intent);
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if(user.isEmailVerified()){
+                                Intent intent = new Intent(LoginEmail_Activity.this, Home_Activity.class);
+                                closeProgressDialog();
+                                startActivity(intent);
+                            }else{
+                                closeProgressDialog();
+                                Toast.makeText(LoginEmail_Activity.this, "Tài khoản chưa được kích hoạt", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             Toast.makeText(LoginEmail_Activity.this, "Tài Khoản Hoặc Mật Khẩu Không Đúng.", Toast.LENGTH_SHORT).show();
                             closeProgressDialog();

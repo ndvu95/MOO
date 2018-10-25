@@ -13,12 +13,12 @@ public class Phim implements Serializable{
         private String theloaiPhim;
         private String motaPhim;
         private String dienvienPhim;
-        private int soluotXem;
+        private long soluotXem;
 
     public Phim() {
     }
 
-    public Phim(String tenPhim, String linkPhim, String linksub, String posterPhim, String theloaiPhim, String motaPhim, String dienvienPhim, int soluotXem) {
+    public Phim(String tenPhim, String linkPhim, String linksub, String posterPhim, String theloaiPhim, String motaPhim, String dienvienPhim, long soluotXem) {
         this.tenPhim = tenPhim;
         this.linkPhim = linkPhim;
         this.linksub = linksub;
@@ -85,7 +85,7 @@ public class Phim implements Serializable{
         this.dienvienPhim = dienvienPhim;
     }
 
-    public int getSoluotXem() {
+    public long getSoluotXem() {
         return soluotXem;
     }
 

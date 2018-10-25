@@ -3,10 +3,14 @@ package com.example.vu.morningofowl.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.media.MediaRecorder;
+import android.media.session.MediaController;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Surface;
+import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
@@ -47,6 +51,7 @@ public class ExoPlayerActivity extends Activity {
         simpleExoPlayerView = (SimpleExoPlayerView) findViewById(R.id.exoplayer);
 
         //Toast.makeText(this, Link, Toast.LENGTH_SHORT).show();
+
 
     }
 
@@ -103,12 +108,12 @@ public class ExoPlayerActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
 
         tapBack++;
         if (tapBack == 2) {
             tapBack = 0;
-            finish();
+            super.onBackPressed();
+            //finish();
         } else {
             Toast.makeText(this, "Nhấn Back Một Lần Nữa Để Thoát", Toast.LENGTH_SHORT).show();
         }

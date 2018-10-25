@@ -1,6 +1,7 @@
 package com.example.vu.morningofowl.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ public class ManagerAddPhim_Activity extends AppCompatActivity {
         edtTheLoai = (EditText)findViewById(R.id.edtTheLoai);
         edtMoTa = (EditText)findViewById(R.id.edtMota);
         edtDienVien = (EditText)findViewById(R.id.edtDienVien);
-        edtLuotXem = (EditText)findViewById(R.id.edtViews);
+
     }
 
     public void clickUp(View view) {
@@ -51,7 +52,7 @@ public class ManagerAddPhim_Activity extends AppCompatActivity {
         String theLoai = edtTheLoai.getText().toString().trim();
         String moTa = edtMoTa.getText().toString().trim();
         String dienVien = edtDienVien.getText().toString().trim();
-        int luotXem = Integer.parseInt(edtLuotXem.getText().toString().trim());
+        Long luotXem = Long.parseLong("1");
 
         Phim phim = new Phim(tenPhim,linkPhim,linkSub,linkPoster,theLoai,moTa,dienVien,luotXem);
 
@@ -71,10 +72,15 @@ public class ManagerAddPhim_Activity extends AppCompatActivity {
         edtTheLoai.setText("");
         edtMoTa.setText("");
         edtDienVien.setText("");
-        edtLuotXem.setText("");
+
     }
 
     public void clickClear(View view) {
         clearText();
+    }
+
+    public void clickBackToMain(View view) {
+        Intent intent = new Intent(ManagerAddPhim_Activity.this, Home_Activity.class);
+        startActivity(intent);
     }
 }

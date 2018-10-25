@@ -35,11 +35,12 @@
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
         android:elevation="5dp"
-        android:src="@drawable/ic_ondemand_video_black_24dp"
+        android:src="@drawable/person"
         app:civ_border_color="#FF000000"
         app:civ_border_width="2dp" />
 
     <TextView
+        android:onClick="clickEditPhoto"
         android:id="@+id/tveditPhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

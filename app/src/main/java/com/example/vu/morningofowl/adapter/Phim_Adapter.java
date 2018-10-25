@@ -36,7 +36,7 @@ public class Phim_Adapter extends ArrayAdapter<Phim> {
     public Phim_Adapter(@NonNull Context context, int resource, @NonNull List<Phim> objects) {
         super(context, resource, objects);
         this.phimList = objects;
-        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @NonNull
@@ -45,26 +45,25 @@ public class Phim_Adapter extends ArrayAdapter<Phim> {
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
-            convertView = layoutInflater.inflate(R.layout.dong_layout, parent, false);
-            holder.imgHinh = (ImageView) convertView.findViewById(R.id.hinhPhim);
-            holder.tvName = (TextView) convertView.findViewById(R.id.tvtenPhim);
-            holder.tvCategory = (TextView) convertView.findViewById(R.id.tvtheLoai);
-            holder.tvViews = (TextView) convertView.findViewById(R.id.tvLuotXem);
+            convertView = layoutInflater.inflate(R.layout.custom_grid_item, parent, false);
+            holder.imgHinh = (ImageView) convertView.findViewById(R.id.imgHinh);
+            holder.tvName = (TextView) convertView.findViewById(R.id.tvTen);
+
 
             convertView.setTag(holder);
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            holder = (ViewHolder)convertView.getTag();
         }
 
         final Phim phim = phimList.get(position);
 
 
         Picasso.with(getContext()).load(Uri.parse(phim.getPosterPhim()))
+                .resize(6000,2000)
+                .onlyScaleDown()
                 .placeholder(R.mipmap.ic_launcher_round)
                 .into(holder.imgHinh);
         holder.tvName.setText(phim.getTenPhim());
-        holder.tvCategory.setText("Thể Loại: "+phim.getTheloaiPhim());
-        holder.tvViews.setText("Views: "+phim.getSoluotXem());
 
         return convertView;
     }
@@ -72,8 +71,6 @@ public class Phim_Adapter extends ArrayAdapter<Phim> {
     public static class ViewHolder {
         public ImageView imgHinh;
         public TextView tvName;
-        public TextView tvCategory;
-        public TextView tvViews;
 
     }
 }
