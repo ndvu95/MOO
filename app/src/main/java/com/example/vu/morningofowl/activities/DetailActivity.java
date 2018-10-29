@@ -69,7 +69,7 @@ public class DetailActivity extends AppCompatActivity {
     Context context;
     DatabaseReference mData = FirebaseDatabase.getInstance().getReference("Phim");
 
-    String phim_UID;
+    String phimID;
     String link_Phim;
     String link_Anh;
     String theLoai;
@@ -92,15 +92,17 @@ public class DetailActivity extends AppCompatActivity {
         rcRelated.setAdapter(adapter);
         rcRelated.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
 
+
         readData();
         fillDetail();
 
     }
 
     private void fillDetail() {
+
         Intent intent = getIntent();
         String phim_UID = intent.getStringExtra("phim_UID");
-
+        phimID = phim_UID;
         mData.child(phim_UID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -207,8 +209,13 @@ public class DetailActivity extends AppCompatActivity {
                     Long luotxem = (Long) snapshot.child("soluotXem").getValue();
 
 
-                    arrayList.add(new Related_Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, luotxem));
-                    adapter.notifyDataSetChanged();
+                    if(!snapshot.child("idPhim").getValue().toString().equals(phimID)){
+                        arrayList.add(new Related_Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, luotxem));
+                        adapter.notifyDataSetChanged();
+                    }
+
+
+
                 }
             }
 
