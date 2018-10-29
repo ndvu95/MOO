@@ -8,9 +8,12 @@
     <color name="transparent">#00ffffff</color>
     <color name="bnv_tab_foreground">#000000</color>
     <color name="gray">#e9e7e7</color>
-    <color name="gray_dark">#cecdcd</color>
+    <color name="gray_dark">#535252</color>
     <color name="grayyy">#5c5959</color>
     <color name="owl">#b1523e</color>
     <color name="white">#FFFFFF</color>
     <color name="mau_nen">#FFF9F9F9</color>
+    <color name="gray_with_opacity">#5c5959</color>
+    <color name="label">#455AA6</color>
+    <color name="sectionHeader">#000000</color>
 </resources>

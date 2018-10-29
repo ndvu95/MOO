@@ -178,7 +178,23 @@
                         android:background="@color/transparent" />
                 </com.ms.square.android.expandabletextview.ExpandableTextView>
             </ScrollView>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+            <TextView
+                android:textSize="16sp"
+                android:layout_marginLeft="10dp"
+                android:text="Liên Quan"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <android.support.v7.widget.RecyclerView
+                android:orientation="horizontal"
+                android:id="@+id/relatedRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
+            </android.support.v7.widget.RecyclerView>
 
         </LinearLayout>
     </ScrollView>

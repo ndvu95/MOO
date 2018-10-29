@@ -29,17 +29,21 @@
     </android.support.v7.widget.Toolbar>
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:background="@drawable/button_with_opacity"
         android:id="@+id/profile_Image"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:elevation="5dp"
+        android:layout_marginTop="10dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/person"
+        android:elevation="3dp"
         app:civ_border_color="#FF000000"
-        app:civ_border_width="2dp" />
+        app:civ_border_width="1dp"
+         />
 
     <TextView
+        android:linksClickable="true"
         android:onClick="clickEditPhoto"
         android:id="@+id/tveditPhoto"
         android:layout_width="wrap_content"
@@ -49,9 +53,10 @@
         android:text="Edit Photo" />
 
     <TextView
+        android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_margin="15dp"
+
         android:gravity="center"
         android:text="Thông Tin Tài Khoản"
         android:textColor="@color/owl"
@@ -66,6 +71,8 @@
         app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
 
         <EditText
+            android:drawablePadding="8dp"
+            android:drawableLeft="@drawable/person"
             android:id="@+id/edtDisplayName"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -80,6 +87,7 @@
         app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
 
         <EditText
+            android:drawablePadding="8dp"
             android:id="@+id/edtDisplayEmail"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -97,6 +105,7 @@
         app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
 
         <EditText
+            android:drawablePadding="8dp"
             android:id="@+id/edtPhone"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -120,6 +129,8 @@
             android:orientation="horizontal">
 
             <EditText
+                android:drawablePadding="8dp"
+                android:editable="false"
                 android:id="@+id/edtPassword"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
@@ -129,6 +140,7 @@
                 android:text="fdsafdsaf" />
 
             <ImageButton
+                android:id="@+id/btnChangePass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

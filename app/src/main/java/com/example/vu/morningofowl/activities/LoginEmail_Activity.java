@@ -30,8 +30,8 @@ public class LoginEmail_Activity extends AppCompatActivity {
     EditText edtEmailLogin, edtPasswordLogin;
     CheckBox cbRememberMe;
     TextView tvForgotPassword;
-    ProgressDialog pd;
     private FirebaseAuth mAuth;
+    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,24 +70,28 @@ public class LoginEmail_Activity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         String Email = edtEmailLogin.getText().toString().trim();
         String Password = edtPasswordLogin.getText().toString().trim();
+        pd = new ProgressDialog(this);
+        pd.setMessage("Đang Tải Dữ Liệu...");
+        pd.setCanceledOnTouchOutside(false);
+        pd.show();
         mAuth.signInWithEmailAndPassword(Email, Password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        showProgressDialog();
+
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             if(user.isEmailVerified()){
                                 Intent intent = new Intent(LoginEmail_Activity.this, Home_Activity.class);
-                                closeProgressDialog();
+                                pd.dismiss();
                                 startActivity(intent);
                             }else{
-                                closeProgressDialog();
+                                pd.dismiss();
                                 Toast.makeText(LoginEmail_Activity.this, "Tài khoản chưa được kích hoạt", Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             Toast.makeText(LoginEmail_Activity.this, "Tài Khoản Hoặc Mật Khẩu Không Đúng.", Toast.LENGTH_SHORT).show();
-                            closeProgressDialog();
+                            pd.dismiss();
                         }
 
                     }
@@ -101,23 +105,5 @@ public class LoginEmail_Activity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void showProgressDialog() {
-        try {
-            if (pd == null) {
-                pd = ProgressDialog.show(this, "Loading", "Đang Xử Lý Dữ Liệu...", true, true);
-            }
-        } catch (Exception e) {
-            Log.e("Error", "" + e.getMessage());
-        }
-    }
 
-    public void closeProgressDialog() {
-        try {
-            if (pd != null) {
-                pd.dismiss();
-            }
-        } catch (Exception e) {
-            Log.e("Error", e.getMessage());
-        }
-    }
 }

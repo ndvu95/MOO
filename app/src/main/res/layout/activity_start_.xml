@@ -12,6 +12,9 @@
         android:layout_height="250dp"
         android:layout_gravity="center"
         android:src="@drawable/moo" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
 
     <android.support.v7.widget.CardView
         android:layout_width="wrap_content"
@@ -20,15 +23,17 @@
         android:layout_margin="10dp"
         app:cardElevation="5dp">
             <TextView
+                android:textColor="@color/owl"
                 android:onClick="loginWithFaceBook"
                 android:id="@+id/loginFacebook"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
+                android:layout_width="300dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center_horizontal"
-                android:drawableLeft="@drawable/login_with_fb"
+                android:drawableLeft="@drawable/ic_facebook_logo_button"
                 android:gravity="center"
-                android:text="Login With Facebook"
-                android:textSize="15sp" />
+                android:text="Đăng Nhập Bằng Facebook"
+                android:paddingLeft="5dp"
+                android:textSize="16sp" />
     </android.support.v7.widget.CardView>
     <android.support.v7.widget.CardView
         android:layout_width="wrap_content"
@@ -37,16 +42,20 @@
         android:layout_margin="10dp"
         app:cardElevation="5dp">
         <TextView
+            android:textColor="@color/owl"
+            android:drawablePadding="-30dp"
             android:onClick="clickLoginWithEmail"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
+            android:layout_width="300dp"
+            android:layout_height="30dp"
             android:layout_gravity="center_horizontal"
-            android:drawableLeft="@drawable/email"
+            android:drawableLeft="@drawable/ic_email"
             android:gravity="center"
-            android:text="Login With Email"
-            android:textSize="15sp" />
+            android:text="Đăng Nhập Bằng Email"
+            android:paddingLeft="5dp"
+            android:textSize="16sp" />
     </android.support.v7.widget.CardView>
         <TextView
+            android:textColor="@color/owl"
             android:id="@+id/tvReg"
             android:layout_gravity="center"
             android:padding="5dp"
@@ -58,6 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
+            android:textColor="@color/owl"
             android:text="Morning Of Owl v0.01"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"

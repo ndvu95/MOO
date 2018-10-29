@@ -1,11 +1,8 @@
 package com.example.vu.morningofowl.model;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-
 import java.io.Serializable;
 
-public class Phim implements Serializable {
+public class Related_Phim implements Serializable {
     private String idPhim;
     private String tenPhim;
     private String linkPhim;
@@ -16,10 +13,10 @@ public class Phim implements Serializable {
     private String dienvienPhim;
     private long soluotXem;
 
-    public Phim() {
+    public Related_Phim() {
     }
 
-    public Phim(String idPhim, String tenPhim, String linkPhim, String linksub, String posterPhim, String theloaiPhim, String motaPhim, String dienvienPhim, long soluotXem) {
+    public Related_Phim(String idPhim, String tenPhim, String linkPhim, String linksub, String posterPhim, String theloaiPhim, String motaPhim, String dienvienPhim, long soluotXem) {
         this.idPhim = idPhim;
         this.tenPhim = tenPhim;
         this.linkPhim = linkPhim;

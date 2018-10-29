@@ -45,6 +45,7 @@
             app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
 
             <EditText
+                android:drawablePadding="10dp"
                 android:id="@+id/edtEmailLogin"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
@@ -60,6 +61,7 @@
             app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
 
             <EditText
+                android:drawablePadding="10dp"
                 android:id="@+id/edtMatKhauLogin"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"

@@ -3,6 +3,7 @@ package com.example.vu.morningofowl.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -12,6 +13,7 @@ import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,8 @@ public class Start_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_);
+        Window window = this.getWindow();
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.gray_dark));
         tvReg = (TextView) findViewById(R.id.tvReg);
         loginFacebook = (TextView) findViewById(R.id.loginFacebook);
         mAuth = FirebaseAuth.getInstance();
@@ -57,7 +61,7 @@ public class Start_Activity extends AppCompatActivity {
             }
         };
         ss.setSpan(clickableSpan, 23, 30, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        ss.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.owl)), 23, 30, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimary)), 23, 30, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvReg.setText(ss);
         tvReg.setMovementMethod(LinkMovementMethod.getInstance());
 

@@ -11,10 +11,6 @@
         android:icon="@drawable/ic_child_friendly_black_24dp"
         android:title="Kidz"/>
     <item
-        android:id="@+id/nav_live"
-        android:icon="@drawable/ic_ondemand_video_black_24dp"
-        android:title="Live"/>
-    <item
         android:id="@+id/nav_more"
         android:icon="@drawable/ic_reorder_black_24dp"
         android:title="More"/>

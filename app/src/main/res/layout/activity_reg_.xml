@@ -35,7 +35,8 @@
             app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
             >
             <EditText
-                android:drawableLeft="@drawable/ic_assignment_black_24dp"
+                android:drawablePadding="8dp"
+                android:drawableLeft="@drawable/person"
                 android:id="@+id/edtHoTen"
                 android:hint="Họ Tên"
                 android:layout_width="350dp"
@@ -48,6 +49,7 @@
             android:gravity="center"
             app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
             <EditText
+                android:drawablePadding="8dp"
                 android:drawableLeft="@drawable/ic_email_black_24dp"
                 android:id="@+id/edtEmail"
                 android:hint="Email"
@@ -61,6 +63,7 @@
             android:gravity="center"
             app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
             <EditText
+                android:drawablePadding="8dp"
                 android:drawableLeft="@drawable/ic_lock_black_24dp"
                 android:id="@+id/edtMatKhau"
                 android:inputType="textPassword"
@@ -75,6 +78,7 @@
             android:gravity="center"
             app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
             <EditText
+                android:drawablePadding="8dp"
                 android:drawableLeft="@drawable/ic_phone_iphone_black_24dp"
                 android:id="@+id/edtSDT"
                 android:inputType="number"

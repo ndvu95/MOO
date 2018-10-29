@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -48,6 +49,7 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -69,7 +71,8 @@ public class AccountActivity extends AppCompatActivity {
     CircleImageView profileImage;
     EditText edtDisplayName, edtDisplayEmail, edtPhone, edtPassword;
     TextInputLayout tilPhone, tilPassword;
-    TextView tvPhoto;
+    TextView tvPhoto,tvTitle;
+    ImageButton btnChangePass;
     Button btnSave;
 
     @Override
@@ -82,19 +85,17 @@ public class AccountActivity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.gray));
         mData = FirebaseDatabase.getInstance().getReference("Users");
         initUI();
-        fillInfo();
+
 
         Log.d("PROVIDERRRR", "" + provider);
 
-        if (provider == "facebook.com") {
-            btnSave.setVisibility(View.GONE);
-            edtPassword.setVisibility(View.GONE);
-            profileImage.setClickable(false);
-        }
-        if (provider == "password") {
-            btnSave.setVisibility(View.VISIBLE);
-            edtPassword.setVisibility(View.VISIBLE);
+        if (provider.equals("facebook.com")) {
 
+            fillInfoFacebook();
+        }
+        else if(provider.equals("password")) {
+
+            fillInfo();
         }
     }
 
@@ -173,6 +174,35 @@ public class AccountActivity extends AppCompatActivity {
 
     }
 
+    private void fillInfoFacebook(){
+        tvTitle.setText("Bạn Đang Đăng Nhập Với Tài Khoản Facebook");
+        tvTitle.setTextSize(15f);
+        String displayName = user.getDisplayName();
+        String email =user.getEmail();
+        Uri image_url = user.getPhotoUrl();
+        String linkAnh = image_url+"?height=400";
+        Uri profile_Image = Uri.parse(linkAnh);
+
+        btnSave.setVisibility(View.GONE);
+        edtPassword.setVisibility(View.GONE);
+        edtPhone.setVisibility(View.GONE);
+        profileImage.setClickable(false);
+        edtDisplayName.setClickable(false);
+        edtDisplayName.setFocusable(false);
+        tvPhoto.setVisibility(View.GONE);
+        btnChangePass.setVisibility(View.GONE);
+        tilPhone.setVisibility(View.GONE);
+        tilPassword.setVisibility(View.GONE);
+        tvPhoto.setVisibility(View.GONE);
+        tvPhoto.setClickable(false);
+        btnSave.setVisibility(View.GONE);
+        edtDisplayName.setText(displayName);
+        edtDisplayEmail.setText(email);
+        Picasso.with(AccountActivity.this)
+                .load(profile_Image)
+                .placeholder(R.drawable.person)
+                .into(profileImage);
+    }
     private void fillInfo() {
 
 
@@ -180,7 +210,7 @@ public class AccountActivity extends AppCompatActivity {
         String displayEmail = user.getEmail();
         String phone = user.getPhoneNumber();
 
-        if (provider.equals("password")) {
+
             mData.child(UID).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -197,6 +227,8 @@ public class AccountActivity extends AppCompatActivity {
                     edtDisplayName.setText(name);
                     edtPhone.setText(sdt);
                     edtDisplayEmail.setText(email);
+                    btnSave.setVisibility(View.VISIBLE);
+                    edtPassword.setVisibility(View.VISIBLE);
                     tvPhoto.setClickable(true);
                     tvPhoto.setVisibility(View.VISIBLE);
                     Picasso.with(AccountActivity.this).load(uri).placeholder(R.drawable.person).into(profileImage);
@@ -207,20 +239,7 @@ public class AccountActivity extends AppCompatActivity {
 
                 }
             });
-        } else if (provider.equals("facebook.com")) {
-            String displayname = user.getDisplayName();
-            String email = user.getEmail();
-
-            edtDisplayName.setText(displayname);
-            edtDisplayEmail.setText(email);
-            tilPhone.setVisibility(View.GONE);
-            tilPassword.setVisibility(View.GONE);
-            tvPhoto.setVisibility(View.GONE);
-            tvPhoto.setClickable(false);
-            btnSave.setVisibility(View.GONE);
         }
-
-    }
 
     private void initUI() {
         profileImage = (CircleImageView) findViewById(R.id.profile_Image);
@@ -231,7 +250,13 @@ public class AccountActivity extends AppCompatActivity {
         tilPhone = (TextInputLayout) findViewById(R.id.tilPhone);
         tilPassword = (TextInputLayout) findViewById(R.id.tilPassword);
         tvPhoto = (TextView) findViewById(R.id.tveditPhoto);
+        tvTitle = (TextView)findViewById(R.id.tvTitle);
         btnSave = (Button) findViewById(R.id.btnSave);
+        btnChangePass = (ImageButton)findViewById(R.id.btnChangePass);
+        edtPassword.setFocusable(false);
+        edtPassword.setClickable(false);
+        edtDisplayEmail.setFocusable(false);
+        edtDisplayEmail.setClickable(false);
 
         imageStorageData = FirebaseStorage.getInstance().getReference();
         userDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
@@ -245,23 +270,39 @@ public class AccountActivity extends AppCompatActivity {
         String eMailMoi = edtDisplayEmail.getText().toString().trim();
         String hotenMoi = edtDisplayName.getText().toString().trim();
         String sdtMoi = edtPhone.getText().toString().trim();
-        setnewUserData(eMailMoi, hotenMoi, sdtMoi,download);
+        setnewUserData(eMailMoi, hotenMoi, sdtMoi);
     }
 
-    private void setnewUserData(String eMail, String hoten, String sdt, String image) {
+    private void setnewUserData(final String eMail, final String hoten, final String sdt) {
         ProgressDialog pd = new ProgressDialog(AccountActivity.this);
         pd.setMessage("Loading...");
         pd.show();
         mData = FirebaseDatabase.getInstance().getReference("Users");
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Users users = new Users(hoten, eMail, sdt, download);
+        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         pd.dismiss();
 
-        mData.child(uid).setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
+        mData.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String, Object> postValues = new HashMap<String,Object>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    postValues.put(snapshot.getKey(),snapshot.getValue());
+                }
+                postValues.put("Email",eMail);
+                postValues.put("HoTen",hoten);
+                postValues.put("SDT",sdt);
+                mData.child(uid).updateChildren(postValues).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(AccountActivity.this, "Cập Nhật Thông Tin Thành Công", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
 
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(AccountActivity.this, "Cập Nhật Thông Tin Thành Công", Toast.LENGTH_SHORT).show();
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });

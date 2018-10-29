@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
@@ -35,94 +37,66 @@ import java.util.Map;
 
 public class Kid_Fragment extends android.support.v4.app.Fragment {
     DatabaseReference mData;
+    View view;
     private GridView gridviewKid;
     private ArrayList<Phim> arrayList;
     private Phim_Adapter adapter;
+    private RecyclerView rcRelated;
     private List<String> listKey;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_kid, container, false);
-        gridviewKid = (GridView) view.findViewById(R.id.gvKidz);
-        arrayList = new ArrayList<>();
-        listKey = new ArrayList<>();
-        adapter = new Phim_Adapter(getContext(), R.layout.custom_grid_item, arrayList);
 
-        gridviewKid.setAdapter(adapter);
-        readData();
+            view = inflater.inflate(R.layout.fragment_kid, container, false);
+            gridviewKid = (GridView) view.findViewById(R.id.gvKidz);
+
+            arrayList = new ArrayList<>();
+            adapter = new Phim_Adapter(getContext(), R.layout.custom_grid_item, arrayList);
+            gridviewKid.setAdapter(adapter);
+            readData();
 
 
-        gridviewKid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final Phim phim = arrayList.get(position);
-                Intent manhinhDetail = new Intent(getActivity(), DetailActivity.class);
-                for (int i = 0; i < arrayList.size(); i++) {
-                    manhinhDetail.putExtra("dulieu", (Serializable) phim);
+            gridviewKid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    Intent manhinhDetail = new Intent(getActivity(), DetailActivity.class);
+                    String key = arrayList.get(position).getIdPhim();
+                    for (int i = 0; i < arrayList.size(); i++) {
+                        manhinhDetail.putExtra("phim_UID", key);
+                    }
+                    startActivity(manhinhDetail);
                 }
-                String key = listKey.get(position);
-                for (int i = 0; i < listKey.size(); i++) {
-                    manhinhDetail.putExtra("phim_UID",key);
-                }
-                startActivity(manhinhDetail);
-            }
-        });
+            });
+
 
         return view;
     }
 
 
-
     public void readData() {
         mData = FirebaseDatabase.getInstance().getReference("Phim");
 
-        mData.addChildEventListener(new ChildEventListener() {
+        Query query = mData.orderByChild("theloaiPhim").equalTo("Hoạt Hình");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                final String key = dataSnapshot.getKey().toString();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String idPhim = snapshot.child("idPhim").getValue().toString();
+                    String tenPhim = snapshot.child("tenPhim").getValue().toString();
+                    String linkPhim = snapshot.child("linkPhim").getValue().toString();
+                    String linkSub = snapshot.child("linksub").getValue().toString();
+                    String posterPhim = snapshot.child("posterPhim").getValue().toString();
+                    String theloaiPhim = snapshot.child("theloaiPhim").getValue().toString();
+                    String motaPhim = snapshot.child("motaPhim").getValue().toString();
+                    String dienvienPhim = snapshot.child("dienvienPhim").getValue().toString();
+                    Long luotxem = (Long) snapshot.child("soluotXem").getValue();
 
-                mData.child(key).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, String> map = (Map<String, String>) dataSnapshot.getValue();
-                        Map<Long, Long> mapViews = (Map<Long, Long>) dataSnapshot.getValue();
-                        String tenphim = map.get("tenPhim");
-                        String linkphim = map.get("linkPhim");
-                        String linksub = map.get("linksub");
-                        String posterphim = map.get("posterPhim");
-                        String motaphim = map.get("motaPhim");
-                        String theloai = map.get("theloaiPhim");
-                        String dienvien = map.get("dienvienPhim");
-                        Long luotxem = mapViews.get("soluotXem");
 
-                        listKey.add(key);
-                        arrayList.add(new Phim(tenphim, linkphim, linksub, posterphim, theloai, motaphim, dienvien, luotxem));
-                        adapter.notifyDataSetChanged();
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                    arrayList.add(new Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, luotxem));
+                    adapter.notifyDataSetChanged();
+                }
             }
 
             @Override

@@ -3,10 +3,12 @@ package com.example.vu.morningofowl.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -29,6 +31,8 @@ public class Reg_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reg_);
+        Window window = this.getWindow();
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.gray_dark));
         edtHoTen = (EditText) findViewById(R.id.edtHoTen);
         edtEmail = (EditText) findViewById(R.id.edtEmail);
         edtMatKhau = (EditText) findViewById(R.id.edtMatKhau);
