@@ -15,6 +15,7 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +39,9 @@ import com.example.vu.morningofowl.model.Related_Phim;
 import com.example.vu.morningofowl.model.SectionDataPhim;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -61,6 +66,7 @@ public class DetailActivity extends AppCompatActivity {
     private TextView tvTheLoai;
     private TextView tvDienVien;
     private TextView tvViews;
+    private ImageButton btnAdd;
     private ArrayList<Related_Phim> arrayList;
     private Related_Adapter adapter;
     private ExpandableTextView expandableTextView;
@@ -68,11 +74,12 @@ public class DetailActivity extends AppCompatActivity {
     private RecyclerView rcRelated;
     Context context;
     DatabaseReference mData = FirebaseDatabase.getInstance().getReference("Phim");
-
+    String theLoai;
     String phimID;
     String link_Phim;
     String link_Anh;
-    String theLoai;
+    private boolean processWatchLater = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,12 +98,35 @@ public class DetailActivity extends AppCompatActivity {
         adapter = new Related_Adapter(arrayList, context);
         rcRelated.setAdapter(adapter);
         rcRelated.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-
-
-        readData();
         fillDetail();
-
+        searchtheLoai();
+        checkWatch_Later();
     }
+
+    private void checkWatch_Later() {
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Intent intent = getIntent();
+        final String idPhim = intent.getStringExtra("phim_UID");
+        final String tenPhim = tvTenPhim.getText().toString();
+        final DatabaseReference mData = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("Watch_Later");
+
+        mData.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild(idPhim)) {
+                    btnAdd.setImageDrawable(getDrawable(R.drawable.ic_baseline_playlist_add_check_24px));
+                } else {
+                    btnAdd.setImageDrawable(getDrawable(R.drawable.watch_later_icon));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
     private void fillDetail() {
 
@@ -117,10 +147,10 @@ public class DetailActivity extends AppCompatActivity {
                 Long views = view.get("soluotXem");
 
                 tvTenPhim.setText(ten);
-                tvTheLoai.setText("Thể Loại: " + theloai);
+                tvTheLoai.setText(theloai);
                 tvDienVien.setText("Diễn Viên:" + dienvien);
                 expandableTextView.setText(mota);
-                tvViews.setText("Lượt Xem: "+ views);
+                tvViews.setText("Lượt Xem: " + views);
 
                 Picasso.with(getBaseContext()).load(link_poster)
                         .placeholder(R.mipmap.ic_launcher_round)
@@ -175,13 +205,14 @@ public class DetailActivity extends AppCompatActivity {
         return result;
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
-        //fillDetail();
     }
 
     public void khoiTao() {
+        btnAdd = (ImageButton) findViewById(R.id.btnAdd);
         imgPoster = (ImageView) findViewById(R.id.imgPoster);
         tvTenPhim = (TextView) findViewById(R.id.tvName);
         tvTheLoai = (TextView) findViewById(R.id.tvTheLoai);
@@ -189,11 +220,31 @@ public class DetailActivity extends AppCompatActivity {
         tvViews = (TextView) findViewById(R.id.tvSoLuotXem);
         layout = (LinearLayout) findViewById(R.id.layoutDetail);
         expandableTextView = (ExpandableTextView) findViewById(R.id.expandable_textView);
-        rcRelated = (RecyclerView)findViewById(R.id.relatedRecycler);
+        rcRelated = (RecyclerView) findViewById(R.id.relatedRecycler);
     }
 
-    public void readData() {
-        Query query = mData.orderByChild("theloaiPhim").equalTo("Hoạt Hình");
+    private void searchtheLoai() {
+        Intent intent = getIntent();
+        String phim_UID = intent.getStringExtra("phim_UID");
+        phimID = phim_UID;
+        mData.child(phim_UID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String, String> map = (Map<String, String>) dataSnapshot.getValue();
+                String theloai = map.get("theloaiPhim");
+                readData(theloai);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void readData(String tl) {
+
+        Query query = mData.orderByChild("theloaiPhim").equalTo(tl);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -209,11 +260,10 @@ public class DetailActivity extends AppCompatActivity {
                     Long luotxem = (Long) snapshot.child("soluotXem").getValue();
 
 
-                    if(!snapshot.child("idPhim").getValue().toString().equals(phimID)){
+                    if (!snapshot.child("idPhim").getValue().toString().equals(phimID)) {
                         arrayList.add(new Related_Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, luotxem));
                         adapter.notifyDataSetChanged();
                     }
-
 
 
                 }
@@ -251,8 +301,6 @@ public class DetailActivity extends AppCompatActivity {
 
 
         update_luotXem();
-
-        //finish();
     }
 
     public void update_luotXem() {
@@ -273,8 +321,52 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
+
+
     public void clickBackToSomeThing(View view) {
         super.onBackPressed();
+    }
+
+    public void clickXemSau(View view) {
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Intent intent = getIntent();
+        final String idPhim = intent.getStringExtra("phim_UID");
+        final String tenPhim = tvTenPhim.getText().toString();
+        final DatabaseReference mData = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("Watch_Later");
+
+        processWatchLater = true;
+
+
+        mData.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (processWatchLater) {
+                    if (dataSnapshot.hasChild(idPhim)) {
+                        mData.child(idPhim).removeValue();
+                        btnAdd.setImageDrawable(getDrawable(R.drawable.watch_later_icon));
+                        Toast.makeText(context, "Đã xóa "+tenPhim+" ra khỏi danh sách xem sau", Toast.LENGTH_SHORT).show();
+                        processWatchLater = false;
+                    } else {
+                        mData.child(idPhim).setValue(tenPhim);
+                        btnAdd.setImageDrawable(getDrawable(R.drawable.ic_baseline_playlist_add_check_24px));
+                        Toast.makeText(context, "Đã thêm "+tenPhim+" vào danh sách xem sau", Toast.LENGTH_SHORT).show();
+                        processWatchLater = false;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 }
 

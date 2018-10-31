@@ -4,8 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.nfc.Tag;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -13,7 +15,9 @@ import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -37,9 +41,10 @@ public class LoginEmail_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_email_);
+        Window window = this.getWindow();
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.gray));
         edtEmailLogin = (EditText) findViewById(R.id.edtEmailLogin);
         edtPasswordLogin = (EditText) findViewById(R.id.edtMatKhauLogin);
-        cbRememberMe = (CheckBox) findViewById(R.id.cbRememberMe);
         tvForgotPassword = (TextView) findViewById(R.id.tvQuenMatKhau);
         doimau();
 
@@ -56,7 +61,7 @@ public class LoginEmail_Activity extends AppCompatActivity {
             }
         };
         ss.setSpan(clickableSpan, 15, 27, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        ss.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.owl)), 15, 27, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark)), 15, 27, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvForgotPassword.setText(ss);
         tvForgotPassword.setMovementMethod(LinkMovementMethod.getInstance());
     }
