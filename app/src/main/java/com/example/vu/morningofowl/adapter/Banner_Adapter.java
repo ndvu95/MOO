@@ -17,6 +17,8 @@ import com.example.vu.morningofowl.R;
 import com.example.vu.morningofowl.activities.DetailActivity;
 import com.example.vu.morningofowl.activities.ExoPlayerActivity;
 import com.example.vu.morningofowl.model.QuangCao;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,9 +35,12 @@ public class Banner_Adapter extends PagerAdapter {
     ArrayList<QuangCao> arrayListBanner;
     Context context;
     DatabaseReference mData;
+    FirebaseUser user;
     ImageView imgAddPlaylist;
     List<String> listKey;
     String phim_UID;
+    String tenphim;
+    private boolean mProcessWatchLater = false;
 
     public Banner_Adapter(Context context, ArrayList<QuangCao> arrayListBanner) {
         this.context = context;
@@ -55,11 +60,13 @@ public class Banner_Adapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull final ViewGroup container, final int position) {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        mData = FirebaseDatabase.getInstance().getReference();
         final LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.banner_item,null);
-        imgAddPlaylist = (ImageView)view.findViewById(R.id.imgAddToPlaylist);
-        ImageView img =(ImageView)view.findViewById(R.id.imgBackGroundBanner);
-        ImageView imgPlay = (ImageView)view.findViewById(R.id.imgPlay);
+        View view = inflater.inflate(R.layout.banner_item, null);
+        imgAddPlaylist = (ImageView) view.findViewById(R.id.imgAddToPlaylist);
+        ImageView img = (ImageView) view.findViewById(R.id.imgBackGroundBanner);
+        ImageView imgPlay = (ImageView) view.findViewById(R.id.imgPlay);
 
 
         Picasso.with(context)
@@ -70,8 +77,8 @@ public class Banner_Adapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 String key = arrayListBanner.get(position).getIdPhim();
-                Intent intent = new Intent(context,DetailActivity.class);
-                intent.putExtra("phim_UID",key);
+                Intent intent = new Intent(context, DetailActivity.class);
+                intent.putExtra("phim_UID", key);
                 context.startActivity(intent);
             }
         });
@@ -80,7 +87,12 @@ public class Banner_Adapter extends PagerAdapter {
         imgAddPlaylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context.getApplicationContext(), "testtttt", Toast.LENGTH_SHORT).show();
+                final String idPhim = arrayListBanner.get(position).getIdPhim();
+                mProcessWatchLater = true;
+
+                Intent intent = new Intent(context.getApplicationContext(), DetailActivity.class);
+                intent.putExtra("phim_UID", idPhim);
+                context.startActivity(intent);
             }
         });
 
@@ -88,13 +100,13 @@ public class Banner_Adapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 String key = arrayListBanner.get(position).getIdPhim();
-                mData= FirebaseDatabase.getInstance().getReference();
+                mData = FirebaseDatabase.getInstance().getReference();
                 mData.child("Phim").child(key).child("linkPhim").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String linkPhim = dataSnapshot.getValue().toString();
-                        Intent intent = new Intent(context,ExoPlayerActivity.class);
-                        intent.putExtra("Link",linkPhim);
+                        Intent intent = new Intent(context, ExoPlayerActivity.class);
+                        intent.putExtra("Link", linkPhim);
                         context.startActivity(intent);
                     }
 
@@ -115,7 +127,7 @@ public class Banner_Adapter extends PagerAdapter {
     }
 
     private void getData() {
-        mData =FirebaseDatabase.getInstance().getReference("QuangCao");
+        mData = FirebaseDatabase.getInstance().getReference("QuangCao");
         mData.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -123,7 +135,7 @@ public class Banner_Adapter extends PagerAdapter {
                 mData.child(key).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String,String> map =(Map<String,String>)dataSnapshot.getValue();
+                        Map<String, String> map = (Map<String, String>) dataSnapshot.getValue();
                         String id_Phim = map.get("idPhim");
                         String link_Anh = map.get("linkAnh");
 
@@ -158,4 +170,5 @@ public class Banner_Adapter extends PagerAdapter {
 
             }
         });
-}}
+    }
+}

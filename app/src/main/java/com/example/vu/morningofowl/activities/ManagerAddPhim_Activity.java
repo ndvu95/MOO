@@ -98,7 +98,6 @@ public class ManagerAddPhim_Activity extends AppCompatActivity {
     }
 
     public void clickBackToMain(View view) {
-        Intent intent = new Intent(ManagerAddPhim_Activity.this, Home_Activity.class);
-        startActivity(intent);
+        super.onBackPressed();
     }
 }

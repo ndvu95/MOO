@@ -4,44 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.Search_Activity"
+    tools:context=".activities.Watch_Later_Activity"
     android:orientation="vertical">
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
+                android:onClick="clickBacktoMore"
                 android:id="@+id/imgHinhBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="13dp"
-                android:layout_weight="1"
-                android:onClick="clickcloseSearch"
                 android:src="@drawable/ic_arrow_back_black_24dp" />
 
-            <android.support.v7.widget.SearchView
+            <TextView
                 android:id="@+id/tvSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_weight="1"
+                android:layout_marginLeft="20dp"
+                android:textSize="18sp"
                 android:maxLines="1"
-                android:text="KQTK">
+                android:textColor="#000000"
+                android:text="Danh Sách Xem Sau">
 
-            </android.support.v7.widget.SearchView>
-        </RelativeLayout>
+            </TextView>
+        </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
     <GridView
-        android:id="@+id/gvSearch"
+        android:id="@+id/gvWatchLater"
         android:columnWidth="110dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

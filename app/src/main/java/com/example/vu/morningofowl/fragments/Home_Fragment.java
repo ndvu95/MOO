@@ -123,26 +123,26 @@ public class Home_Fragment extends Fragment {
 
     }
 
-    private void testData() {
-        SectionDataPhim dm = new SectionDataPhim();
-
-        dm.setHeaderTitle("Hot ");
-
-        ArrayList<Phim> singleItem = new ArrayList<Phim>();
-
-        for (int i = 0; i < 5; i++) {
-            singleItem.add(new Phim("-LPApVA6QjeVUWPrKdMu", "Minions", "https://moowlcom.000webhostapp.com/Minions%20Official%20Trailer%201%20(2015)%20-%20Despicable%20Me%20Prequel%20HD.mp4",
-                    "https://moowlcom.000webhostapp.com/Minions%20Official%20Trailer%201%20(2015)%20-%20Despicable%20Me%20Prequel%20HD.mp4",
-                    "https://c2.staticflickr.com/2/1888/42471882670_c03e961a2c_m.jpg",
-                    "Hoạt Hình",
-                    "Câu chuyện kể về các MINION ",
-                    "Steve Carell, Kristen Wiig,Trey Parker", 1));
-
-            dm.setAllPhimSections(singleItem);
-        }
-
-        allSampleData.add(dm);
-    }
+//    private void testData() {
+//        SectionDataPhim dm = new SectionDataPhim();
+//
+//        dm.setHeaderTitle("Hot ");
+//
+//        ArrayList<Phim> singleItem = new ArrayList<Phim>();
+//
+//        for (int i = 0; i < 5; i++) {
+//            singleItem.add(new Phim("-LPApVA6QjeVUWPrKdMu", "Minions", "https://moowlcom.000webhostapp.com/Minions%20Official%20Trailer%201%20(2015)%20-%20Despicable%20Me%20Prequel%20HD.mp4",
+//                    "https://moowlcom.000webhostapp.com/Minions%20Official%20Trailer%201%20(2015)%20-%20Despicable%20Me%20Prequel%20HD.mp4",
+//                    "https://c2.staticflickr.com/2/1888/42471882670_c03e961a2c_m.jpg",
+//                    "Hoạt Hình",
+//                    "Câu chuyện kể về các MINION ",
+//                    "Steve Carell, Kristen Wiig,Trey Parker", 1));
+//
+//            dm.setAllPhimSections(singleItem);
+//        }
+//
+//        allSampleData.add(dm);
+//    }
 
 
     private void getDataQuangCao() {

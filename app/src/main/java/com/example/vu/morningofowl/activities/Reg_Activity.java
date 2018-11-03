@@ -96,7 +96,8 @@ public class Reg_Activity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(Reg_Activity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    pd.dismiss();
+                    Toast.makeText(Reg_Activity.this, "Email đã có người sử dụng, vui lòng chọn email khác", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -87,9 +87,11 @@ public class LoginEmail_Activity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             if(user.isEmailVerified()){
+                                Toast.makeText(LoginEmail_Activity.this, "You're Logged In", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginEmail_Activity.this, Home_Activity.class);
                                 pd.dismiss();
                                 startActivity(intent);
+                                finish();
                             }else{
                                 pd.dismiss();
                                 Toast.makeText(LoginEmail_Activity.this, "Tài khoản chưa được kích hoạt", Toast.LENGTH_SHORT).show();

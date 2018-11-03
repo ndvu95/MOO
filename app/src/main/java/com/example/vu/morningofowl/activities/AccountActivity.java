@@ -15,6 +15,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -102,7 +103,17 @@ public class AccountActivity extends AppCompatActivity {
     private void dialogChangePass() {
 
         final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_changepassword);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.gravity = Gravity.CENTER;
+
+        dialog.getWindow().setAttributes(lp);
+
         ImageButton tvThoat = (ImageButton) dialog.findViewById(R.id.tvThoat);
         final EditText edtMKHT = (EditText) dialog.findViewById(R.id.edtMKHT);
         final EditText edtMKM = (EditText) dialog.findViewById(R.id.edtMKM);

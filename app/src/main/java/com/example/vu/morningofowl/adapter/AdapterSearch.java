@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +18,7 @@ import com.example.vu.morningofowl.R;
 import com.example.vu.morningofowl.model.Phim;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterSearch extends ArrayAdapter<Phim> {
@@ -36,19 +39,19 @@ public class AdapterSearch extends ArrayAdapter<Phim> {
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
-            convertView = layoutInflater.inflate(R.layout.custom_gridview_item_search,parent,false);
+            convertView = layoutInflater.inflate(R.layout.custom_gridview_item_search, parent, false);
             holder.imgHinh = convertView.findViewById(R.id.imgHinhSearch);
             holder.tvName = convertView.findViewById(R.id.tvTenSearch);
 
             convertView.setTag(holder);
-        }else{
-            holder =(ViewHolder)convertView.getTag();
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
         final Phim phim = phimList.get(position);
 
 
         Picasso.with(getContext()).load(Uri.parse(phim.getPosterPhim()))
-                .resize(6000,2000)
+                .resize(6000, 2000)
                 .onlyScaleDown()
                 .placeholder(R.mipmap.ic_launcher_round)
                 .into(holder.imgHinh);
@@ -63,4 +66,5 @@ public class AdapterSearch extends ArrayAdapter<Phim> {
         public TextView tvName;
 
     }
+
 }

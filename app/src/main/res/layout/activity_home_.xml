@@ -19,7 +19,10 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <android.support.v7.widget.SearchView
+            <ImageButton
+                android:background="@drawable/button_with_opacity"
+                android:src="@drawable/ic_search_black_24dp"
+                android:onClick="clickSearch"
                 android:id="@+id/searchPhim"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

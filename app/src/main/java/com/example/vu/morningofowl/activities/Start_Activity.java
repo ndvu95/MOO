@@ -31,6 +31,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 
@@ -72,24 +77,24 @@ public class Start_Activity extends AppCompatActivity {
                 showProgressDialog();
                 LoginManager.getInstance().logInWithReadPermissions(Start_Activity.this, Arrays.asList("email", "public_profile"));
                 LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        Log.d(TAG, "facebook:onSuccess:" + loginResult);
-                        handleFacebookAccessToken(loginResult.getAccessToken());
-                        closeProgressDialog();
-                    }
+                        @Override
+                        public void onSuccess(LoginResult loginResult) {
+                            Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                            handleFacebookAccessToken(loginResult.getAccessToken());
+                            closeProgressDialog();
+                        }
 
-                    @Override
-                    public void onCancel() {
-                        Log.d(TAG, "facebook:onCancel");
-                        closeProgressDialog();
-                    }
+                        @Override
+                        public void onCancel() {
+                            Log.d(TAG, "facebook:onCancel");
+                            closeProgressDialog();
+                        }
 
-                    @Override
-                    public void onError(FacebookException error) {
-                        Log.d(TAG, "facebook:onError", error);
-                        closeProgressDialog();
-                    }
+                        @Override
+                        public void onError(FacebookException error) {
+                            Log.d(TAG, "facebook:onError", error);
+                            closeProgressDialog();
+                        }
                 });
             }
         });
@@ -118,7 +123,9 @@ public class Start_Activity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            
                             updateUI();
+                            createDatabase();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -130,19 +137,27 @@ public class Start_Activity extends AppCompatActivity {
                 });
     }
 
-    private void updateUI() {
-        FirebaseUser user = mAuth.getCurrentUser();
+    private void createDatabase() {
+        DatabaseReference mData = FirebaseDatabase.getInstance().getReference("Users");
+        FirebaseUser user= mAuth.getCurrentUser();
         String uid = user.getUid();
-        if(uid.equals("rAgQIoO5ouhal07Edgd53p7HNly1")){
+        String email = user.getEmail();
+        String name = user.getDisplayName().toString();
+        String photo_url = user.getPhotoUrl().toString();
+        String uri = photo_url +"?height=400";
+
+        mData.child(uid).child("Email").setValue(email);
+        mData.child(uid).child("HoTen").setValue(name);
+        mData.child(uid).child("Image").setValue(uri);
+        mData.child(uid).child("SDT").setValue("facebook_default_phone_number");
+
+    }
+
+    private void updateUI() {
             Toast.makeText(this, "You're Logged in", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(Start_Activity.this, ManagerAddPhim_Activity.class);
-            startActivity(intent);
-            finish();
-        }else{
-            Toast.makeText(this, "You're logged in", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(Start_Activity.this, Home_Activity.class);
             startActivity(intent);
-        }
+            finish();
 
     }
 

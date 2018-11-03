@@ -74,10 +74,12 @@ public class DetailActivity extends AppCompatActivity {
     private RecyclerView rcRelated;
     Context context;
     DatabaseReference mData = FirebaseDatabase.getInstance().getReference("Phim");
+
+    Long luotxem;
     String theLoai;
     String phimID;
     String link_Phim;
-    String link_Anh;
+    String link_Sub;
     private boolean processWatchLater = false;
 
     @Override
@@ -115,8 +117,10 @@ public class DetailActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChild(idPhim)) {
                     btnAdd.setImageDrawable(getDrawable(R.drawable.ic_baseline_playlist_add_check_24px));
+                    btnAdd.setBackground(getDrawable(R.drawable.elip_button_with_opacity_added));
                 } else {
-                    btnAdd.setImageDrawable(getDrawable(R.drawable.watch_later_icon));
+                    btnAdd.setImageDrawable(getDrawable(R.drawable.ic_baseline_playlist_add_24px));
+                    btnAdd.setBackground(getDrawable(R.drawable.elip_button_with_opacity));
                 }
             }
 
@@ -139,13 +143,16 @@ public class DetailActivity extends AppCompatActivity {
                 Map<String, String> map = (Map<String, String>) dataSnapshot.getValue();
                 Map<Long, Long> view = (Map<Long, Long>) dataSnapshot.getValue();
                 String ten = map.get("tenPhim");
-
+                String linkPhim = map.get("linkPhim");
+                link_Phim = linkPhim;
+                String linkSub = map.get("linksub");
+                link_Sub = linkSub;
                 String link_poster = map.get("posterPhim");
                 String mota = map.get("motaPhim");
                 String dienvien = map.get("dienvienPhim");
                 String theloai = map.get("theloaiPhim");
                 Long views = view.get("soluotXem");
-
+                luotxem = views;
                 tvTenPhim.setText(ten);
                 tvTheLoai.setText(theloai);
                 tvDienVien.setText("Diễn Viên:" + dienvien);
@@ -153,7 +160,6 @@ public class DetailActivity extends AppCompatActivity {
                 tvViews.setText("Lượt Xem: " + views);
 
                 Picasso.with(getBaseContext()).load(link_poster)
-                        .placeholder(R.mipmap.ic_launcher_round)
                         .into(imgPoster);
 
 
@@ -279,46 +285,22 @@ public class DetailActivity extends AppCompatActivity {
 
     public void clickplayPhim(View view) {
 
-        Intent intent = getIntent();
-
-        final String key = intent.getStringExtra("phim_UID");
-
-        mData = FirebaseDatabase.getInstance().getReference();
-        mData.child("Phim").child(key).child("linkPhim").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String linkPhim = dataSnapshot.getValue().toString();
-                Intent intent = new Intent(DetailActivity.this, ExoPlayerActivity.class);
-                intent.putExtra("Link", linkPhim);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-
+        Intent intent = new Intent(DetailActivity.this, ExoPlayerActivity.class);
+        intent.putExtra("Link", link_Phim);
+        intent.putExtra("Link_Sub", link_Sub);
+        startActivity(intent);
         update_luotXem();
+
     }
 
     public void update_luotXem() {
         Intent intent = getIntent();
         final String key = intent.getStringExtra("phim_UID");
 
-        FirebaseDatabase.getInstance().getReference("Phim").child(key).child("soluotXem").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Long giatri = (Long) dataSnapshot.getValue();
-                mData.child("Phim").child(key).child("soluotXem").setValue(giatri + 1);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        FirebaseDatabase.getInstance().getReference("Phim").
+                child(key).
+                child("soluotXem").
+                setValue(luotxem+1);
     }
 
     @Override
@@ -348,12 +330,14 @@ public class DetailActivity extends AppCompatActivity {
                 if (processWatchLater) {
                     if (dataSnapshot.hasChild(idPhim)) {
                         mData.child(idPhim).removeValue();
-                        btnAdd.setImageDrawable(getDrawable(R.drawable.watch_later_icon));
+                        btnAdd.setImageDrawable(getDrawable(R.drawable.ic_baseline_playlist_add_24px));
+                        btnAdd.setBackground(getDrawable(R.drawable.elip_button_with_opacity));
                         Toast.makeText(context, "Đã xóa "+tenPhim+" ra khỏi danh sách xem sau", Toast.LENGTH_SHORT).show();
                         processWatchLater = false;
                     } else {
-                        mData.child(idPhim).setValue(tenPhim);
+                        mData.child(idPhim).setValue(idPhim);
                         btnAdd.setImageDrawable(getDrawable(R.drawable.ic_baseline_playlist_add_check_24px));
+                        btnAdd.setBackground(getDrawable(R.drawable.elip_button_with_opacity_added));
                         Toast.makeText(context, "Đã thêm "+tenPhim+" vào danh sách xem sau", Toast.LENGTH_SHORT).show();
                         processWatchLater = false;
                     }

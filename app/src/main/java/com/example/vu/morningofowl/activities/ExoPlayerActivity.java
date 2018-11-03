@@ -17,12 +17,16 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.vu.morningofowl.R;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.MergingMediaSource;
+import com.google.android.exoplayer2.source.SingleSampleMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
@@ -33,6 +37,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 
 public class ExoPlayerActivity extends Activity {
@@ -65,7 +70,7 @@ public class ExoPlayerActivity extends Activity {
         try {
             Intent intent = getIntent();
             String Link = intent.getStringExtra("Link");
-
+            String Sub = intent.getStringExtra("Link_Sub");
             BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
             TrackSelection.Factory trackSelectorfactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
             TrackSelector trackSelector = new DefaultTrackSelector(trackSelectorfactory);
@@ -82,8 +87,31 @@ public class ExoPlayerActivity extends Activity {
 
             //Đường dẫn để player load video
             Uri videoUri = Uri.parse(Link);
-            MediaSource videoSource = new ExtractorMediaSource(videoUri,dataSourceFactory,extractorsFactory,null,null);
-            player.prepare(videoSource);
+            Uri subtitleUri = Uri.parse(Sub);
+            MediaSource videoSource = new ExtractorMediaSource(videoUri,
+                    dataSourceFactory,
+                    extractorsFactory,
+                    null,
+                    null);
+
+
+
+            // Build the subtitle MediaSource.
+            Format subtitleFormat = Format.createTextSampleFormat(
+                    null, // An identifier for the track. May be null.
+                    MimeTypes.APPLICATION_SUBRIP, // The mime type. Must be set correctly.
+                    null,
+                    Format.NO_VALUE,
+                    Format.NO_VALUE,
+                    null,
+                    null); // The subtitle language. May be null.
+            MediaSource subtitleSource =new SingleSampleMediaSource(subtitleUri, dataSourceFactory, subtitleFormat, C.TIME_UNSET);
+
+
+            MergingMediaSource mergedSource = new MergingMediaSource(videoSource, subtitleSource);
+
+            simpleExoPlayerView.setPlayer(player);
+            player.prepare(mergedSource);
             player.setPlayWhenReady(true);
 
         } catch (Exception e) {

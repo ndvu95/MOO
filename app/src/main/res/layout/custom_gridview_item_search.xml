@@ -24,7 +24,7 @@
                 android:layout_width="100dp"
                 android:layout_height="150dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/sidekick" />
+                 />
 
             <TextView
                 android:id="@+id/tvTenSearch"
