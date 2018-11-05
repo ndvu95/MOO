@@ -25,7 +25,10 @@ public class Recyclerview_Data_Adapter extends RecyclerView.Adapter<Recyclerview
 
     @Override
     public ItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.horizontal_recycler_item, null);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.horizontal_recycler_item, null,false);
+
+        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        v.setLayoutParams(lp);
         return new ItemRowHolder(v);
     }
 
@@ -44,6 +47,10 @@ public class Recyclerview_Data_Adapter extends RecyclerView.Adapter<Recyclerview
         itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         itemRowHolder.recycler_view_list.setAdapter(itemListDataAdapter);
         itemRowHolder.recycler_view_list.setNestedScrollingEnabled(false);
+
+        if(i > 0){
+            itemRowHolder.itemTitle.setTextColor(mContext.getResources().getColor(R.color.sectionHeader));
+        }
 
 
 

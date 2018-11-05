@@ -15,12 +15,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 
+import com.example.vu.morningofowl.BottomNavigationViewHelper;
 import com.example.vu.morningofowl.R;
 import com.example.vu.morningofowl.fragments.Admin_Fragment;
 import com.example.vu.morningofowl.fragments.Home_Fragment;
 import com.example.vu.morningofowl.fragments.Kid_Fragment;
 import com.example.vu.morningofowl.fragments.More_Fragment;
-import com.example.vu.morningofowl.model.BottomNavigationViewHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

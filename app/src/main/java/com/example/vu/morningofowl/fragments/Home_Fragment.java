@@ -52,31 +52,32 @@ public class Home_Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-        view = inflater.inflate(R.layout.fragment_home, container, false);
-        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+            view = inflater.inflate(R.layout.fragment_home, container, false);
+            viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
-        circleIndicator = (CircleIndicator) view.findViewById(R.id.indicatorDefault);
-        arrayList = new ArrayList<>();
-        listKey = new ArrayList<>();
-        adapter = new Banner_Adapter(getActivity(), arrayList);
-        viewPager.setAdapter(adapter);
-        circleIndicator.setViewPager(viewPager);
-        adapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
-
-
-
-        allSampleData = new ArrayList<SectionDataPhim>();
-        RecyclerView myRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
-        myRecyclerView.setHasFixedSize(true);
-        Recyclerview_Data_Adapter adapter1 = new Recyclerview_Data_Adapter(view.getContext(), allSampleData);
-        myRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
-        myRecyclerView.setAdapter(adapter1);
+            circleIndicator = (CircleIndicator) view.findViewById(R.id.indicatorDefault);
+            arrayList = new ArrayList<>();
+            listKey = new ArrayList<>();
+            adapter = new Banner_Adapter(getActivity(), arrayList);
+            viewPager.setAdapter(adapter);
+            circleIndicator.setViewPager(viewPager);
+            adapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
 
 
-        getDataQuangCao();
-        initPhim("Hoạt Hình");
-        initPhim("Hành Động");
-        //testData();
+
+            allSampleData = new ArrayList<SectionDataPhim>();
+            RecyclerView myRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+            myRecyclerView.setHasFixedSize(true);
+            Recyclerview_Data_Adapter adapter1 = new Recyclerview_Data_Adapter(view.getContext(), allSampleData);
+            myRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
+
+            myRecyclerView.setAdapter(adapter1);
+
+
+            getDataQuangCao();
+            initPhim("Hoạt Hình");
+            initPhim("Hành Động");
+            //testData();
 
 
 
