@@ -51,14 +51,15 @@ public class More_Fragment extends Fragment {
     private List<String> listHeader;
     private HashMap<String, List<String>> listHash;
     private FirebaseAuth mAuth;
-    private FirebaseDatabase mData;
+    private DatabaseReference mData;
     private FirebaseUser mUser;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_more, container, false);
         mAuth = FirebaseAuth.getInstance();
-        mData = FirebaseDatabase.getInstance();
+        mData = FirebaseDatabase.getInstance().getReference();
         listView = (ExpandableListView) view.findViewById(R.id.lvMore);
         initData();
         adapter = new Expandablelist_Adapter(getContext(), listHeader, listHash);
@@ -80,7 +81,8 @@ public class More_Fragment extends Fragment {
                                 startActivity(intentAccount);
                                 break;
                             case 2:
-                                FirebaseAuth.getInstance().signOut();
+                                checkOffline();
+                                mAuth.signOut();
                                 Toast.makeText(getContext(), "Vui Lòng Đăng Nhập Để Tiếp Tục Sử Dụng", Toast.LENGTH_SHORT).show();
                                 Intent intent1 = new Intent(getContext(), Start_Activity.class);
                                 startActivity(intent1);
@@ -98,6 +100,29 @@ public class More_Fragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void checkOffline() {
+        String userID = mAuth.getCurrentUser().getUid();
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = (cal.get(Calendar.MONTH) + 1);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        int minute = cal.get(Calendar.MINUTE);
+
+
+        if (mAuth.getCurrentUser() != null) {
+            mData.child("Users").child(userID).child("Status").setValue("Offline");
+            mData.child("Users").child(userID).child("Last_Active").setValue("Ngày "
+                    + day
+                    + " tháng "
+                    + month + " năm "
+                    + year
+                    + " lúc " + hour
+                    + "h:" + minute);
+        }
     }
 
     private void dialogFeedback() {
@@ -131,10 +156,13 @@ public class More_Fragment extends Fragment {
 
                 EditText edtContent = (EditText) dialog.findViewById(R.id.edtContent);
                 String feedbackContent = edtContent.getText().toString();
-                submitFeedback(feedbackContent);
-
-                edtContent.setText("");
-                Toast.makeText(getContext(), "Cảm ơn bạn đã đóng góp ý kiến", Toast.LENGTH_SHORT).show();
+                if (feedbackContent.equals("")) {
+                    Toast.makeText(getContext(), "Nội dung feedback không được để trống", Toast.LENGTH_SHORT).show();
+                } else{
+                    submitFeedback(feedbackContent);
+                    edtContent.setText("");
+                    Toast.makeText(getContext(), "Cảm ơn bạn đã đóng góp ý kiến", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         dialog.show();
@@ -152,12 +180,27 @@ public class More_Fragment extends Fragment {
         int year = cal.get(Calendar.YEAR);
         int month_of_year = cal.get(Calendar.MONTH);
         int day_of_month = cal.get(Calendar.DAY_OF_MONTH);
-        int hour = cal.get(Calendar.HOUR);
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
         int minute = cal.get(Calendar.MINUTE);
-        int second = cal.get(Calendar.SECOND);
-        mDataFeedBack = mData.child("FeedBack").child(userID).child("" + day_of_month + "-" + (month_of_year + 1) + "-" + year + ":" + hour + ":" + minute + ":" + second);
-        mDataFeedBack.child("content").setValue(content);
+        int sec = cal.get(Calendar.SECOND);
+        mDataFeedBack = mData.child("FeedBack").child(userID).child("Date")
+                .child("Ngày "
+                + day_of_month
+                + " tháng "
+                + month_of_year + " năm "
+                + year
+                + " lúc " + hour
+                + "h:" + minute +"p"
+                + ":" + sec+"s");
+        mDataFeedBack.child("Content").setValue(content);
         mDataFeedBack.child("Email").setValue(email);
+        mDataFeedBack.child("At").setValue("Ngày "
+                + day_of_month
+                + " tháng "
+                + month_of_year + " năm "
+                + year
+                + " lúc " + hour
+                + "h:" + minute);
     }
 
     private void initData() {

@@ -16,6 +16,8 @@ import android.widget.Toast;
 import com.example.vu.morningofowl.R;
 import com.example.vu.morningofowl.adapter.AdapterSearch;
 import com.example.vu.morningofowl.model.Phim;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,6 +26,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Search_Activity extends AppCompatActivity {
     GridView gvSearch;
@@ -41,15 +44,11 @@ public class Search_Activity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.gray_dark));
         gvSearch = (GridView) findViewById(R.id.gvSearch);
         tvSearch = (SearchView) findViewById(R.id.tvSearch);
-        Intent intent = getIntent();
-        String content = intent.getStringExtra("SearchQuery");
+
         listPhim = new ArrayList<>();
         adapterSearch = new AdapterSearch(this, R.layout.custom_gridview_item_search, listPhim);
         gvSearch.setAdapter(adapterSearch);
         fillDataAll();
-
-
-
 
 
         tvSearch.setIconified(false);

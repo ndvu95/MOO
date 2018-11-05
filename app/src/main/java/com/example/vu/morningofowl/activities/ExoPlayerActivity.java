@@ -111,7 +111,13 @@ public class ExoPlayerActivity extends Activity {
             MergingMediaSource mergedSource = new MergingMediaSource(videoSource, subtitleSource);
 
             simpleExoPlayerView.setPlayer(player);
-            player.prepare(mergedSource);
+
+            if(Sub.equals("")){
+                player.prepare(videoSource);
+            }else{
+                player.prepare(mergedSource);
+            }
+
             player.setPlayWhenReady(true);
 
         } catch (Exception e) {

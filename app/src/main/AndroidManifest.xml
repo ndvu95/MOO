@@ -56,7 +56,9 @@
             android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".activities.Search_Activity" />
         <activity android:name=".activities.Watch_Later_Activity" />
-        <activity android:name=".activities.QL_PhimActivity"></activity>
+        <activity android:name=".activities.QL_PhimActivity" />
+        <activity android:name=".activities.Phim_InfoActivity" />
+        <activity android:name=".activities.All_UserActivity"></activity>
     </application>
 
 </manifest>

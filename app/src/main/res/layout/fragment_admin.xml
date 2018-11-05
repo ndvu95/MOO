@@ -232,7 +232,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:text="Sự Cố Báo Cáo"
+                    android:text="Sự Cố"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 

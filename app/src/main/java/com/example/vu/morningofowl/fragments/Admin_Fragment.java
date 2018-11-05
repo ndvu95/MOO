@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.example.vu.morningofowl.R;
+import com.example.vu.morningofowl.activities.All_UserActivity;
 import com.example.vu.morningofowl.activities.ManagerAddPhim_Activity;
 import com.example.vu.morningofowl.activities.QL_PhimActivity;
 
@@ -30,6 +31,14 @@ public class Admin_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(view.getContext(), QL_PhimActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        linearUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(view.getContext(), All_UserActivity.class);
                 startActivity(intent);
             }
         });

@@ -55,17 +55,20 @@ public class Reg_Activity extends AppCompatActivity {
         pd.setMessage("Vui Lòng Chờ Trong Giây Lát...");
         pd.setCanceledOnTouchOutside(false);
         pd.show();
-        final String hoTen = edtHoTen.getText().toString().trim();
-        final String eMail = edtEmail.getText().toString().trim();
+
+        String eMail = edtEmail.getText().toString().trim();
         String matKhau = edtMatKhau.getText().toString().trim();
-        final String SDT = edtSDT.getText().toString().trim();
+
 
         mAuth.createUserWithEmailAndPassword(eMail, matKhau).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
                 if (task.isSuccessful()) {
-                    Users users = new Users(hoTen, eMail, SDT, "Default_Image");
+                    String hoTen = edtHoTen.getText().toString().trim();
+                    String eMail = edtEmail.getText().toString().trim();
+                    String SDT = edtSDT.getText().toString().trim();
+                    Users users = new Users(hoTen, eMail, SDT, "Default_Image","Default","Default");
                     FirebaseDatabase.getInstance()
                             .getReference("Users")
                             .child(FirebaseAuth.getInstance()

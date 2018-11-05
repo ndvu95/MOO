@@ -16,4 +16,6 @@
     <color name="gray_with_opacity">#5c5959</color>
     <color name="label">#455AA6</color>
     <color name="sectionHeader">#000000</color>
+    <color name="online">#2C82C9</color>
+    <color name="offline">#BDC3C7</color>
 </resources>

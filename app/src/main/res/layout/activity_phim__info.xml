@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".activities.ManagerAddPhim_Activity">
+    tools:context=".activities.Phim_InfoActivity">
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
-            android:onClick="clickBackToMain"
+            android:onClick="clickBackToAdmin"
             android:src="@drawable/ic_arrow_back_black_24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -28,6 +28,18 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tilIDPhim"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <EditText
+                    android:clickable="false"
+                    android:editable="false"
+                    android:id="@+id/edtID"
+                    android:hint="ID Phim"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                </android.support.design.widget.TextInputLayout>
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/tilTenphim"
                     android:layout_width="match_parent"
@@ -111,11 +123,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <Button
-                    android:onClick="clickUp"
+                    android:onClick="clickSavePhim"
                     android:textColor="#FFFFFF"
                     android:background="@drawable/button"
                     android:id="@+id/btnLuu"
-                    android:layout_marginRight="50dp"
+                    android:layout_margin="15dp"
                     android:textAllCaps="false"
                     android:text="Lưu"
                     android:layout_width="wrap_content"
@@ -125,7 +137,7 @@
                     android:textColor="#FFFFFF"
                     android:background="@drawable/button"
                     android:id="@+id/btnHuy"
-                    android:layout_marginLeft="50dp"
+                android:layout_margin="15dp"
                     android:textAllCaps="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
