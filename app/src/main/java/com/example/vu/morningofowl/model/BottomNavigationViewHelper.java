@@ -1,4 +1,4 @@
-package com.example.vu.morningofowl;
+package com.example.vu.morningofowl.model;
 
 import android.annotation.SuppressLint;
 import android.support.design.internal.BottomNavigationItemView;
