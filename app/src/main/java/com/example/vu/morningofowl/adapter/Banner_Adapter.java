@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.vu.morningofowl.R;
 import com.example.vu.morningofowl.activities.DetailActivity;
 import com.example.vu.morningofowl.activities.ExoPlayerActivity;
+import com.example.vu.morningofowl.model.Phim;
 import com.example.vu.morningofowl.model.QuangCao;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -40,6 +42,7 @@ public class Banner_Adapter extends PagerAdapter {
     List<String> listKey;
     String phim_UID;
     String tenphim;
+    Long luotxem;
     private boolean mProcessWatchLater = false;
 
     public Banner_Adapter(Context context, ArrayList<QuangCao> arrayListBanner) {
@@ -79,6 +82,7 @@ public class Banner_Adapter extends PagerAdapter {
                 String key = arrayListBanner.get(position).getIdPhim();
                 Intent intent = new Intent(context, DetailActivity.class);
                 intent.putExtra("phim_UID", key);
+                Log.d("KEYYYYY", "" + key);
                 context.startActivity(intent);
             }
         });
@@ -99,14 +103,37 @@ public class Banner_Adapter extends PagerAdapter {
         imgPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String key = arrayListBanner.get(position).getIdPhim();
-                mData = FirebaseDatabase.getInstance().getReference();
-                mData.child("Phim").child(key).child("linkPhim").addValueEventListener(new ValueEventListener() {
+                final String key = arrayListBanner.get(position).getIdPhim();
+                mData = FirebaseDatabase.getInstance().getReference("Phim");
+                mData.child(key).child("soluotXem").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String linkPhim = dataSnapshot.getValue().toString();
+                        String view = dataSnapshot.getValue().toString();
+                        luotxem = Long.parseLong(view);
+                        update_luotXem(key);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+
+
+                mData.child(key).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Map<String,String> map = (Map<String,String>)dataSnapshot.getValue();
+                        String link = map.get("linkPhim");
+                        String sub = map.get("linksub");
+
+
                         Intent intent = new Intent(context, ExoPlayerActivity.class);
-                        intent.putExtra("Link", linkPhim);
+                        intent.putExtra("Link", link);
+                        intent.putExtra("Link_Sub", sub);
                         context.startActivity(intent);
                     }
 
@@ -115,11 +142,21 @@ public class Banner_Adapter extends PagerAdapter {
 
                     }
                 });
+
             }
         });
         return view;
     }
 
+    public void update_luotXem(String id) {
+        Long clicked = (luotxem +1);
+
+        FirebaseDatabase.getInstance().getReference("Phim").
+                child(id).
+                child("soluotXem").
+                setValue(clicked);
+
+    }
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {

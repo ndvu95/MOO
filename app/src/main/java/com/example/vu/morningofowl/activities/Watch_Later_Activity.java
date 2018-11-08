@@ -75,10 +75,10 @@ public class Watch_Later_Activity extends AppCompatActivity {
                                 String theloaiPhim = ds.child("theloaiPhim").getValue().toString();
                                 String motaPhim = ds.child("motaPhim").getValue().toString();
                                 String dienvienPhim = ds.child("dienvienPhim").getValue().toString();
-                                Long luotxem = (Long) ds.child("soluotXem").getValue();
+                                String luotxem = ds.child("soluotXem").getValue().toString();
 
                                 if (idPhim.equals(idP)) {
-                                    arrayList.add(new Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, luotxem));
+                                    arrayList.add(new Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, Long.parseLong(luotxem)));
                                     adapter.notifyDataSetChanged();
                                 }
                             }

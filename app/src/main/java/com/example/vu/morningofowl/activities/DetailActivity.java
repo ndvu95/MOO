@@ -142,6 +142,7 @@ public class DetailActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Map<String, String> map = (Map<String, String>) dataSnapshot.getValue();
                 Map<Long, Long> view = (Map<Long, Long>) dataSnapshot.getValue();
+
                 String ten = map.get("tenPhim");
                 String linkPhim = map.get("linkPhim");
                 link_Phim = linkPhim;
@@ -212,10 +213,6 @@ public class DetailActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 
     public void khoiTao() {
         btnAdd = (ImageButton) findViewById(R.id.btnAdd);
@@ -263,11 +260,11 @@ public class DetailActivity extends AppCompatActivity {
                     String theloaiPhim = snapshot.child("theloaiPhim").getValue().toString();
                     String motaPhim = snapshot.child("motaPhim").getValue().toString();
                     String dienvienPhim = snapshot.child("dienvienPhim").getValue().toString();
-                    Long luotxem = (Long) snapshot.child("soluotXem").getValue();
+                    String luotxem = snapshot.child("soluotXem").getValue().toString();
 
 
                     if (!snapshot.child("idPhim").getValue().toString().equals(phimID)) {
-                        arrayList.add(new Related_Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, luotxem));
+                        arrayList.add(new Related_Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, Long.parseLong(luotxem)));
                         adapter.notifyDataSetChanged();
                     }
 
@@ -284,7 +281,6 @@ public class DetailActivity extends AppCompatActivity {
 
 
     public void clickplayPhim(View view) {
-
         Intent intent = new Intent(DetailActivity.this, ExoPlayerActivity.class);
         intent.putExtra("Link", link_Phim);
         intent.putExtra("Link_Sub", link_Sub);

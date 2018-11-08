@@ -57,20 +57,21 @@ public class ExoPlayerActivity extends Activity {
 
         //Toast.makeText(this, Link, Toast.LENGTH_SHORT).show();
 
+        String Link = getIntent().getStringExtra("Link");
+        String Sub = getIntent().getStringExtra("Link_Sub");
 
+        initPlayer(Link,Sub);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        initPlayer();
     }
 
-    private void initPlayer() {
+    private void initPlayer(String Link, String Sub) {
         try {
-            Intent intent = getIntent();
-            String Link = intent.getStringExtra("Link");
-            String Sub = intent.getStringExtra("Link_Sub");
+
+
             BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
             TrackSelection.Factory trackSelectorfactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
             TrackSelector trackSelector = new DefaultTrackSelector(trackSelectorfactory);
@@ -78,7 +79,7 @@ public class ExoPlayerActivity extends Activity {
             player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
             //khởi tạo exoplayerview
             SimpleExoPlayerView simpleExoPlayerView = findViewById(R.id.exoplayer);
-            simpleExoPlayerView.setPlayer(player);
+
 
             //chuẩn bị datasource để player có thể load
             DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "Test ExoPlayer"));
@@ -112,11 +113,9 @@ public class ExoPlayerActivity extends Activity {
 
             simpleExoPlayerView.setPlayer(player);
 
-            if(Sub.equals("")){
-                player.prepare(videoSource);
-            }else{
-                player.prepare(mergedSource);
-            }
+
+            player.prepare(mergedSource);
+
 
             player.setPlayWhenReady(true);
 
@@ -147,7 +146,7 @@ public class ExoPlayerActivity extends Activity {
         if (tapBack == 2) {
             tapBack = 0;
             super.onBackPressed();
-            //finish();
+            finish();
         } else {
             Toast.makeText(this, "Nhấn Back Một Lần Nữa Để Thoát", Toast.LENGTH_SHORT).show();
         }

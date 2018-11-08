@@ -99,12 +99,11 @@ public class QL_PhimActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
 
 
-                gvPhim.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                gvPhim.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
-                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         String key = arrayList.get(position).getIdPhim();
                         dialogEdit(key);
-                        return false;
                     }
                 });
             }
@@ -150,18 +149,28 @@ public class QL_PhimActivity extends AppCompatActivity {
                 arrayList.clear();
                 if(dataSnapshot.exists()){
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        Phim phim = snapshot.getValue(Phim.class);
-                        arrayList.add(phim);
+                        String idPhim = snapshot.child("idPhim").getValue().toString();
+                        String tenPhim = snapshot.child("tenPhim").getValue().toString();
+                        String linkPhim = snapshot.child("linkPhim").getValue().toString();
+                        String linkSub = snapshot.child("linksub").getValue().toString();
+                        String posterPhim = snapshot.child("posterPhim").getValue().toString();
+                        String theloaiPhim = snapshot.child("theloaiPhim").getValue().toString();
+                        String motaPhim = snapshot.child("motaPhim").getValue().toString();
+                        String dienvienPhim = snapshot.child("dienvienPhim").getValue().toString();
+                        String luotxem = snapshot.child("soluotXem").getValue().toString();
+
+
+                        arrayList.add(new Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, Long.parseLong(luotxem)));
+
                     }
                     adapter.notifyDataSetChanged();
 
 
-                    gvPhim.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    gvPhim.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
-                        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             String key = arrayList.get(position).getIdPhim();
                             dialogEdit(key);
-                            return false;
                         }
                     });
                 }
@@ -192,8 +201,18 @@ public class QL_PhimActivity extends AppCompatActivity {
                 arrayList.clear();
                 if(dataSnapshot.exists()){
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        Phim phim = snapshot.getValue(Phim.class);
-                        arrayList.add(phim);
+                        String idPhim = snapshot.child("idPhim").getValue().toString();
+                        String tenPhim = snapshot.child("tenPhim").getValue().toString();
+                        String linkPhim = snapshot.child("linkPhim").getValue().toString();
+                        String linkSub = snapshot.child("linksub").getValue().toString();
+                        String posterPhim = snapshot.child("posterPhim").getValue().toString();
+                        String theloaiPhim = snapshot.child("theloaiPhim").getValue().toString();
+                        String motaPhim = snapshot.child("motaPhim").getValue().toString();
+                        String dienvienPhim = snapshot.child("dienvienPhim").getValue().toString();
+                        String luotxem = snapshot.child("soluotXem").getValue().toString();
+
+
+                        arrayList.add(new Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, Long.parseLong(luotxem)));
                     }
                     adapter.notifyDataSetChanged();
 

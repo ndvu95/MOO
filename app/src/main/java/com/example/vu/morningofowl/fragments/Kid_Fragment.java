@@ -91,10 +91,10 @@ public class Kid_Fragment extends android.support.v4.app.Fragment {
                     String theloaiPhim = snapshot.child("theloaiPhim").getValue().toString();
                     String motaPhim = snapshot.child("motaPhim").getValue().toString();
                     String dienvienPhim = snapshot.child("dienvienPhim").getValue().toString();
-                    Long luotxem = (Long) snapshot.child("soluotXem").getValue();
+                    String luotxem = snapshot.child("soluotXem").getValue().toString();
 
 
-                    arrayList.add(new Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, luotxem));
+                    arrayList.add(new Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, Long.parseLong(luotxem)));
                     adapter.notifyDataSetChanged();
                 }
             }

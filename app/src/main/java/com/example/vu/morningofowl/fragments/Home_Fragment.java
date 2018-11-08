@@ -107,10 +107,10 @@ public class Home_Fragment extends Fragment {
                     String theloaiPhim = snapshot.child("theloaiPhim").getValue().toString();
                     String motaPhim = snapshot.child("motaPhim").getValue().toString();
                     String dienvienPhim = snapshot.child("dienvienPhim").getValue().toString();
-                    Long luotxem = (Long) snapshot.child("soluotXem").getValue();
+                    String luotxem =  snapshot.child("soluotXem").getValue().toString();
 
 
-                    singleItem.add(new Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, luotxem));
+                    singleItem.add(new Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim,Long.parseLong(luotxem)));
                     dm.setAllPhimSections(singleItem);
                 }
                 allSampleData.add(dm);
