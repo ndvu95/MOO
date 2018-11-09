@@ -78,8 +78,18 @@ public class Search_Activity extends AppCompatActivity {
                 listPhim.clear();
                 if(dataSnapshot.exists()){
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        Phim phim = snapshot.getValue(Phim.class);
-                        listPhim.add(phim);
+                        String idPhim = snapshot.child("idPhim").getValue().toString();
+                        String tenPhim = snapshot.child("tenPhim").getValue().toString();
+                        String linkPhim = snapshot.child("linkPhim").getValue().toString();
+                        String linkSub = snapshot.child("linksub").getValue().toString();
+                        String posterPhim = snapshot.child("posterPhim").getValue().toString();
+                        String theloaiPhim = snapshot.child("theloaiPhim").getValue().toString();
+                        String motaPhim = snapshot.child("motaPhim").getValue().toString();
+                        String dienvienPhim = snapshot.child("dienvienPhim").getValue().toString();
+                        String luotxem = snapshot.child("soluotXem").getValue().toString();
+
+
+                        listPhim.add(new Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, Long.parseLong(luotxem)));
                     }
                     adapterSearch.notifyDataSetChanged();
                 }
@@ -118,8 +128,18 @@ public class Search_Activity extends AppCompatActivity {
                 listPhim.clear();
                 if(dataSnapshot.exists()){
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        Phim phim = snapshot.getValue(Phim.class);
-                        listPhim.add(phim);
+                        String idPhim = snapshot.child("idPhim").getValue().toString();
+                        String tenPhim = snapshot.child("tenPhim").getValue().toString();
+                        String linkPhim = snapshot.child("linkPhim").getValue().toString();
+                        String linkSub = snapshot.child("linksub").getValue().toString();
+                        String posterPhim = snapshot.child("posterPhim").getValue().toString();
+                        String theloaiPhim = snapshot.child("theloaiPhim").getValue().toString();
+                        String motaPhim = snapshot.child("motaPhim").getValue().toString();
+                        String dienvienPhim = snapshot.child("dienvienPhim").getValue().toString();
+                        String luotxem = snapshot.child("soluotXem").getValue().toString();
+
+
+                        listPhim.add(new Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, Long.parseLong(luotxem)));
                     }
                     adapterSearch.notifyDataSetChanged();
                 }

@@ -11,12 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.vu.morningofowl.R;
 import com.example.vu.morningofowl.activities.DetailActivity;
 import com.example.vu.morningofowl.activities.ExoPlayerActivity;
-import com.example.vu.morningofowl.model.Phim;
 import com.example.vu.morningofowl.model.QuangCao;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,7 +23,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -120,10 +117,7 @@ public class Banner_Adapter extends PagerAdapter {
                 });
 
 
-
-
-
-                mData.child(key).addValueEventListener(new ValueEventListener() {
+                mData.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Map<String,String> map = (Map<String,String>)dataSnapshot.getValue();

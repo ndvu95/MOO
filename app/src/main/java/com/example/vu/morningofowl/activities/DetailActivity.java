@@ -54,6 +54,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -286,8 +287,31 @@ public class DetailActivity extends AppCompatActivity {
         intent.putExtra("Link_Sub", link_Sub);
         startActivity(intent);
         update_luotXem();
+        ghiLog();
+    }
+
+
+
+    public void ghiLog(){
+        final DatabaseReference dataLog = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        String uid = user.getUid();
+        String email = user.getEmail();
+
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = (cal.get(Calendar.MONTH) + 1);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        int minute = cal.get(Calendar.MINUTE);
+
+        String timeStamp = "Ngày "+day+" tháng "+month+" năm "+ year+ " lúc "+hour+"h:"+minute;
+        dataLog.child("UserLog").child(uid).child(timeStamp).setValue(tvTenPhim.getText().toString());
 
     }
+
 
     public void update_luotXem() {
         Intent intent = getIntent();

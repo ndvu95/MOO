@@ -1,6 +1,8 @@
 package com.example.vu.morningofowl.model;
 
-public class Users {
+import java.io.Serializable;
+
+public class Users implements Serializable {
     public String HoTen;
     public String Email;
     public String SDT;

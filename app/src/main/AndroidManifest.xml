@@ -58,7 +58,8 @@
         <activity android:name=".activities.Watch_Later_Activity" />
         <activity android:name=".activities.QL_PhimActivity" />
         <activity android:name=".activities.Phim_InfoActivity" />
-        <activity android:name=".activities.All_UserActivity"></activity>
+        <activity android:name=".activities.All_UserActivity" />
+        <activity android:name=".activities.UserInformationActivity"></activity>
     </application>
 
 </manifest>
