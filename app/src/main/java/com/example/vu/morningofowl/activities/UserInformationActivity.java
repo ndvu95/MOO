@@ -16,8 +16,10 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
@@ -26,11 +28,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.vu.morningofowl.R;
+import com.example.vu.morningofowl.adapter.Adapter_User_Log;
+import com.example.vu.morningofowl.model.User_Log;
 import com.example.vu.morningofowl.model.Users;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import jp.wasabeef.blurry.Blurry;
@@ -42,6 +54,12 @@ public class UserInformationActivity extends AppCompatActivity {
     CircleImageView imgAvatar, green_dot_user;
     ListView lichsuUser;
     Context context;
+    String email;
+    DatabaseReference mData;
+
+    ArrayList<User_Log> arrayList;
+    Adapter_User_Log adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,25 +70,32 @@ public class UserInformationActivity extends AppCompatActivity {
         context = this;
 
         initUI();
-        Intent intent= getIntent();
-        Users users =(Users) intent.getSerializableExtra("dulieu");
+        mData = FirebaseDatabase.getInstance().getReference();
+        arrayList = new ArrayList<>();
+        adapter = new Adapter_User_Log(context, R.layout.user_log_list_item, arrayList);
+        lichsuUser.setAdapter(adapter);
+
+
+        Intent intent = getIntent();
+        Users users = (Users) intent.getSerializableExtra("dulieu");
+
 
         String hoten = users.HoTen;
-        String email = users.Email;
+        email = users.Email;
         String phone = users.SDT;
         String last_seen = users.Last_Active;
         String status = users.Status;
 
 
         tvHoTen.setText(hoten);
-        tvMail.setText("<"+ email+">");
+        tvMail.setText("<" + email + ">");
         tvPhone.setText(phone);
 
 
-        Display display = getWindowManager(). getDefaultDisplay();
+        Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
-        display. getSize(size);
-        int width = size. x;
+        display.getSize(size);
+        int width = size.x;
 
         Uri userAvatar = Uri.parse(users.Image);
 
@@ -95,31 +120,73 @@ public class UserInformationActivity extends AppCompatActivity {
             }
         });
 
-        if(status.equals("Offline")){
-            tvLastSeen.setText("Online lần cuối: "+last_seen);
+        if (status.equals("Offline")) {
+            tvLastSeen.setText("Online lần cuối: " + last_seen);
             green_dot_user.setVisibility(View.INVISIBLE);
-        }else{
+        } else {
             tvLastSeen.setTextColor(getResources().getColor(R.color.online));
             tvLastSeen.setText(status);
             green_dot_user.setVisibility(View.VISIBLE);
         }
 
+        getUID();
+    }
+
+    private void populateListView(String uid) {
+        mData.child("UserLog").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds:dataSnapshot.getChildren()){
+                    if(ds.exists()){
+                        String dateTime = ds.child("dateTime").getValue().toString();
+                        String watchedMovie = ds.child("movieWatched").getValue().toString();
+                        arrayList.add(new User_Log(dateTime, watchedMovie));
+                    }else{
+                        Toast.makeText(context, "Nhật ký xem phim của người dùng chưa có", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void getUID() {
+        mData.child("Users").orderByChild("Email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String key = ds.getKey();
+                    populateListView(key);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 
-
-
     private void initUI() {
-        tvHoTen = (TextView)findViewById(R.id.tvHoTen);
-        tvLastSeen = (TextView)findViewById(R.id.tvLastSeen);
-        tvMail = (TextView)findViewById(R.id.tvMail);
-        tvPhone = (TextView)findViewById(R.id.tvPhone);
-        layout = (LinearLayout)findViewById(R.id.layoutUserInfo);
+        tvHoTen = (TextView) findViewById(R.id.tvHoTen);
+        tvLastSeen = (TextView) findViewById(R.id.tvLastSeen);
+        tvMail = (TextView) findViewById(R.id.tvMail);
+        tvPhone = (TextView) findViewById(R.id.tvPhone);
+        layout = (LinearLayout) findViewById(R.id.layoutUserInfo);
 
-        green_dot_user= (CircleImageView)findViewById(R.id.green_dot_user);
-        imageViewBG =(ImageView)findViewById(R.id.imageViewBG);
-        imgAvatar =(CircleImageView)findViewById(R.id.imgAvatar);
-        lichsuUser = (ListView)findViewById(R.id.lichsuUser);
+        green_dot_user = (CircleImageView) findViewById(R.id.green_dot_user);
+        imageViewBG = (ImageView) findViewById(R.id.imageViewBG);
+        imgAvatar = (CircleImageView) findViewById(R.id.imgAvatar);
+        lichsuUser = (ListView) findViewById(R.id.lichsuUser);
     }
 
     public void clickBackToAllUser(View view) {
@@ -127,4 +194,5 @@ public class UserInformationActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
 }

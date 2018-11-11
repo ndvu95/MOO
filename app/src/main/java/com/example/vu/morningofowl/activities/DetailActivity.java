@@ -37,6 +37,7 @@ import com.example.vu.morningofowl.adapter.Related_Adapter;
 import com.example.vu.morningofowl.model.Phim;
 import com.example.vu.morningofowl.model.Related_Phim;
 import com.example.vu.morningofowl.model.SectionDataPhim;
+import com.example.vu.morningofowl.model.User_Log;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -293,11 +294,11 @@ public class DetailActivity extends AppCompatActivity {
 
 
     public void ghiLog(){
-        final DatabaseReference dataLog = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference dataLog = FirebaseDatabase.getInstance().getReference();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         String uid = user.getUid();
-        String email = user.getEmail();
+
 
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
@@ -308,8 +309,19 @@ public class DetailActivity extends AppCompatActivity {
         int minute = cal.get(Calendar.MINUTE);
 
         String timeStamp = "Ngày "+day+" tháng "+month+" năm "+ year+ " lúc "+hour+"h:"+minute;
-        dataLog.child("UserLog").child(uid).child(timeStamp).setValue(tvTenPhim.getText().toString());
+        String movieWatched = tvTenPhim.getText().toString();
+//        dataLog.child("UserLog").child(uid).child("dateTime").setValue(timeStamp);
+//        dataLog.child("UserLog").child(uid).child("movieWatched").setValue(tvTenPhim.getText().toString());
+       String key= dataLog.child("UserLog").push().getKey();
+        User_Log user_log = new User_Log(timeStamp,movieWatched);
+       dataLog.child("UserLog").child(uid).child(key).setValue(user_log).addOnCompleteListener(new OnCompleteListener<Void>() {
+           @Override
+           public void onComplete(@NonNull Task<Void> task) {
+               if(task.isSuccessful()){
 
+               }
+           }
+       });
     }
 
 

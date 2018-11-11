@@ -16,6 +16,9 @@ import com.example.vu.morningofowl.R;
 import com.example.vu.morningofowl.activities.DetailActivity;
 import com.example.vu.morningofowl.activities.ExoPlayerActivity;
 import com.example.vu.morningofowl.model.QuangCao;
+import com.example.vu.morningofowl.model.User_Log;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -27,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -117,10 +121,43 @@ public class Banner_Adapter extends PagerAdapter {
                 });
 
 
+                mData.child(key).child("tenPhim").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                        DatabaseReference dataLog = FirebaseDatabase.getInstance().getReference();
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                        String uid = user.getUid();
+
+
+                        Calendar cal = Calendar.getInstance();
+                        int year = cal.get(Calendar.YEAR);
+                        int month = (cal.get(Calendar.MONTH) + 1);
+                        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                        int hour = cal.get(Calendar.HOUR_OF_DAY);
+                        int minute = cal.get(Calendar.MINUTE);
+
+                        String timeStamp = "Ngày " + day + " tháng " + month + " năm " + year + " lúc " + hour + "h:" + minute;
+                        String movieWatched = dataSnapshot.getValue().toString();
+                        String key = dataLog.child("UserLog").push().getKey();
+                        Log.d("TAGGGGGG", "" + movieWatched);
+                        User_Log user_log = new User_Log(timeStamp, movieWatched);
+                        dataLog.child("UserLog").child(uid).child(key).setValue(user_log);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
                 mData.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String,String> map = (Map<String,String>)dataSnapshot.getValue();
+                        Map<String, String> map = (Map<String, String>) dataSnapshot.getValue();
                         String link = map.get("linkPhim");
                         String sub = map.get("linksub");
 
@@ -143,7 +180,7 @@ public class Banner_Adapter extends PagerAdapter {
     }
 
     public void update_luotXem(String id) {
-        Long clicked = (luotxem +1);
+        Long clicked = (luotxem + 1);
 
         FirebaseDatabase.getInstance().getReference("Phim").
                 child(id).
@@ -202,4 +239,6 @@ public class Banner_Adapter extends PagerAdapter {
             }
         });
     }
+
+
 }
