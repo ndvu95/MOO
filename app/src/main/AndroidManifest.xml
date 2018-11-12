@@ -59,7 +59,8 @@
         <activity android:name=".activities.QL_PhimActivity" />
         <activity android:name=".activities.Phim_InfoActivity" />
         <activity android:name=".activities.All_UserActivity" />
-        <activity android:name=".activities.UserInformationActivity"></activity>
+        <activity android:name=".activities.UserInformationActivity" />
+        <activity android:name=".activities.BannerManagerActivity"></activity>
     </application>
 
 </manifest>
