@@ -83,7 +83,6 @@ public class Banner_Adapter extends PagerAdapter {
                 String key = arrayListBanner.get(position).getIdPhim();
                 Intent intent = new Intent(context, DetailActivity.class);
                 intent.putExtra("phim_UID", key);
-                Log.d("KEYYYYY", "" + key);
                 context.startActivity(intent);
             }
         });

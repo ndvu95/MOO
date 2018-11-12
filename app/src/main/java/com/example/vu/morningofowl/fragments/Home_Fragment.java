@@ -148,42 +148,27 @@ public class Home_Fragment extends Fragment {
 
     private void getDataQuangCao() {
         mData = FirebaseDatabase.getInstance().getReference("QuangCao");
-        mData.addChildEventListener(new ChildEventListener() {
+        mData.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                final String key = dataSnapshot.getKey().toString();
-                mData.child(key).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, String> map = (Map<String, String>) dataSnapshot.getValue();
-                        String id_Phim = map.get("idPhim");
-                        String link_Anh = map.get("linkAnh");
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds: dataSnapshot.getChildren()){
+                    String key = ds.getKey();
+                    mData.child(key).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        listKey.add(key);
-                        arrayList.add(new QuangCao(link_Anh, id_Phim));
-                        adapter.notifyDataSetChanged();
-                    }
+                                QuangCao qc = dataSnapshot.getValue(QuangCao.class);
+                                arrayList.add(qc);
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                            adapter.notifyDataSetChanged();
+                        }
 
-                    }
-                });
-            }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                        }
+                    });
+                }
             }
 
             @Override
