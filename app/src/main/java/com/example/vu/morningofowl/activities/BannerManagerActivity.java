@@ -1,9 +1,11 @@
 package com.example.vu.morningofowl.activities;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
@@ -43,6 +45,7 @@ public class BannerManagerActivity extends AppCompatActivity {
     SearchView searchBanner;
     private String ten;
     private String key;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +59,7 @@ public class BannerManagerActivity extends AppCompatActivity {
         listBanner.setAdapter(adapter);
 
 
-       reloadQC();
+        reloadQC();
 
 
         searchBanner.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -80,17 +83,99 @@ public class BannerManagerActivity extends AppCompatActivity {
                 dialogAddBanner();
             }
         });
+
+
+        listBanner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                final String idPhim = arrayList.get(i).getIdPhim();
+
+                mData = FirebaseDatabase.getInstance().getReference();
+
+                final Dialog dialog = new Dialog(BannerManagerActivity.this);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.dialog_remove_phim);
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                lp.copyFrom(dialog.getWindow().getAttributes());
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                lp.gravity = Gravity.CENTER;
+                dialog.getWindow().setAttributes(lp);
+
+
+                Button btnHuy = (Button) dialog.findViewById(R.id.btnHuy);
+                Button btnSua = (Button) dialog.findViewById(R.id.btnSua);
+                Button btnSubmit = (Button) dialog.findViewById(R.id.btnSubmit);
+
+
+                btnHuy.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+                btnSubmit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(BannerManagerActivity.this);
+                        builder.setTitle("Xóa Quảng Cáo");
+                        builder.setMessage("Bạn Muốn Xóa Quảng Cáo Này?");
+
+                        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+
+                        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                mData.child("QuangCao").orderByChild("idPhim").equalTo(idPhim).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        for(DataSnapshot d:dataSnapshot.getChildren()){
+                                            String key = d.getKey();
+                                            mData.child("QuangCao").child(key).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if(task.isSuccessful()){
+                                                        Toast.makeText(BannerManagerActivity.this, "Xóa Thành Công", Toast.LENGTH_SHORT).show();
+                                                        reloadQC();
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                        });
+
+                      AlertDialog alertDialog =  builder.create();
+                      alertDialog.show();
+                    }
+                });
+                dialog.show();
+            }
+        });
     }
-    private void reloadQC(){
+
+    private void reloadQC() {
         arrayList.clear();
         mData = FirebaseDatabase.getInstance().getReference();
         mData.child("QuangCao").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds:dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     String linkPoster = ds.child("linkAnh").getValue().toString();
                     String idphim = ds.child("idPhim").getValue().toString();
-                    arrayList.add(new QuangCao(linkPoster,idphim));
+                    arrayList.add(new QuangCao(linkPoster, idphim));
                     adapter.notifyDataSetChanged();
                 }
 
@@ -103,40 +188,40 @@ public class BannerManagerActivity extends AppCompatActivity {
 
         });
     }
-    private void dialogAddBanner(){
+
+    private void dialogAddBanner() {
         final Dialog dialog = new Dialog(this);
         dialog.setCanceledOnTouchOutside(false);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_add_banner);WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        dialog.setContentView(R.layout.dialog_add_banner);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.gravity = Gravity.CENTER;
         dialog.getWindow().setAttributes(lp);
 
-        Button btnHuy = (Button)dialog.findViewById(R.id.btnHuy);
-        Button btnThem= (Button)dialog.findViewById(R.id.btnThem);
-        Spinner sptenPhim = (Spinner)dialog.findViewById(R.id.sptenPhim);
-        final EditText edtlinkPoster = (EditText)dialog.findViewById(R.id.edtlinkAnh);
+        Button btnHuy = (Button) dialog.findViewById(R.id.btnHuy);
+        Button btnThem = (Button) dialog.findViewById(R.id.btnThem);
+        Spinner sptenPhim = (Spinner) dialog.findViewById(R.id.sptenPhim);
+        final EditText edtlinkPoster = (EditText) dialog.findViewById(R.id.edtlinkAnh);
         final ArrayList<String> arrayList;
         final ArrayAdapter<String> adapter;
         final DatabaseReference mDataQC;
 
 
-
-
         arrayList = new ArrayList<>();
-        adapter = new ArrayAdapter(dialog.getContext(),android.R.layout.simple_spinner_item,arrayList);
+        adapter = new ArrayAdapter(dialog.getContext(), android.R.layout.simple_spinner_item, arrayList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sptenPhim.setAdapter(adapter);
 
-        arrayList.add(0,"- Tên Phim -");
+        arrayList.add(0, "- Tên Phim -");
 
         mDataQC = FirebaseDatabase.getInstance().getReference();
         mDataQC.child("Phim").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds: dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     String tenphim = ds.child("tenPhim").getValue().toString();
                     arrayList.add(tenphim);
                 }
@@ -153,14 +238,14 @@ public class BannerManagerActivity extends AppCompatActivity {
         sptenPhim.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(adapterView.getItemAtPosition(i).equals("- Tên Phim -")){
+                if (adapterView.getItemAtPosition(i).equals("- Tên Phim -")) {
 
-                }else{
+                } else {
                     ten = adapterView.getItemAtPosition(i).toString();
                     mDataQC.child("Phim").orderByChild("tenPhim").equalTo(ten).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for(DataSnapshot ds:dataSnapshot.getChildren()){
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                 key = ds.getKey();
                             }
                         }
@@ -188,18 +273,18 @@ public class BannerManagerActivity extends AppCompatActivity {
                 mDataQC.child("QuangCao").push().setValue(qc).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Toast.makeText(BannerManagerActivity.this, "Thêm Thành Công", Toast.LENGTH_SHORT).show();
                             reloadQC();
                             dialog.dismiss();
-                        }else{
+                        } else {
                             Toast.makeText(BannerManagerActivity.this, "Có lỗi xảy ra", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                         }
                     }
                 });
 
-            }   
+            }
         });
 
 
@@ -211,36 +296,30 @@ public class BannerManagerActivity extends AppCompatActivity {
         });
 
 
-
-
-
-
-
-
         dialog.show();
     }
 
 
-    private void searchBanner(String q){
+    private void searchBanner(String q) {
         mData = FirebaseDatabase.getInstance().getReference("Phim");
-        Query query = mData.orderByChild("tenPhim").startAt(q).endAt(q+"\uf8ff");
+        Query query = mData.orderByChild("tenPhim").startAt(q).endAt(q + "\uf8ff");
 
 
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 arrayList.clear();
-                for(DataSnapshot ds:dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     final String idPhim = ds.child("idPhim").getValue().toString();
                     final String linkanh = ds.child("posterPhim").getValue().toString();
                     DatabaseReference mDataCheck = FirebaseDatabase.getInstance().getReference("QuangCao");
                     mDataCheck.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for(DataSnapshot ds:dataSnapshot.getChildren()){
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                 String idphim_QC = ds.child("idPhim").getValue().toString();
                                 QuangCao qc = ds.getValue(QuangCao.class);
-                                if(idPhim.equals(idphim_QC)){
+                                if (idPhim.equals(idphim_QC)) {
                                     arrayList.add(qc);
                                 }
                                 adapter.notifyDataSetChanged();
@@ -266,11 +345,16 @@ public class BannerManagerActivity extends AppCompatActivity {
 
 
     private void InitUI() {
-        listBanner = (ListView)findViewById(R.id.lvBanner);
-        btnAdd = (FloatingActionButton)findViewById(R.id.btnAddBanner);
-        searchBanner = (SearchView)findViewById(R.id.searchBanner);
+        listBanner = (ListView) findViewById(R.id.lvBanner);
+        btnAdd = (FloatingActionButton) findViewById(R.id.btnAddBanner);
+        searchBanner = (SearchView) findViewById(R.id.searchBanner);
     }
+
     public void clickBackToAdmin1(View view) {
         super.onBackPressed();
+    }
+
+    private void dialogRemoveBanner() {
+
     }
 }
