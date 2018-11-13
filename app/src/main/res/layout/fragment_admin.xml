@@ -131,14 +131,14 @@
                         android:layout_height="64dp"
                         android:background="@drawable/elip_button_with_opacity_purple"
                         android:padding="13dp"
-                        android:src="@drawable/ic_ad" />
+                        android:src="@drawable/ic_slider" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
-                        android:text="Quảng Cáo"
+                        android:text="Poster Phim"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -152,7 +152,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
-                        android:text="Quản Lý Danh Mục Quảng Cáo"
+                        android:text="Quản Lý Danh Mục Poster"
                         android:textAlignment="center"
                         android:textSize="15sp" />
                 </LinearLayout>

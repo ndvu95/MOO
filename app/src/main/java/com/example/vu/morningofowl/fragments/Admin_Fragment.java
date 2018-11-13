@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import com.example.vu.morningofowl.R;
 import com.example.vu.morningofowl.activities.All_UserActivity;
 import com.example.vu.morningofowl.activities.BannerManagerActivity;
+import com.example.vu.morningofowl.activities.FeedbackManagerActivity;
 import com.example.vu.morningofowl.activities.ManagerAddPhim_Activity;
 import com.example.vu.morningofowl.activities.QL_PhimActivity;
 
@@ -49,6 +50,14 @@ public class Admin_Fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), BannerManagerActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        linearFeedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(),FeedbackManagerActivity.class);
                 startActivity(intent);
             }
         });

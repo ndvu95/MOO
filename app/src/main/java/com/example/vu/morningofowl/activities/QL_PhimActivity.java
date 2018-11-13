@@ -300,7 +300,6 @@ public class QL_PhimActivity extends AppCompatActivity {
     }
 
     public void clickBackToAdminn(View view) {
-        Intent intent = new Intent(QL_PhimActivity.this, Home_Activity.class);
-        startActivity(intent);
+        finish();
     }
 }

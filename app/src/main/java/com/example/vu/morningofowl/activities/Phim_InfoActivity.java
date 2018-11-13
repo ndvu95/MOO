@@ -82,8 +82,7 @@ public class Phim_InfoActivity extends AppCompatActivity {
     }
 
     public void clickBackToAdmin(View view) {
-        Intent intent = new Intent(Phim_InfoActivity.this, QL_PhimActivity.class);
-        startActivity(intent);
+
         finish();
     }
 

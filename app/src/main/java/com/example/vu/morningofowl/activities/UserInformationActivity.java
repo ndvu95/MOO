@@ -190,8 +190,6 @@ public class UserInformationActivity extends AppCompatActivity {
     }
 
     public void clickBackToAllUser(View view) {
-        Intent intent = new Intent(UserInformationActivity.this, All_UserActivity.class);
-        startActivity(intent);
         finish();
     }
 

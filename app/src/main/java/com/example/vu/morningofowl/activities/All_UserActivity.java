@@ -126,7 +126,6 @@ public class All_UserActivity extends AppCompatActivity {
     }
 
     public void clickBackToAdmin1(View view) {
-        Intent intent = new Intent(All_UserActivity.this, Home_Activity.class);
-        startActivity(intent);
+        finish();
     }
 }

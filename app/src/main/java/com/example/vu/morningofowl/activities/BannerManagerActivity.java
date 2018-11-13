@@ -2,6 +2,7 @@ package com.example.vu.morningofowl.activities;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.vu.morningofowl.R;
 import com.example.vu.morningofowl.adapter.Adapter_QC;
+import com.example.vu.morningofowl.fragments.Admin_Fragment;
 import com.example.vu.morningofowl.model.QuangCao;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,7 +47,6 @@ public class BannerManagerActivity extends AppCompatActivity {
     SearchView searchBanner;
     private String ten;
     private String key;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +88,7 @@ public class BannerManagerActivity extends AppCompatActivity {
 
         listBanner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
                 final String idPhim = arrayList.get(i).getIdPhim();
 
                 mData = FirebaseDatabase.getInstance().getReference();
@@ -107,6 +108,21 @@ public class BannerManagerActivity extends AppCompatActivity {
                 Button btnHuy = (Button) dialog.findViewById(R.id.btnHuy);
                 Button btnSua = (Button) dialog.findViewById(R.id.btnSua);
                 Button btnSubmit = (Button) dialog.findViewById(R.id.btnSubmit);
+
+
+
+                btnSua.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        final Intent intent = new Intent(BannerManagerActivity.this, EditBannerActivity.class);
+
+                        String idPhim = arrayList.get(i).getIdPhim();
+                        intent.putExtra("idPhim", idPhim);
+                        startActivity(intent);
+                    }
+                });
+
+
 
 
                 btnHuy.setOnClickListener(new View.OnClickListener() {
@@ -351,10 +367,7 @@ public class BannerManagerActivity extends AppCompatActivity {
     }
 
     public void clickBackToAdmin1(View view) {
-        super.onBackPressed();
+        finish();
     }
 
-    private void dialogRemoveBanner() {
-
-    }
 }
