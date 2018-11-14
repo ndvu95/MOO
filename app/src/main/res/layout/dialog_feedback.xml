@@ -30,6 +30,8 @@
         android:orientation="horizontal">
 
         <Button
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:id="@+id/btnHuy"
             android:layout_marginRight="80dp"
             android:layout_width="wrap_content"
@@ -40,13 +42,15 @@
             android:textColor="#666868" />
 
         <Button
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:id="@+id/btnSubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_radius_corner_for_dialog"
+            android:background="@drawable/button"
             android:text="Gửi"
             android:textAllCaps="false"
-            android:textColor="@color/owl" />
+            android:textColor="@color/white" />
 
     </LinearLayout>
 </LinearLayout>

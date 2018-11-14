@@ -182,16 +182,11 @@ public class More_Fragment extends Fragment {
         int day_of_month = cal.get(Calendar.DAY_OF_MONTH);
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int minute = cal.get(Calendar.MINUTE);
-        int sec = cal.get(Calendar.SECOND);
-        mDataFeedBack = mData.child("FeedBack").child(userID).child("Date")
-                .child("Ngày "
-                + day_of_month
-                + " tháng "
-                + month_of_year + " năm "
-                + year
-                + " lúc " + hour
-                + "h:" + minute +"p"
-                + ":" + sec+"s");
+
+
+        String pushKey = mData.child("FeedBack").push().getKey();
+        mDataFeedBack = mData.child("FeedBack").child(pushKey);
+
         mDataFeedBack.child("Content").setValue(content);
         mDataFeedBack.child("Email").setValue(email);
         mDataFeedBack.child("At").setValue("Ngày "
@@ -201,6 +196,8 @@ public class More_Fragment extends Fragment {
                 + year
                 + " lúc " + hour
                 + "h:" + minute);
+        mDataFeedBack.child("Status").setValue("Sent");
+        mDataFeedBack.child("Key").setValue(pushKey);
     }
 
     private void initData() {

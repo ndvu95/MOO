@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <android.support.v7.widget.SearchView
-                    android:id="@+id/searchUser"
+                    android:id="@+id/searchFeedBack"
                     app:showAsAction="always|collapseActionView"
                     android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"

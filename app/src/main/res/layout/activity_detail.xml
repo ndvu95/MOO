@@ -126,13 +126,7 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/elip_button_with_opacity"
                     android:src="@drawable/ic_baseline_playlist_add_24px" />
-                <ImageButton
-                    android:id="@+id/btnAdd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/elip_button_with_opacity"
-                    android:src="@drawable/ic_exclamation" />
+
                 <ImageButton
                     android:id="@+id/btnShare"
                     android:layout_width="wrap_content"
