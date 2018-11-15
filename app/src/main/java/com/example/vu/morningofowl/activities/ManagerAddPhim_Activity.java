@@ -3,15 +3,21 @@ package com.example.vu.morningofowl.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.vu.morningofowl.R;
 import com.example.vu.morningofowl.model.Phim;
+import com.example.vu.morningofowl.model.TheLoai;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -20,18 +26,67 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ManagerAddPhim_Activity extends AppCompatActivity {
     DatabaseReference mData;
-    EditText edtTenPhim, edtLinkPhim, edtLinkSub, edtLinkPoster, edtTheLoai, edtMoTa, edtDienVien, edtLuotXem;
-
+    EditText edtTenPhim, edtLinkPhim, edtLinkSub, edtLinkPoster, edtMoTa, edtDienVien;
+    Spinner spTheLoai;
+    ArrayList<String> arrayList;
+    ArrayAdapter<String> adapter;
+    private String theLoai;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager_add_phim);
+        Window window = this.getWindow();
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.gray_dark));
         initUI();
+
+        arrayList= new ArrayList<>();
+        adapter = new ArrayAdapter(ManagerAddPhim_Activity.this, android.R.layout.simple_spinner_item,arrayList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spTheLoai.setAdapter(adapter);
+
+        fillCategory();
+        spTheLoai.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String tl = arrayList.get(i);
+                theLoai = tl;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void fillCategory() {
+        DatabaseReference mDataCate = FirebaseDatabase.getInstance().getReference("TheLoai");
+        mDataCate.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                arrayList.clear();
+                arrayList.add(0,"- Chọn Thể Loại -");
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot ds:dataSnapshot.getChildren()){
+                        String tl = ds.child("TenTheLoai").getValue().toString();
+                        arrayList.add(tl);
+                    }
+                    adapter.notifyDataSetChanged();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void initUI() {
@@ -39,9 +94,9 @@ public class ManagerAddPhim_Activity extends AppCompatActivity {
         edtLinkPhim = (EditText) findViewById(R.id.edtLink);
         edtLinkSub = (EditText) findViewById(R.id.edtLinkSub);
         edtLinkPoster = (EditText) findViewById(R.id.edtPoster);
-        edtTheLoai = (EditText) findViewById(R.id.edtTheLoai);
         edtMoTa = (EditText) findViewById(R.id.edtMota);
         edtDienVien = (EditText) findViewById(R.id.edtDienVien);
+        spTheLoai = (Spinner)findViewById(R.id.spTheLoai);
 
     }
 
@@ -59,7 +114,7 @@ public class ManagerAddPhim_Activity extends AppCompatActivity {
         String linkPhim = edtLinkPhim.getText().toString().trim();
         String linkSub = edtLinkSub.getText().toString().trim();
         String linkPoster = edtLinkPoster.getText().toString().trim();
-        String theLoai = edtTheLoai.getText().toString().trim();
+
         String moTa = edtMoTa.getText().toString().trim();
         String dienVien = edtDienVien.getText().toString().trim();
         Long luotXem = Long.parseLong("1");
@@ -87,7 +142,7 @@ public class ManagerAddPhim_Activity extends AppCompatActivity {
         edtLinkPhim.setText("");
         edtLinkSub.setText("");
         edtLinkPoster.setText("");
-        edtTheLoai.setText("");
+
         edtMoTa.setText("");
         edtDienVien.setText("");
 

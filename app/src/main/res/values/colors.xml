@@ -18,4 +18,13 @@
     <color name="sectionHeader">#000000</color>
     <color name="online">#2C82C9</color>
     <color name="offline">#BDC3C7</color>
+    <color name="action">#24252A</color>
+    <color name="cartoon">#FCB941</color>
+    <color name="adventure">#34495E</color>
+    <color name="horror">#446CB3</color>
+    <color name="scient">#2E3131</color>
+    <color name="documentary">#34495E</color>
+    <color name="criminal">#BFBFBF</color>
+    <color name="psy">#16A085</color>
+    <color name="love">#F1A9A0</color>
 </resources>

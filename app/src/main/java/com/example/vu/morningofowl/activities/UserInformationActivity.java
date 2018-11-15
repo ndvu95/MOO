@@ -133,20 +133,24 @@ public class UserInformationActivity extends AppCompatActivity {
     }
 
     private void populateListView(String uid) {
-        mData.child("UserLog").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference mDataLog = FirebaseDatabase.getInstance().getReference("UserLog");
+        mDataLog.child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds:dataSnapshot.getChildren()){
-                    if(ds.exists()){
-                        String dateTime = ds.child("dateTime").getValue().toString();
-                        String watchedMovie = ds.child("movieWatched").getValue().toString();
-                        arrayList.add(new User_Log(dateTime, watchedMovie));
-                    }else{
-                        Toast.makeText(context, "Nhật ký xem phim của người dùng chưa có", Toast.LENGTH_SHORT).show();
+                if(dataSnapshot.exists()){
+                    arrayList.clear();
+                    for(DataSnapshot ds:dataSnapshot.getChildren()){
+                        if(ds.exists()){
+                            String dateTime = ds.child("dateTime").getValue().toString();
+                            String watchedMovie = ds.child("movieWatched").getValue().toString();
+                            arrayList.add(new User_Log(dateTime, watchedMovie));
+                        }else{
+                            Toast.makeText(context, "Nhật ký xem phim của người dùng chưa có", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
 
-                adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
+                }
             }
 
             @Override

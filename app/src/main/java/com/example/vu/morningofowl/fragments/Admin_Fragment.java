@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.vu.morningofowl.R;
 import com.example.vu.morningofowl.activities.All_UserActivity;
 import com.example.vu.morningofowl.activities.BannerManagerActivity;
+import com.example.vu.morningofowl.activities.CategoryActivity;
 import com.example.vu.morningofowl.activities.FeedbackManagerActivity;
 import com.example.vu.morningofowl.activities.ManagerAddPhim_Activity;
 import com.example.vu.morningofowl.activities.QL_PhimActivity;
@@ -26,7 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class Admin_Fragment extends Fragment {
-    LinearLayout linearPhim, linearUser, linearAd, linearFeedback;
+    LinearLayout linearPhim, linearUser, linearAd, linearFeedback, linearTheLoai;
     TextView tvFeedCount;
     DatabaseReference mData;
     View view;
@@ -97,6 +98,14 @@ public class Admin_Fragment extends Fragment {
             }
         });
 
+        linearTheLoai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(),CategoryActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
@@ -105,6 +114,7 @@ public class Admin_Fragment extends Fragment {
         linearUser = (LinearLayout) view.findViewById(R.id.linearUser);
         linearAd = (LinearLayout) view.findViewById(R.id.linearAd);
         linearFeedback = (LinearLayout) view.findViewById(R.id.linearFeedback);
+        linearTheLoai = (LinearLayout)view.findViewById(R.id.linearCategory);
         tvFeedCount = (TextView) view.findViewById(R.id.tvnotiFeedbackCount);
     }
 

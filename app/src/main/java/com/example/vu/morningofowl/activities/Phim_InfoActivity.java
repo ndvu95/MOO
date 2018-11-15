@@ -8,7 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.vu.morningofowl.R;
@@ -18,10 +21,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class Phim_InfoActivity extends AppCompatActivity {
     EditText edtID, edtTen, edtLink, edtSub, edtPoster, edtCate, edtDes, edtActor;
+    Spinner spTheLoai;
     DatabaseReference mData;
     String key;
+
+    ArrayList<String> arrayList;
+    ArrayAdapter<String> adapter;
+    private String theloai;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +40,12 @@ public class Phim_InfoActivity extends AppCompatActivity {
         Window window = this.getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.gray_dark));
         InitUI();
+
+        arrayList = new ArrayList<>();
+        adapter = new ArrayAdapter(Phim_InfoActivity.this, android.R.layout.simple_spinner_item, arrayList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spTheLoai.setAdapter(adapter);
+
 
         edtID.setFocusable(false);
         edtID.setClickable(false);
@@ -40,14 +56,16 @@ public class Phim_InfoActivity extends AppCompatActivity {
         mData.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
+                arrayList.clear();
+                arrayList.add(0, theloai);
+                if (dataSnapshot.exists()) {
                     String id = dataSnapshot.child("idPhim").getValue().toString();
                     String ten = dataSnapshot.child("tenPhim").getValue().toString();
                     String link = dataSnapshot.child("linkPhim").getValue().toString();
                     String sub = dataSnapshot.child("linksub").getValue().toString();
                     String poster = dataSnapshot.child("posterPhim").getValue().toString();
                     String mota = dataSnapshot.child("motaPhim").getValue().toString();
-                    String theloai = dataSnapshot.child("theloaiPhim").getValue().toString();
+                    theloai = dataSnapshot.child("theloaiPhim").getValue().toString();
                     String dienvien = dataSnapshot.child("dienvienPhim").getValue().toString();
 
                     edtID.setText(id);
@@ -56,7 +74,6 @@ public class Phim_InfoActivity extends AppCompatActivity {
                     edtSub.setText(sub);
                     edtPoster.setText(poster);
                     edtDes.setText(mota);
-                    edtCate.setText(theloai);
                     edtActor.setText(dienvien);
                 }
             }
@@ -66,8 +83,44 @@ public class Phim_InfoActivity extends AppCompatActivity {
 
             }
         });
+        fillCate();
+        spTheLoai.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String tl = arrayList.get(i);
+                theloai = tl;
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+    }
+
+    private void fillCate() {
+        DatabaseReference mDataCate = FirebaseDatabase.getInstance().getReference("TheLoai");
+        mDataCate.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                arrayList.clear();
+                arrayList.add(0, theloai);
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        String tl = ds.child("TenTheLoai").getValue().toString();
+                        if (tl != null && !tl.equals(theloai)) {
+                            arrayList.add(tl);
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void InitUI() {
@@ -76,13 +129,12 @@ public class Phim_InfoActivity extends AppCompatActivity {
         edtLink = (EditText) findViewById(R.id.edtLink);
         edtSub = (EditText) findViewById(R.id.edtLinkSub);
         edtPoster = (EditText) findViewById(R.id.edtPoster);
-        edtCate = (EditText) findViewById(R.id.edtTheLoai);
+        spTheLoai = (Spinner) findViewById(R.id.spTheLoai1);
         edtDes = (EditText) findViewById(R.id.edtMota);
         edtActor = (EditText) findViewById(R.id.edtDienVien);
     }
 
     public void clickBackToAdmin(View view) {
-
         finish();
     }
 
@@ -93,18 +145,15 @@ public class Phim_InfoActivity extends AppCompatActivity {
         edtSub.setText("");
         edtPoster.setText("");
         edtDes.setText("");
-        edtCate.setText("");
         edtActor.setText("");
     }
 
     public void clickSavePhim(View view) {
-
-
         String name = edtTen.getText().toString().trim();
         String link = edtLink.getText().toString().trim();
         String sub = edtSub.getText().toString().trim();
         String poster = edtPoster.getText().toString().trim();
-        String cate = edtCate.getText().toString().trim();
+
         String des = edtDes.getText().toString().trim();
         String actor = edtActor.getText().toString().trim();
 
@@ -114,7 +163,7 @@ public class Phim_InfoActivity extends AppCompatActivity {
         mData.child("linksub").setValue(sub);
         mData.child("posterPhim").setValue(poster);
         mData.child("motaPhim").setValue(des);
-        mData.child("theloaiPhim").setValue(cate);
+        mData.child("theloaiPhim").setValue(theloai);
         mData.child("dienvienPhim").setValue(actor);
 
         Toast.makeText(this, "Cập Nhật Thông Tin Phim Thành Công", Toast.LENGTH_SHORT).show();

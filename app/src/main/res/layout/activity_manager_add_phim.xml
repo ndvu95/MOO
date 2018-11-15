@@ -68,17 +68,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/tilTheloai"
+                <TextView
+                    android:layout_marginLeft="4dp"
+                    android:textSize="18sp"
+                    android:text="Thể Loại:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Spinner
+                    android:id="@+id/spTheLoai"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <EditText
-                        android:isScrollContainer="true"
-                        android:id="@+id/edtTheLoai"
-                        android:hint="Thể Loại"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content"></Spinner>
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/tilMota"
                     android:layout_width="match_parent"
