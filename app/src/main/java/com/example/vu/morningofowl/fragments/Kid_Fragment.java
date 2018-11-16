@@ -32,6 +32,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -79,22 +81,21 @@ public class Kid_Fragment extends android.support.v4.app.Fragment {
         mData = FirebaseDatabase.getInstance().getReference("Phim");
 
         Query query = mData.orderByChild("theloaiPhim").equalTo("Hoạt Hình");
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String idPhim = snapshot.child("idPhim").getValue().toString();
-                    String tenPhim = snapshot.child("tenPhim").getValue().toString();
-                    String linkPhim = snapshot.child("linkPhim").getValue().toString();
-                    String linkSub = snapshot.child("linksub").getValue().toString();
-                    String posterPhim = snapshot.child("posterPhim").getValue().toString();
-                    String theloaiPhim = snapshot.child("theloaiPhim").getValue().toString();
-                    String motaPhim = snapshot.child("motaPhim").getValue().toString();
-                    String dienvienPhim = snapshot.child("dienvienPhim").getValue().toString();
-                    String luotxem = snapshot.child("soluotXem").getValue().toString();
-
-
-                    arrayList.add(new Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, Long.parseLong(luotxem)));
+                if(dataSnapshot != null){
+                    arrayList.clear();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Phim phim = snapshot.getValue(Phim.class);
+                        arrayList.add(phim);
+                        Collections.sort(arrayList, new Comparator<Phim>() {
+                            @Override
+                            public int compare(Phim phim, Phim t1) {
+                                return phim.getTenPhim().compareTo(t1.getTenPhim());
+                            }
+                        });
+                    }
                     adapter.notifyDataSetChanged();
                 }
             }

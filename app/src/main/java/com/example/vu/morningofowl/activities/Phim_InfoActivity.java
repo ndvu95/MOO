@@ -100,7 +100,7 @@ public class Phim_InfoActivity extends AppCompatActivity {
 
     private void fillCate() {
         DatabaseReference mDataCate = FirebaseDatabase.getInstance().getReference("TheLoai");
-        mDataCate.addValueEventListener(new ValueEventListener() {
+        mDataCate.orderByChild("TenTheLoai").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 arrayList.clear();

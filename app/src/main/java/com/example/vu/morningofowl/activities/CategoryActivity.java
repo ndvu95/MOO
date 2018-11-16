@@ -39,10 +39,8 @@ public class CategoryActivity extends AppCompatActivity {
         adapter = new Adapter_Category(CategoryActivity.this,R.layout.cate_item_list,arrayList);
         lvCate.setAdapter(adapter);
 
-
-
         mData = FirebaseDatabase.getInstance().getReference("TheLoai");
-        mData.addListenerForSingleValueEvent(new ValueEventListener() {
+        mData.orderByChild("TenTheLoai").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){

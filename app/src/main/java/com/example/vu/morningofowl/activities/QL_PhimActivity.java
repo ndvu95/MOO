@@ -1,6 +1,7 @@
 package com.example.vu.morningofowl.activities;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -34,6 +35,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 
 public class QL_PhimActivity extends AppCompatActivity {
@@ -44,6 +47,8 @@ public class QL_PhimActivity extends AppCompatActivity {
     SearchView searchView;
     FloatingActionButton btnAdd;
     TextView tvDS;
+
+    private Dialog dialogHoi = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +62,6 @@ public class QL_PhimActivity extends AppCompatActivity {
         adapter = new Adapter_Phim_Admin(this, R.layout.grid_single_item, arrayList);
         gvPhim.setAdapter(adapter);
         fillDataAll();
-
 
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +87,6 @@ public class QL_PhimActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
     private void readData() {
@@ -138,7 +141,7 @@ public class QL_PhimActivity extends AppCompatActivity {
         });
     }
 
-    private void fillDataAll(){
+    private void fillDataAll() {
         mData = FirebaseDatabase.getInstance().getReference("Phim");
 
         Query query = mData;
@@ -147,8 +150,8 @@ public class QL_PhimActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 arrayList.clear();
-                if(dataSnapshot.exists()){
-                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         String idPhim = snapshot.child("idPhim").getValue().toString();
                         String tenPhim = snapshot.child("tenPhim").getValue().toString();
                         String linkPhim = snapshot.child("linkPhim").getValue().toString();
@@ -161,7 +164,12 @@ public class QL_PhimActivity extends AppCompatActivity {
 
 
                         arrayList.add(new Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, Long.parseLong(luotxem)));
-
+                        Collections.sort(arrayList, new Comparator<Phim>() {
+                            @Override
+                            public int compare(Phim phim, Phim t1) {
+                                return phim.getTenPhim().compareTo(t1.getTenPhim());
+                            }
+                        });
                     }
                     adapter.notifyDataSetChanged();
 
@@ -186,7 +194,6 @@ public class QL_PhimActivity extends AppCompatActivity {
     }
 
 
-
     private void fillData(String q) {
 
         mData = FirebaseDatabase.getInstance().getReference("Phim");
@@ -199,8 +206,8 @@ public class QL_PhimActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 arrayList.clear();
-                if(dataSnapshot.exists()){
-                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         String idPhim = snapshot.child("idPhim").getValue().toString();
                         String tenPhim = snapshot.child("tenPhim").getValue().toString();
                         String linkPhim = snapshot.child("linkPhim").getValue().toString();
@@ -237,29 +244,27 @@ public class QL_PhimActivity extends AppCompatActivity {
     }
 
 
-
-
     private void dialogEdit(final String key) {
-        final Dialog dialog = new Dialog(QL_PhimActivity.this);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_remove_phim);
+        dialogHoi = new Dialog(QL_PhimActivity.this);
+        dialogHoi.setCanceledOnTouchOutside(false);
+        dialogHoi.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogHoi.setContentView(R.layout.dialog_remove_phim);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.copyFrom(dialogHoi.getWindow().getAttributes());
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.gravity = Gravity.CENTER;
-        dialog.getWindow().setAttributes(lp);
+        dialogHoi.getWindow().setAttributes(lp);
 
 
-        Button btnHuy = (Button) dialog.findViewById(R.id.btnHuy);
-        Button btnSubmit = (Button) dialog.findViewById(R.id.btnSubmit);
-        Button btnEdit = (Button) dialog.findViewById(R.id.btnSua);
+        Button btnHuy = (Button) dialogHoi.findViewById(R.id.btnHuy);
+        Button btnSubmit = (Button) dialogHoi.findViewById(R.id.btnSubmit);
+        Button btnEdit = (Button) dialogHoi.findViewById(R.id.btnSua);
 
         btnHuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                dialogHoi.dismiss();
             }
         });
 
@@ -277,19 +282,46 @@ public class QL_PhimActivity extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mData.child(key).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(QL_PhimActivity.this);
+
+                builder.setTitle("Xóa Phim");
+                builder.setMessage("Bạn Muốn Xóa Phim Này?");
+
+                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(QL_PhimActivity.this, "Xóa Phim Thành Công", Toast.LENGTH_SHORT).show();
-                            //reloadData();
-                            dialog.dismiss();
-                        }
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+                builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        mData.child(key).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(QL_PhimActivity.this, "Xóa Phim Thành Công", Toast.LENGTH_SHORT).show();
+                                    //reloadData();
+                                    dialogHoi.dismiss();
+                                }
+                            }
+                        });
+                    }
+                });
+                final AlertDialog alertDialog =  builder.create();
+                alertDialog.show();
+
+                dialogHoi.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        alertDialog.dismiss();
                     }
                 });
             }
         });
-        dialog.show();
+        dialogHoi.show();
     }
 
     private void InitUI() {

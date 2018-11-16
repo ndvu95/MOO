@@ -67,7 +67,7 @@ public class ManagerAddPhim_Activity extends AppCompatActivity {
 
     private void fillCategory() {
         DatabaseReference mDataCate = FirebaseDatabase.getInstance().getReference("TheLoai");
-        mDataCate.addValueEventListener(new ValueEventListener() {
+        mDataCate.orderByChild("TenTheLoai").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 arrayList.clear();
@@ -117,7 +117,7 @@ public class ManagerAddPhim_Activity extends AppCompatActivity {
 
         String moTa = edtMoTa.getText().toString().trim();
         String dienVien = edtDienVien.getText().toString().trim();
-        Long luotXem = Long.parseLong("1");
+        Long luotXem = Long.parseLong("0");
 
 
         mData = FirebaseDatabase.getInstance().getReference("Phim");

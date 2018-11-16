@@ -87,6 +87,14 @@ public class Adapter_Category extends ArrayAdapter<TheLoai> {
                         holder.imgCateLogo.setImageDrawable(getContext().getDrawable(R.drawable.ic_heartbeat));
                         holder.imgCateLogo.setBackground(getContext().getDrawable(R.drawable.elip_button_with_opacity_love));
                         break;
+                    case "Hài":
+                        holder.imgCateLogo.setImageDrawable(getContext().getDrawable(R.drawable.ic_laughing));
+                        holder.imgCateLogo.setBackground(getContext().getDrawable(R.drawable.elip_button_with_opacity_funny));
+                        break;
+                    case "Chiến Tranh":
+                        holder.imgCateLogo.setImageDrawable(getContext().getDrawable(R.drawable.ic_soldier));
+                        holder.imgCateLogo.setBackground(getContext().getDrawable(R.drawable.elip_button_with_opacity_war));
+                        break;
                 }
             }
         }

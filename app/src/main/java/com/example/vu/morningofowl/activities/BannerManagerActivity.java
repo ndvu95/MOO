@@ -45,6 +45,8 @@ public class BannerManagerActivity extends AppCompatActivity {
     FloatingActionButton btnAdd;
     DatabaseReference mData;
     SearchView searchBanner;
+    private Dialog dialogHoi = null;
+    private Dialog dialogXoa = null;
     private String ten;
     private String key;
     @Override
@@ -93,21 +95,21 @@ public class BannerManagerActivity extends AppCompatActivity {
 
                 mData = FirebaseDatabase.getInstance().getReference();
 
-                final Dialog dialog = new Dialog(BannerManagerActivity.this);
-                dialog.setCanceledOnTouchOutside(false);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.dialog_remove_phim);
+                dialogHoi = new Dialog(BannerManagerActivity.this);
+                dialogHoi.setCanceledOnTouchOutside(false);
+                dialogHoi.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogHoi.setContentView(R.layout.dialog_remove_phim);
                 WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                lp.copyFrom(dialog.getWindow().getAttributes());
+                lp.copyFrom(dialogHoi.getWindow().getAttributes());
                 lp.width = WindowManager.LayoutParams.MATCH_PARENT;
                 lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
                 lp.gravity = Gravity.CENTER;
-                dialog.getWindow().setAttributes(lp);
+                dialogHoi.getWindow().setAttributes(lp);
 
 
-                Button btnHuy = (Button) dialog.findViewById(R.id.btnHuy);
-                Button btnSua = (Button) dialog.findViewById(R.id.btnSua);
-                Button btnSubmit = (Button) dialog.findViewById(R.id.btnSubmit);
+                Button btnHuy = (Button) dialogHoi.findViewById(R.id.btnHuy);
+                Button btnSua = (Button) dialogHoi.findViewById(R.id.btnSua);
+                Button btnSubmit = (Button) dialogHoi.findViewById(R.id.btnSubmit);
 
 
 
@@ -128,15 +130,15 @@ public class BannerManagerActivity extends AppCompatActivity {
                 btnHuy.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.dismiss();
+                        dialogHoi.dismiss();
                     }
                 });
                 btnSubmit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(BannerManagerActivity.this);
-                        builder.setTitle("Xóa Quảng Cáo");
-                        builder.setMessage("Bạn Muốn Xóa Quảng Cáo Này?");
+                        builder.setTitle("Xóa Banner");
+                        builder.setMessage("Bạn Muốn Xóa Banner Này?");
 
                         builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
                             @Override
@@ -158,6 +160,7 @@ public class BannerManagerActivity extends AppCompatActivity {
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if(task.isSuccessful()){
                                                         Toast.makeText(BannerManagerActivity.this, "Xóa Thành Công", Toast.LENGTH_SHORT).show();
+                                                        dialogHoi.dismiss();
                                                         reloadQC();
                                                     }
                                                 }
@@ -173,11 +176,18 @@ public class BannerManagerActivity extends AppCompatActivity {
                             }
                         });
 
-                      AlertDialog alertDialog =  builder.create();
+                      final AlertDialog alertDialog =  builder.create();
                       alertDialog.show();
+
+                      dialogHoi.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                          @Override
+                          public void onDismiss(DialogInterface dialogInterface) {
+                              alertDialog.dismiss();
+                          }
+                      });
                     }
                 });
-                dialog.show();
+                dialogHoi.show();
             }
         });
     }

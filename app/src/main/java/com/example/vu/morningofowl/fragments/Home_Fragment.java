@@ -27,6 +27,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +37,7 @@ import me.relex.circleindicator.CircleIndicator;
 public class Home_Fragment extends Fragment {
 
     DatabaseReference mData;
+    DatabaseReference mDataCate;
     View view;
     ViewPager viewPager;
     CircleIndicator circleIndicator;
@@ -44,40 +47,48 @@ public class Home_Fragment extends Fragment {
     Runnable runnable;
     Handler handler;
 
-    int currentItem;
     ArrayList<SectionDataPhim> allSampleData;
+
+
+    int currentItem;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_home, container, false);
+        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+
+        circleIndicator = (CircleIndicator) view.findViewById(R.id.indicatorDefault);
+        arrayList = new ArrayList<>();
+        listKey = new ArrayList<>();
+        adapter = new Banner_Adapter(getActivity(), arrayList);
+        viewPager.setAdapter(adapter);
+        circleIndicator.setViewPager(viewPager);
+        adapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
+
+        mDataCate = FirebaseDatabase.getInstance().getReference("TheLoai");
+//        mData.orderByChild("TenTheLoai").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if(dataSnapshot != null && dataSnapshot.exists()){
+//                    for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+//                        String theloai = snapshot.child("TenTheLoai").getValue().toString();
+//                        initPhim(theloai);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
 
-            view = inflater.inflate(R.layout.fragment_home, container, false);
-            viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-
-            circleIndicator = (CircleIndicator) view.findViewById(R.id.indicatorDefault);
-            arrayList = new ArrayList<>();
-            listKey = new ArrayList<>();
-            adapter = new Banner_Adapter(getActivity(), arrayList);
-            viewPager.setAdapter(adapter);
-            circleIndicator.setViewPager(viewPager);
-            adapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
-
-
-
-            allSampleData = new ArrayList<SectionDataPhim>();
-            RecyclerView myRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
-            myRecyclerView.setHasFixedSize(true);
-            Recyclerview_Data_Adapter adapter1 = new Recyclerview_Data_Adapter(view.getContext(), allSampleData);
-            myRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
-
-            myRecyclerView.setAdapter(adapter1);
-
-
-            getDataQuangCao();
-            initPhim("Hoạt Hình");
-            initPhim("Hành Động");
-            //testData();
+        getDataQuangCao();
+        initPhim("Hoạt Hình");
+        initPhim("Hành Động");
+        initPhim("Chiến Tranh");
 
 
 
@@ -85,6 +96,16 @@ public class Home_Fragment extends Fragment {
     }
 
     private void initPhim(String theloai) {
+
+        allSampleData = new ArrayList<>();
+        RecyclerView myRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+        myRecyclerView.setHasFixedSize(true);
+        final Recyclerview_Data_Adapter adapter1 = new Recyclerview_Data_Adapter(view.getContext(), allSampleData);
+        myRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
+
+        myRecyclerView.setAdapter(adapter1);
+
+
         final SectionDataPhim dm = new SectionDataPhim();
 
         dm.setHeaderTitle(theloai);
@@ -93,27 +114,27 @@ public class Home_Fragment extends Fragment {
         final DatabaseReference mDataPhim;
         mDataPhim = FirebaseDatabase.getInstance().getReference("Phim");
         Query query = mDataPhim.orderByChild("theloaiPhim").equalTo(theloai);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            ArrayList<Phim> singleItem = new ArrayList<Phim>();
 
+        query.addValueEventListener(new ValueEventListener() {
+            ArrayList<Phim> singleItem = new ArrayList<>();
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String idPhim = snapshot.child("idPhim").getValue().toString();
-                    String tenPhim = snapshot.child("tenPhim").getValue().toString();
-                    String linkPhim = snapshot.child("linkPhim").getValue().toString();
-                    String linkSub = snapshot.child("linksub").getValue().toString();
-                    String posterPhim = snapshot.child("posterPhim").getValue().toString();
-                    String theloaiPhim = snapshot.child("theloaiPhim").getValue().toString();
-                    String motaPhim = snapshot.child("motaPhim").getValue().toString();
-                    String dienvienPhim = snapshot.child("dienvienPhim").getValue().toString();
-                    String luotxem =  snapshot.child("soluotXem").getValue().toString();
-
-
-                    singleItem.add(new Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim,Long.parseLong(luotxem)));
-                    dm.setAllPhimSections(singleItem);
+                if (dataSnapshot.exists()&&dataSnapshot!= null) {
+                    singleItem.clear();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Phim phim = snapshot.getValue(Phim.class);
+                        singleItem.add(phim);
+                        Collections.sort(singleItem, new Comparator<Phim>() {
+                            @Override
+                            public int compare(Phim phim, Phim t1) {
+                                return phim.getTenPhim().compareTo(t1.getTenPhim());
+                            }
+                        });
+                        dm.setAllPhimSections(singleItem);
+                    }
+                    allSampleData.add(dm);
+                    adapter1.notifyDataSetChanged();
                 }
-                allSampleData.add(dm);
             }
 
             @Override
@@ -151,9 +172,9 @@ public class Home_Fragment extends Fragment {
         mData.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     arrayList.clear();
-                    for(DataSnapshot ds: dataSnapshot.getChildren()){
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         String key = ds.getKey();
                         mData.child(key).addValueEventListener(new ValueEventListener() {
                             @Override

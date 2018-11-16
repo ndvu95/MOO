@@ -60,7 +60,7 @@ public class ExoPlayerActivity extends Activity {
         String Link = getIntent().getStringExtra("Link");
         String Sub = getIntent().getStringExtra("Link_Sub");
 
-        initPlayer(Link,Sub);
+        initPlayer(Link, Sub);
     }
 
     @Override
@@ -96,7 +96,6 @@ public class ExoPlayerActivity extends Activity {
                     null);
 
 
-
             // Build the subtitle MediaSource.
             Format subtitleFormat = Format.createTextSampleFormat(
                     null, // An identifier for the track. May be null.
@@ -106,16 +105,18 @@ public class ExoPlayerActivity extends Activity {
                     Format.NO_VALUE,
                     null,
                     null); // The subtitle language. May be null.
-            MediaSource subtitleSource =new SingleSampleMediaSource(subtitleUri, dataSourceFactory, subtitleFormat, C.TIME_UNSET);
+            MediaSource subtitleSource = new SingleSampleMediaSource(subtitleUri, dataSourceFactory, subtitleFormat, C.TIME_UNSET);
 
 
             MergingMediaSource mergedSource = new MergingMediaSource(videoSource, subtitleSource);
 
             simpleExoPlayerView.setPlayer(player);
 
-
-            player.prepare(mergedSource);
-
+            if (!Link.equals("") && !Sub.equals("")) {
+                player.prepare(mergedSource);
+            } else if (!Link.equals("") && Sub.equals("")) {
+                player.prepare(videoSource);
+            }
 
             player.setPlayWhenReady(true);
 

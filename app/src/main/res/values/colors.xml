@@ -22,9 +22,11 @@
     <color name="cartoon">#FCB941</color>
     <color name="adventure">#34495E</color>
     <color name="horror">#446CB3</color>
-    <color name="scient">#2E3131</color>
+    <color name="scient">#00cec9</color>
     <color name="documentary">#34495E</color>
     <color name="criminal">#BFBFBF</color>
     <color name="psy">#16A085</color>
     <color name="love">#F1A9A0</color>
+    <color name="funny">#d63031</color>
+    <color name="war">#6c5ce7</color>
 </resources>

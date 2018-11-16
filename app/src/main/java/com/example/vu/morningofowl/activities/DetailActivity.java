@@ -56,6 +56,8 @@ import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -249,10 +251,11 @@ public class DetailActivity extends AppCompatActivity {
 
     public void readData(String tl) {
 
-        Query query = mData.orderByChild("theloaiPhim").equalTo(tl);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        Query query = mData.orderByChild("theloaiPhim").equalTo(tl).limitToLast(5);
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                arrayList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String idPhim = snapshot.child("idPhim").getValue().toString();
                     String tenPhim = snapshot.child("tenPhim").getValue().toString();
@@ -266,9 +269,15 @@ public class DetailActivity extends AppCompatActivity {
 
 
                     if (!snapshot.child("idPhim").getValue().toString().equals(phimID)) {
+                        Collections.sort(arrayList, new Comparator<Related_Phim>() {
+                            @Override
+                            public int compare(Related_Phim related_phim, Related_Phim t1) {
+                                return related_phim.getTenPhim().compareTo(t1.getTenPhim());
+                            }
+                        });
                         arrayList.add(new Related_Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, Long.parseLong(luotxem)));
-                        adapter.notifyDataSetChanged();
                     }
+                    adapter.notifyDataSetChanged();
 
 
                 }

@@ -155,12 +155,6 @@ public class Home_Activity extends AppCompatActivity implements BottomNavigation
     }
 }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
 
     private boolean loadFragment(Fragment fragment) {
         //switching fragment
