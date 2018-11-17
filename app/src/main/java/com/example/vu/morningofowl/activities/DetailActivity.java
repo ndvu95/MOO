@@ -160,7 +160,11 @@ public class DetailActivity extends AppCompatActivity {
                 luotxem = views;
                 tvTenPhim.setText(ten);
                 tvTheLoai.setText(theloai);
-                tvDienVien.setText("Diễn Viên:" + dienvien);
+                if(theloai.equals("Hoạt Hình")){
+                    tvDienVien.setText("Lồng Tiếng: " + dienvien);
+                }else{
+                    tvDienVien.setText("Diễn Viên: " + dienvien);
+                }
                 expandableTextView.setText(mota);
                 tvViews.setText("Lượt Xem: " + views);
 

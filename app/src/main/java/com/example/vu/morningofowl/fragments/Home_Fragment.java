@@ -89,6 +89,8 @@ public class Home_Fragment extends Fragment {
         initPhim("Hoạt Hình");
         initPhim("Hành Động");
         initPhim("Chiến Tranh");
+        initPhim("Hài");
+        initPhim("Tình Cảm");
 
 
 
@@ -130,8 +132,8 @@ public class Home_Fragment extends Fragment {
                                 return phim.getTenPhim().compareTo(t1.getTenPhim());
                             }
                         });
-                        dm.setAllPhimSections(singleItem);
                     }
+                    dm.setAllPhimSections(singleItem);
                     allSampleData.add(dm);
                     adapter1.notifyDataSetChanged();
                 }
