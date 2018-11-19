@@ -11,6 +11,7 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,11 +27,13 @@ import android.widget.Toast;
 import com.example.vu.morningofowl.R;
 import com.example.vu.morningofowl.activities.AccountActivity;
 import com.example.vu.morningofowl.activities.ChangePassword_Activity;
+import com.example.vu.morningofowl.activities.DetailBaseByCategoryActivity;
 import com.example.vu.morningofowl.activities.Home_Activity;
 import com.example.vu.morningofowl.activities.Reg_Activity;
 import com.example.vu.morningofowl.activities.Start_Activity;
 import com.example.vu.morningofowl.activities.Watch_Later_Activity;
 import com.example.vu.morningofowl.adapter.Expandablelist_Adapter;
+import com.example.vu.morningofowl.model.TheLoai;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -54,18 +57,21 @@ public class More_Fragment extends Fragment {
     private DatabaseReference mData;
     private FirebaseUser mUser;
 
+    private String tentl;
+
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_more, container, false);
         mAuth = FirebaseAuth.getInstance();
-        mData = FirebaseDatabase.getInstance().getReference();
+        mData = FirebaseDatabase.getInstance().getReference("TheLoai");
         listView = (ExpandableListView) view.findViewById(R.id.lvMore);
         initData();
         adapter = new Expandablelist_Adapter(getContext(), listHeader, listHash);
         listView.setAdapter(adapter);
         listView.expandGroup(0);
         listView.expandGroup(2);
+        final Intent intent = new Intent(getActivity(),DetailBaseByCategoryActivity.class);
         listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
@@ -89,19 +95,82 @@ public class More_Fragment extends Fragment {
                                 break;
                         }
                         break;
+                    case 1:
+                        switch (childPosition){
+                            case 0:
+                                truyenIntent(childPosition);
+                                intent.putExtra("tenTL", tentl);
+                                startActivity(intent);
+                                break;
+                            case 1:
+                                truyenIntent(childPosition);
+                                intent.putExtra("tenTL", tentl);
+                                startActivity(intent);
+                                break;
+                            case 2:
+                                truyenIntent(childPosition);
+                                intent.putExtra("tenTL", tentl);
+                                startActivity(intent);
+                                break;
+                            case 3:
+                                truyenIntent(childPosition);
+                                intent.putExtra("tenTL", tentl);
+                                startActivity(intent);
+                                break;
+                            case 4:
+                                truyenIntent(childPosition);
+                                intent.putExtra("tenTL", tentl);
+                                startActivity(intent);
+                                break;
+                            case 5:
+                                truyenIntent(childPosition);
+                                intent.putExtra("tenTL", tentl);
+                                startActivity(intent);
+                                break;
+                            case 6:
+                                truyenIntent(childPosition);
+                                intent.putExtra("tenTL", tentl);
+                                startActivity(intent);
+                                break;
+                            case 7:
+                                truyenIntent(childPosition);
+                                intent.putExtra("tenTL", tentl);
+                                startActivity(intent);
+                                break;
+                            case 8:
+                                truyenIntent(childPosition);
+                                intent.putExtra("tenTL", tentl);
+                                startActivity(intent);
+                                break;
+                            case 9:
+                                truyenIntent(childPosition);
+                                intent.putExtra("tenTL", tentl);
+                                startActivity(intent);
+                                break;
+                            case 10:
+                                truyenIntent(childPosition);
+                                intent.putExtra("tenTL", tentl);
+                                startActivity(intent);
+                                break;
+                        }
+                        break;
+
                     case 2:
                         switch (childPosition) {
                             case 0:
                                 dialogFeedback();
                                 break;
                         }
+                        break;
                 }
                 return true;
             }
         });
         return view;
     }
-
+    private void truyenIntent(int cp){
+        tentl = listHash.get(listHeader.get(1)).get(cp);
+    }
     private void checkOffline() {
         String userID = mAuth.getCurrentUser().getUid();
         Calendar cal = Calendar.getInstance();
@@ -214,15 +283,24 @@ public class More_Fragment extends Fragment {
         taiKhoan.add("Thông Tin");
         taiKhoan.add("Đăng Xuất");
 
-        List<String> theloaiPhim = new ArrayList<>();
-        theloaiPhim.add("Hành Động");
-        theloaiPhim.add("Phiêu Lưu");
-        theloaiPhim.add("Kinh Dị");
-        theloaiPhim.add("Thiếu Nhi");
-        theloaiPhim.add("Hoạt Hình");
-        theloaiPhim.add("Khoa Học Viễn Tưởng");
-        theloaiPhim.add("Tài Liệu");
-        theloaiPhim.add("Tội Phạm");
+        final ArrayList<String> theloaiPhim = new ArrayList<>();
+        mData.orderByChild("TenTheLoai").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot != null && dataSnapshot.exists()){
+                    for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+                        String tl = snapshot.child("TenTheLoai").getValue().toString();
+                        theloaiPhim.add(tl);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
         List<String> hotro = new ArrayList<>();
         hotro.add("Feedback");

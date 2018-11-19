@@ -79,7 +79,6 @@ public class Kid_Fragment extends android.support.v4.app.Fragment {
 
     public void readData() {
         mData = FirebaseDatabase.getInstance().getReference("Phim");
-
         Query query = mData.orderByChild("theloaiPhim").equalTo("Hoạt Hình");
         query.addValueEventListener(new ValueEventListener() {
             @Override

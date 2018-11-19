@@ -63,7 +63,8 @@
         <activity android:name=".activities.BannerManagerActivity" />
         <activity android:name=".activities.EditBannerActivity" />
         <activity android:name=".activities.FeedbackManagerActivity" />
-        <activity android:name=".activities.CategoryActivity"></activity>
+        <activity android:name=".activities.CategoryActivity" />
+        <activity android:name=".activities.DetailBaseByCategoryActivity"></activity>
     </application>
 
 </manifest>
