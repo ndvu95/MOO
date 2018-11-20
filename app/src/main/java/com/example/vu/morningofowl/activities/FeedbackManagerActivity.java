@@ -24,6 +24,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class FeedbackManagerActivity extends AppCompatActivity {
     private String from;
     private String date;
     private String content;
+    private String contentSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,21 @@ public class FeedbackManagerActivity extends AppCompatActivity {
         mData = FirebaseDatabase.getInstance().getReference("FeedBack");
 
         ReloadData();
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchFB(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchFB(newText);
+                return false;
+            }
+        });
 
         lvFeedBack.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -71,6 +88,34 @@ public class FeedbackManagerActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    private void searchFB(final String q){
+        mData = FirebaseDatabase.getInstance().getReference("FeedBack");
+        Query query = mData;
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists() && dataSnapshot != null){
+                    arrayList.clear();
+                    for(DataSnapshot ds:dataSnapshot.getChildren()){
+                        FeedBack fb = ds.getValue(FeedBack.class);
+                        if(fb.Content.contains(q)){
+                            arrayList.add(fb);
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+
+        query.addValueEventListener(valueEventListener);
 
     }
 
@@ -114,7 +159,6 @@ public class FeedbackManagerActivity extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     FeedBack fb = ds.getValue(FeedBack.class);
                     arrayList.add(fb);
-
                 }
                 adapter.notifyDataSetChanged();
             }

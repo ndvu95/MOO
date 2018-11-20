@@ -172,6 +172,7 @@ public class More_Fragment extends Fragment {
         tentl = listHash.get(listHeader.get(1)).get(cp);
     }
     private void checkOffline() {
+        DatabaseReference mDataUser = FirebaseDatabase.getInstance().getReference("Users");
         String userID = mAuth.getCurrentUser().getUid();
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
@@ -183,8 +184,8 @@ public class More_Fragment extends Fragment {
 
 
         if (mAuth.getCurrentUser() != null) {
-            mData.child("Users").child(userID).child("Status").setValue("Offline");
-            mData.child("Users").child(userID).child("Last_Active").setValue("Ngày "
+            mDataUser.child(userID).child("Status").setValue("Offline");
+            mDataUser.child(userID).child("Last_Active").setValue("Ngày "
                     + day
                     + " tháng "
                     + month + " năm "
@@ -287,7 +288,8 @@ public class More_Fragment extends Fragment {
         mData.orderByChild("TenTheLoai").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot != null && dataSnapshot.exists()){
+                if(dataSnapshot.exists()){
+                    theloaiPhim.clear();
                     for(DataSnapshot snapshot:dataSnapshot.getChildren()){
                         String tl = snapshot.child("TenTheLoai").getValue().toString();
                         theloaiPhim.add(tl);
