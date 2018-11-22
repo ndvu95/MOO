@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -71,6 +72,17 @@ public class DetailBaseByCategoryActivity extends AppCompatActivity {
                 }
 
                 return false;
+            }
+        });
+
+
+        gvDetailPhim.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent1= new Intent(DetailBaseByCategoryActivity.this, DetailActivity.class);
+                String uid = arrayList.get(i).getIdPhim();
+                intent1.putExtra("phim_UID",uid);
+                startActivity(intent1);
             }
         });
 

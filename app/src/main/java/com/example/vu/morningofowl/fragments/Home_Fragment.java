@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.example.vu.morningofowl.adapter.Banner_Adapter;
 import com.example.vu.morningofowl.adapter.Recyclerview_Data_Adapter;
 import com.example.vu.morningofowl.model.Phim;
 import com.example.vu.morningofowl.model.QuangCao;
+import com.example.vu.morningofowl.model.TheLoai;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,7 +49,7 @@ public class Home_Fragment extends Fragment {
     List<String> listKey;
     Runnable runnable;
     Handler handler;
-
+    ArrayList<String> listTheLoai;
     ArrayList<SectionDataPhim> allSampleData;
 
 
@@ -59,7 +61,7 @@ public class Home_Fragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-
+        listTheLoai = new ArrayList<>();
         circleIndicator = (CircleIndicator) view.findViewById(R.id.indicatorDefault);
         arrayList = new ArrayList<>();
         listKey = new ArrayList<>();
@@ -72,14 +74,27 @@ public class Home_Fragment extends Fragment {
 
 
         getDataQuangCao();
-        initPhim("Hoạt Hình");
-        initPhim("Hành Động");
-        initPhim("Chiến Tranh");
-        initPhim("Hài");
-        initPhim("Tình Cảm");
 
+        mDataCate.orderByChild("TenTheLoai").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists() && dataSnapshot != null){
+                    listTheLoai.clear();
+                    for(DataSnapshot ds:dataSnapshot.getChildren()){
+                        String tentl = ds.child("TenTheLoai").getValue(String.class);
+                        listTheLoai.add(tentl);
+                    }
+                    for(int i = 0;i <listTheLoai.size(); i++){
+                        initPhim(listTheLoai.get(i));
+                    }
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
         return view;
     }
 

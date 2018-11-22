@@ -76,7 +76,7 @@ public class DetailActivity extends AppCompatActivity {
     private ExpandableTextView expandableTextView;
     private LinearLayout layout;
     private RecyclerView rcRelated;
-
+    private DatabaseReference mDataLink;
     private String tp;
 
     Context context;
@@ -87,6 +87,7 @@ public class DetailActivity extends AppCompatActivity {
     String phimID;
     String link_Phim;
     String link_Sub;
+    private String link;
     private boolean processWatchLater = false;
 
     @Override
@@ -110,7 +111,20 @@ public class DetailActivity extends AppCompatActivity {
         fillDetail();
         searchtheLoai();
         checkWatch_Later();
+        mDataLink = FirebaseDatabase.getInstance().getReference();
+        mDataLink.child("Link").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()&& dataSnapshot != null){
+                    link = dataSnapshot.getValue(String.class);
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
         btnShare.setOnClickListener(new View.OnClickListener() {
@@ -119,7 +133,7 @@ public class DetailActivity extends AppCompatActivity {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT,"Morning Of Owl");
-                shareIntent.putExtra(Intent.EXTRA_TEXT,"Hãy tải ứng dụng tại link "+"https://drive.google.com/file/d/1l3AENDtxrNW3DpbGsO73ssnOt-KxM0ZM"+"\n để xem phim "+tp+" nhé !");
+                shareIntent.putExtra(Intent.EXTRA_TEXT,"Hãy tải ứng dụng tại link "+link+"\n để xem phim "+tp+" nhé !");
                 startActivity(Intent.createChooser(shareIntent, "Chia Sẻ"));
             }
         });
