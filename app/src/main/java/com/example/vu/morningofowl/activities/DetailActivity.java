@@ -119,7 +119,7 @@ public class DetailActivity extends AppCompatActivity {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT,"Morning Of Owl");
-                shareIntent.putExtra(Intent.EXTRA_TEXT,"Hãy tải ứng dụng tại link "+"https://drive.google.com/file/d/10_UmBokjnEQDPFTvcQPzqDnwUaq5QIGH"+"\n để xem phim "+tp+" nhé !");
+                shareIntent.putExtra(Intent.EXTRA_TEXT,"Hãy tải ứng dụng tại link "+"https://drive.google.com/file/d/1l3AENDtxrNW3DpbGsO73ssnOt-KxM0ZM"+"\n để xem phim "+tp+" nhé !");
                 startActivity(Intent.createChooser(shareIntent, "Chia Sẻ"));
             }
         });
