@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
@@ -18,18 +19,24 @@ import android.widget.Toast;
 
 import com.example.vu.morningofowl.R;
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MergingMediaSource;
 import com.google.android.exoplayer2.source.SingleSampleMediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
@@ -40,7 +47,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 
-public class ExoPlayerActivity extends Activity {
+public class ExoPlayerActivity extends Activity  {
     private int tapBack = 0;
     private SimpleExoPlayerView simpleExoPlayerView;
     private SimpleExoPlayer player;
@@ -54,14 +61,21 @@ public class ExoPlayerActivity extends Activity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         simpleExoPlayerView = (SimpleExoPlayerView) findViewById(R.id.exoplayer);
-
+        progressBar  = (ProgressBar)findViewById(R.id.progressBar);
         //Toast.makeText(this, Link, Toast.LENGTH_SHORT).show();
+
+
 
         String Link = getIntent().getStringExtra("Link");
         String Sub = getIntent().getStringExtra("Link_Sub");
 
+
         initPlayer(Link, Sub);
+
+
     }
+
+
 
     @Override
     protected void onStart() {
@@ -120,6 +134,48 @@ public class ExoPlayerActivity extends Activity {
 
             player.setPlayWhenReady(true);
 
+
+            player.addListener(new ExoPlayer.EventListener() {
+                @Override
+                public void onTimelineChanged(Timeline timeline, Object manifest) {
+
+                }
+
+                @Override
+                public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+                }
+
+                @Override
+                public void onLoadingChanged(boolean isLoading) {
+
+                }
+
+                @Override
+                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                    if(playbackState == player.STATE_BUFFERING){
+                        progressBar.setVisibility(View.VISIBLE);
+                    }else{
+                        progressBar.setVisibility(View.INVISIBLE);
+                    }
+                }
+
+                @Override
+                public void onPlayerError(ExoPlaybackException error) {
+
+                }
+
+                @Override
+                public void onPositionDiscontinuity() {
+
+                }
+
+                @Override
+                public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+                }
+            });
+
         } catch (Exception e) {
             Log.e("MainActivity", "exoplayer error" + e.toString());
         }
@@ -152,4 +208,6 @@ public class ExoPlayerActivity extends Activity {
             Toast.makeText(this, "Nhấn Back Một Lần Nữa Để Thoát", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }

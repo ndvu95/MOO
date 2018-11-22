@@ -70,12 +70,15 @@ public class DetailActivity extends AppCompatActivity {
     private TextView tvTheLoai;
     private TextView tvDienVien;
     private TextView tvViews;
-    private ImageButton btnAdd;
+    private ImageButton btnAdd, btnShare;
     private ArrayList<Related_Phim> arrayList;
     private Related_Adapter adapter;
     private ExpandableTextView expandableTextView;
     private LinearLayout layout;
     private RecyclerView rcRelated;
+
+    private String tp;
+
     Context context;
     DatabaseReference mData = FirebaseDatabase.getInstance().getReference("Phim");
 
@@ -107,13 +110,25 @@ public class DetailActivity extends AppCompatActivity {
         fillDetail();
         searchtheLoai();
         checkWatch_Later();
+
+
+
+        btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT,"Morning Of Owl");
+                shareIntent.putExtra(Intent.EXTRA_TEXT,"Hãy tải ứng dụng tại link "+"https://drive.google.com/file/d/10_UmBokjnEQDPFTvcQPzqDnwUaq5QIGH"+"\n để xem phim "+tp+" nhé !");
+                startActivity(Intent.createChooser(shareIntent, "Chia Sẻ"));
+            }
+        });
     }
 
     private void checkWatch_Later() {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Intent intent = getIntent();
         final String idPhim = intent.getStringExtra("phim_UID");
-        final String tenPhim = tvTenPhim.getText().toString();
         final DatabaseReference mData = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("Watch_Later");
 
         mData.addValueEventListener(new ValueEventListener() {
@@ -148,6 +163,7 @@ public class DetailActivity extends AppCompatActivity {
                 Map<Long, Long> view = (Map<Long, Long>) dataSnapshot.getValue();
 
                 String ten = map.get("tenPhim");
+                tp = ten;
                 String linkPhim = map.get("linkPhim");
                 link_Phim = linkPhim;
                 String linkSub = map.get("linksub");
@@ -223,6 +239,7 @@ public class DetailActivity extends AppCompatActivity {
 
 
     public void khoiTao() {
+        btnShare = (ImageButton)findViewById(R.id.btnShare);
         btnAdd = (ImageButton) findViewById(R.id.btnAdd);
         imgPoster = (ImageView) findViewById(R.id.imgPoster);
         tvTenPhim = (TextView) findViewById(R.id.tvName);

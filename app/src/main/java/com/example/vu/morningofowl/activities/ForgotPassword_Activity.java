@@ -1,6 +1,7 @@
 package com.example.vu.morningofowl.activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ public class ForgotPassword_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password_);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         edtForgot = (EditText) findViewById(R.id.edtEmailForgot);
         pgBar = (ProgressBar) findViewById(R.id.progressBar);
     }

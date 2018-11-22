@@ -1,5 +1,6 @@
 package com.example.vu.morningofowl.activities;
 
+import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -31,6 +32,7 @@ public class CategoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Window w = this.getWindow();
         w.setStatusBarColor(ContextCompat.getColor(this,R.color.gray_dark));
         

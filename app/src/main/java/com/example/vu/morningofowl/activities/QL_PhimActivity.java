@@ -3,6 +3,7 @@ package com.example.vu.morningofowl.activities;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -54,6 +55,7 @@ public class QL_PhimActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ql__phim);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Window window = this.getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.gray_dark));
         InitUI();

@@ -2,6 +2,7 @@ package com.example.vu.morningofowl.fragments;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -63,6 +64,7 @@ public class More_Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_more, container, false);
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mAuth = FirebaseAuth.getInstance();
         mData = FirebaseDatabase.getInstance().getReference("TheLoai");
         listView = (ExpandableListView) view.findViewById(R.id.lvMore);

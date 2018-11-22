@@ -1,5 +1,6 @@
 package com.example.vu.morningofowl.fragments;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -56,6 +57,7 @@ public class Home_Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
         circleIndicator = (CircleIndicator) view.findViewById(R.id.indicatorDefault);
@@ -67,22 +69,6 @@ public class Home_Fragment extends Fragment {
         adapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
 
         mDataCate = FirebaseDatabase.getInstance().getReference("TheLoai");
-//        mData.orderByChild("TenTheLoai").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if(dataSnapshot != null && dataSnapshot.exists()){
-//                    for(DataSnapshot snapshot:dataSnapshot.getChildren()){
-//                        String theloai = snapshot.child("TenTheLoai").getValue().toString();
-//                        initPhim(theloai);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
 
 
         getDataQuangCao();
@@ -104,7 +90,7 @@ public class Home_Fragment extends Fragment {
         myRecyclerView.setHasFixedSize(true);
         final Recyclerview_Data_Adapter adapter1 = new Recyclerview_Data_Adapter(view.getContext(), allSampleData);
         myRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
-
+        myRecyclerView.setNestedScrollingEnabled(false);
         myRecyclerView.setAdapter(adapter1);
 
 
@@ -146,27 +132,6 @@ public class Home_Fragment extends Fragment {
         });
 
     }
-
-//    private void testData() {
-//        SectionDataPhim dm = new SectionDataPhim();
-//
-//        dm.setHeaderTitle("Hot ");
-//
-//        ArrayList<Phim> singleItem = new ArrayList<Phim>();
-//
-//        for (int i = 0; i < 5; i++) {
-//            singleItem.add(new Phim("-LPApVA6QjeVUWPrKdMu", "Minions", "https://moowlcom.000webhostapp.com/Minions%20Official%20Trailer%201%20(2015)%20-%20Despicable%20Me%20Prequel%20HD.mp4",
-//                    "https://moowlcom.000webhostapp.com/Minions%20Official%20Trailer%201%20(2015)%20-%20Despicable%20Me%20Prequel%20HD.mp4",
-//                    "https://c2.staticflickr.com/2/1888/42471882670_c03e961a2c_m.jpg",
-//                    "Hoạt Hình",
-//                    "Câu chuyện kể về các MINION ",
-//                    "Steve Carell, Kristen Wiig,Trey Parker", 1));
-//
-//            dm.setAllPhimSections(singleItem);
-//        }
-//
-//        allSampleData.add(dm);
-//    }
 
 
     private void getDataQuangCao() {

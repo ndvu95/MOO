@@ -2,6 +2,7 @@ package com.example.vu.morningofowl.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -64,6 +65,7 @@ public class UserInformationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_information);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Window w = getWindow(); // in Activity's onCreate() for instance
         w.setStatusBarColor(ContextCompat.getColor(this, R.color.gray_dark));
 

@@ -1,6 +1,7 @@
 package com.example.vu.morningofowl.activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ public class EditBannerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_banner);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         initUI();
         arrayList = new ArrayList<>();
         adapter = new ArrayAdapter<>(EditBannerActivity.this, android.R.layout.simple_spinner_item, arrayList);

@@ -1,6 +1,7 @@
 package com.example.vu.morningofowl.fragments;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -50,27 +51,28 @@ public class Kid_Fragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-            view = inflater.inflate(R.layout.fragment_kid, container, false);
-            gridviewKid = (GridView) view.findViewById(R.id.gvKidz);
+        view = inflater.inflate(R.layout.fragment_kid, container, false);
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        gridviewKid = (GridView) view.findViewById(R.id.gvKidz);
 
-            arrayList = new ArrayList<>();
-            adapter = new Phim_Adapter(getContext(), R.layout.custom_grid_item, arrayList);
-            gridviewKid.setAdapter(adapter);
-            readData();
+        arrayList = new ArrayList<>();
+        adapter = new Phim_Adapter(getContext(), R.layout.custom_grid_item, arrayList);
+        gridviewKid.setAdapter(adapter);
+        readData();
 
 
-            gridviewKid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        gridviewKid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    Intent manhinhDetail = new Intent(getActivity(), DetailActivity.class);
-                    String key = arrayList.get(position).getIdPhim();
-                    for (int i = 0; i < arrayList.size(); i++) {
-                        manhinhDetail.putExtra("phim_UID", key);
-                    }
-                    startActivity(manhinhDetail);
+                Intent manhinhDetail = new Intent(getActivity(), DetailActivity.class);
+                String key = arrayList.get(position).getIdPhim();
+                for (int i = 0; i < arrayList.size(); i++) {
+                    manhinhDetail.putExtra("phim_UID", key);
                 }
-            });
+                startActivity(manhinhDetail);
+            }
+        });
 
 
         return view;
@@ -83,7 +85,7 @@ public class Kid_Fragment extends android.support.v4.app.Fragment {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot != null){
+                if (dataSnapshot != null) {
                     arrayList.clear();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Phim phim = snapshot.getValue(Phim.class);

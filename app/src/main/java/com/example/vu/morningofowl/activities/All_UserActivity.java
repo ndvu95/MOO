@@ -1,6 +1,7 @@
 package com.example.vu.morningofowl.activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -36,6 +37,7 @@ public class All_UserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all__user);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Window window = this.getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.gray_dark));
         searchUser = (SearchView)findViewById(R.id.searchUser);

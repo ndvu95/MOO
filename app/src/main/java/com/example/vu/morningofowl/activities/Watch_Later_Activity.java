@@ -1,6 +1,7 @@
 package com.example.vu.morningofowl.activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +36,7 @@ public class Watch_Later_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watch__later_);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Window window = this.getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.gray_dark));
         gvWatchLater = (GridView) findViewById(R.id.gvWatchLater);
