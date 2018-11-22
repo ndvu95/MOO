@@ -21,13 +21,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Calendar;
 
 public class Reg_Activity extends AppCompatActivity {
     private EditText edtHoTen, edtEmail, edtMatKhau, edtSDT;
     private ProgressBar progressBar;
     public FirebaseAuth mAuth;
-
+    DatabaseReference mData;
+    private ProgressDialog pd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,60 +56,50 @@ public class Reg_Activity extends AppCompatActivity {
     }
 
     private void DangKy() {
-        final ProgressDialog pd = new ProgressDialog(Reg_Activity.this);
+         pd = new ProgressDialog(Reg_Activity.this);
         pd.setTitle("Đang Xử Lý Dữ Liệu");
         pd.setMessage("Vui Lòng Chờ Trong Giây Lát...");
         pd.setCanceledOnTouchOutside(false);
-        pd.show();
 
         String eMail = edtEmail.getText().toString().trim();
         String matKhau = edtMatKhau.getText().toString().trim();
 
+        if(!eMail.equals("") && !matKhau.equals("")){
+            pd.show();
+            mAuth.createUserWithEmailAndPassword(eMail, matKhau).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
 
-        mAuth.createUserWithEmailAndPassword(eMail, matKhau).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-
-                if (task.isSuccessful()) {
-                    String hoTen = edtHoTen.getText().toString().trim();
-                    String eMail = edtEmail.getText().toString().trim();
-                    String SDT = edtSDT.getText().toString().trim();
-                    Users users = new Users(hoTen, eMail, SDT, "Default_Image","Default","Default");
-                    FirebaseDatabase.getInstance()
-                            .getReference("Users")
-                            .child(FirebaseAuth.getInstance()
-                                    .getCurrentUser()
-                                    .getUid())
-                            .setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                pd.dismiss();
-                                Toast.makeText(Reg_Activity.this, "Đăng Ký Thành Công", Toast.LENGTH_SHORT).show();
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Toast.makeText(Reg_Activity.this, "Vui Lòng Kích Hoạt Email", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(Reg_Activity.this, Start_Activity.class);
-                                            startActivity(intent);
-                                        }
-                                    }
-                                });
-                                mAuth.signOut();
-                            } else {
-                                pd.dismiss();
-                                Toast.makeText(Reg_Activity.this, "Có Lỗi Xảy Ra, Vui Lòng Thử Lại", Toast.LENGTH_SHORT).show();
-                            }
+                    if (task.isSuccessful()) {
+                        pd.dismiss();
+                        String hoTen = edtHoTen.getText().toString().trim();
+                        String eMail = edtEmail.getText().toString().trim();
+                        String SDT = edtSDT.getText().toString().trim();
+                        if(!hoTen.equals("")&& !eMail.equals("")&& !SDT.equals("")){
+                            innerReg(hoTen,eMail,SDT);
+                            pd.dismiss();
+                        }else{
+                            Toast.makeText(Reg_Activity.this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                         }
-                    });
-                } else {
-                    pd.dismiss();
-                    Toast.makeText(Reg_Activity.this, "Email đã có người sử dụng, vui lòng chọn email khác", Toast.LENGTH_SHORT).show();
+                    } else {
+                        pd.dismiss();
+                        switch (task.getException().toString()){
+                            case "com.google.firebase.auth.FirebaseAuthInvalidCredentialsException: The email address is badly formatted.":
+                                Toast.makeText(Reg_Activity.this, "Email không hợp lệ, vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                                break;
+                            case "com.google.firebase.auth.FirebaseAuthWeakPasswordException: The given password is invalid. [ Password should be at least 6 characters ]":
+                                Toast.makeText(Reg_Activity.this, "Mật khẩu phải chứa ít nhất 6 kí tự", Toast.LENGTH_SHORT).show();
+                                break;
+                            case "com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account.":
+                                Toast.makeText(Reg_Activity.this, "Email đã có người sử dụng", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
                 }
-            }
-        });
+            });
+        }else{
+            Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -114,14 +108,67 @@ public class Reg_Activity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public  void innerReg(String hovaten, String mail, String sdt){
+        Users users = new Users(hovaten, mail, sdt, "Default_Image","Default","Not Actived");
+        FirebaseDatabase.getInstance()
+                .getReference("Users")
+                .child(FirebaseAuth.getInstance()
+                        .getCurrentUser()
+                        .getUid())
+                .setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+
+                    Toast.makeText(Reg_Activity.this, "Đăng Ký Thành Công", Toast.LENGTH_SHORT).show();
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(Reg_Activity.this, "Vui Lòng Kích Hoạt Email", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(Reg_Activity.this, Start_Activity.class);
+                                startActivity(intent);
+                                checkOffline();
+                                mAuth.signOut();
+                                finish();
+                            }
+                        }
+                    });
+                } else {
+                    pd.dismiss();
+                    Toast.makeText(Reg_Activity.this, "Có lỗi xảy ra !", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
     public void clickReg(View view) {
         DangKy();
-        kickHoat();
-    }
-
-    public void kickHoat() {
-
 
     }
 
+    private void checkOffline() {
+        mData = FirebaseDatabase.getInstance().getReference("Users");
+        String userID = mAuth.getCurrentUser().getUid();
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = (cal.get(Calendar.MONTH) + 1);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        int minute = cal.get(Calendar.MINUTE);
+
+
+        if (mAuth.getCurrentUser() != null) {
+            mData.child(userID).child("Status").setValue("Offline");
+            mData.child(userID).child("Last_Active").setValue("Ngày "
+                    + day
+                    + " tháng "
+                    + month + " năm "
+                    + year
+                    + " lúc " + hour
+                    + "h:" + minute);
+        }
+    }
 }
