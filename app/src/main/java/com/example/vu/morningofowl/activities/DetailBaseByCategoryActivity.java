@@ -122,10 +122,8 @@ public class DetailBaseByCategoryActivity extends AppCompatActivity {
         });
     }
 
-    private void searchPhim(String tenPhim){
-       Query query =  mData.orderByChild("tenPhim")
-                .startAt(tenPhim)
-                .endAt(tenPhim+"\uf8ff");
+    private void searchPhim(final String tenPhim){
+       Query query =  mData.orderByChild("tenPhim");
 
        ValueEventListener valueEventListener = new ValueEventListener() {
            @Override
@@ -135,7 +133,8 @@ public class DetailBaseByCategoryActivity extends AppCompatActivity {
                    for(DataSnapshot ds:dataSnapshot.getChildren()){
                        Phim phim = ds.getValue(Phim.class);
                        String tlPhim = phim.getTheloaiPhim();
-                       if(tlPhim.equals(tenTL)){
+                       String tenthuong = phim.getTenPhim().toLowerCase();
+                       if(tlPhim.equals(tenTL) && tenthuong.contains(tenPhim)){
                            arrayList.add(phim);
                        }
                    }

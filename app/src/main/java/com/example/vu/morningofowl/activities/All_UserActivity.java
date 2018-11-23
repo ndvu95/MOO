@@ -78,19 +78,22 @@ public class All_UserActivity extends AppCompatActivity {
         });
     }
 
-    private void search_User(String ten) {
+    private void search_User(final String ten) {
         mData= FirebaseDatabase.getInstance().getReference("Users");
-        Query query = mData.orderByChild("HoTen").startAt(ten).endAt(ten+"\uf8ff");
+        Query query = mData.orderByChild("HoTen");
 
 
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 usersList.clear();
-                if(dataSnapshot.exists()){
+                if(dataSnapshot.exists() && dataSnapshot!= null){
                     for(DataSnapshot ds: dataSnapshot.getChildren()){
                         Users users = ds.getValue(Users.class);
-                        usersList.add(users);
+                        String tenthuong = users.HoTen.toLowerCase();
+                        if(tenthuong.contains(ten)){
+                            usersList.add(users);
+                        }
                     }
                     adapter.notifyDataSetChanged();
                 }
@@ -111,12 +114,14 @@ public class All_UserActivity extends AppCompatActivity {
         mData1.orderByChild("HoTen").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                usersList.clear();
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Users users = ds.getValue(Users.class);
-                    usersList.add(users);
+                if(dataSnapshot.exists() && dataSnapshot != null){
+                    usersList.clear();
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        Users users = ds.getValue(Users.class);
+                        usersList.add(users);
+                    }
+                    adapter.notifyDataSetChanged();
                 }
-                adapter.notifyDataSetChanged();
             }
 
             @Override

@@ -90,59 +90,6 @@ public class QL_PhimActivity extends AppCompatActivity {
         });
     }
 
-
-    private void readData() {
-
-        mData = FirebaseDatabase.getInstance().getReference("Phim");
-        mData.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Phim phim = ds.getValue(Phim.class);
-                    arrayList.add(phim);
-                }
-                adapter.notifyDataSetChanged();
-
-
-                gvPhim.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        String key = arrayList.get(position).getIdPhim();
-                        dialogEdit(key);
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void reloadData() {
-        mData = FirebaseDatabase.getInstance().getReference("Phim");
-        if (arrayList.size() > 0) {
-            arrayList.clear();
-        }
-        mData.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-
-                    Phim phim = ds.getValue(Phim.class);
-                    arrayList.add(phim);
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
     private void fillDataAll() {
         mData = FirebaseDatabase.getInstance().getReference("Phim");
 
@@ -154,18 +101,8 @@ public class QL_PhimActivity extends AppCompatActivity {
                 arrayList.clear();
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        String idPhim = snapshot.child("idPhim").getValue().toString();
-                        String tenPhim = snapshot.child("tenPhim").getValue().toString();
-                        String linkPhim = snapshot.child("linkPhim").getValue().toString();
-                        String linkSub = snapshot.child("linksub").getValue().toString();
-                        String posterPhim = snapshot.child("posterPhim").getValue().toString();
-                        String theloaiPhim = snapshot.child("theloaiPhim").getValue().toString();
-                        String motaPhim = snapshot.child("motaPhim").getValue().toString();
-                        String dienvienPhim = snapshot.child("dienvienPhim").getValue().toString();
-                        String luotxem = snapshot.child("soluotXem").getValue().toString();
-
-
-                        arrayList.add(new Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, Long.parseLong(luotxem)));
+                        Phim phim = snapshot.getValue(Phim.class);
+                        arrayList.add(phim);
                         Collections.sort(arrayList, new Comparator<Phim>() {
                             @Override
                             public int compare(Phim phim, Phim t1) {
@@ -196,32 +133,21 @@ public class QL_PhimActivity extends AppCompatActivity {
     }
 
 
-    private void fillData(String q) {
+    private void fillData(final String q) {
 
         mData = FirebaseDatabase.getInstance().getReference("Phim");
-
-        Query query = mData.orderByChild("tenPhim")
-                .startAt(q)
-                .endAt(q + "\uf8ff");
-
+        Query query = mData.orderByChild("tenPhim");
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 arrayList.clear();
-                if (dataSnapshot.exists()) {
+                if (dataSnapshot.exists() && dataSnapshot != null) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        String idPhim = snapshot.child("idPhim").getValue().toString();
-                        String tenPhim = snapshot.child("tenPhim").getValue().toString();
-                        String linkPhim = snapshot.child("linkPhim").getValue().toString();
-                        String linkSub = snapshot.child("linksub").getValue().toString();
-                        String posterPhim = snapshot.child("posterPhim").getValue().toString();
-                        String theloaiPhim = snapshot.child("theloaiPhim").getValue().toString();
-                        String motaPhim = snapshot.child("motaPhim").getValue().toString();
-                        String dienvienPhim = snapshot.child("dienvienPhim").getValue().toString();
-                        String luotxem = snapshot.child("soluotXem").getValue().toString();
-
-
-                        arrayList.add(new Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, Long.parseLong(luotxem)));
+                        Phim phim = snapshot.getValue(Phim.class);
+                        String tenthuong = phim.getTenPhim().toLowerCase();
+                        if(tenthuong.contains(q)){
+                            arrayList.add(phim);
+                        }
                     }
                     adapter.notifyDataSetChanged();
 

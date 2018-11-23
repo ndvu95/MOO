@@ -60,12 +60,14 @@ public class Adapter_QC extends ArrayAdapter<QuangCao> {
 
         Picasso.with(getContext()).load(url_Anh).into(holder.imgHinhBanner);
         holder.idphimBanner.setText("ID phim: "+idPhim);
-        mData = FirebaseDatabase.getInstance().getReference();
-        mData.child("Phim").child(idPhim).addListenerForSingleValueEvent(new ValueEventListener() {
+        mData = FirebaseDatabase.getInstance().getReference("Phim");
+        mData.child(idPhim).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@android.support.annotation.NonNull DataSnapshot dataSnapshot) {
-                String tenPhim = dataSnapshot.child("tenPhim").getValue().toString();
-                holder.tenphimBanner.setText("Phim: "+tenPhim);
+                if(dataSnapshot.exists()){
+                    String tenPhim = dataSnapshot.child("tenPhim").getValue(String.class);
+                    holder.tenphimBanner.setText("Phim: "+tenPhim);
+                }
             }
 
             @Override

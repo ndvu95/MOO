@@ -37,6 +37,8 @@ public class Search_Activity extends AppCompatActivity {
     String searchtext;
     DatabaseReference mData;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,18 +82,8 @@ public class Search_Activity extends AppCompatActivity {
                 listPhim.clear();
                 if(dataSnapshot.exists()){
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        String idPhim = snapshot.child("idPhim").getValue().toString();
-                        String tenPhim = snapshot.child("tenPhim").getValue().toString();
-                        String linkPhim = snapshot.child("linkPhim").getValue().toString();
-                        String linkSub = snapshot.child("linksub").getValue().toString();
-                        String posterPhim = snapshot.child("posterPhim").getValue().toString();
-                        String theloaiPhim = snapshot.child("theloaiPhim").getValue().toString();
-                        String motaPhim = snapshot.child("motaPhim").getValue().toString();
-                        String dienvienPhim = snapshot.child("dienvienPhim").getValue().toString();
-                        String luotxem = snapshot.child("soluotXem").getValue().toString();
-
-
-                        listPhim.add(new Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, Long.parseLong(luotxem)));
+                        Phim phim = snapshot.getValue(Phim.class);
+                        listPhim.add(phim);
                     }
                     adapterSearch.notifyDataSetChanged();
                 }
@@ -116,13 +108,11 @@ public class Search_Activity extends AppCompatActivity {
 
 
 
-    private void fillData(String q) {
+    private void fillData(final String q) {
 
         mData = FirebaseDatabase.getInstance().getReference("Phim");
 
-        Query query = mData.orderByChild("tenPhim")
-                .startAt(q)
-                .endAt(q + "\uf8ff");
+        Query query = mData.orderByChild("tenPhim");
 
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
@@ -130,18 +120,12 @@ public class Search_Activity extends AppCompatActivity {
                 listPhim.clear();
                 if(dataSnapshot.exists()){
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        String idPhim = snapshot.child("idPhim").getValue().toString();
-                        String tenPhim = snapshot.child("tenPhim").getValue().toString();
-                        String linkPhim = snapshot.child("linkPhim").getValue().toString();
-                        String linkSub = snapshot.child("linksub").getValue().toString();
-                        String posterPhim = snapshot.child("posterPhim").getValue().toString();
-                        String theloaiPhim = snapshot.child("theloaiPhim").getValue().toString();
-                        String motaPhim = snapshot.child("motaPhim").getValue().toString();
-                        String dienvienPhim = snapshot.child("dienvienPhim").getValue().toString();
-                        String luotxem = snapshot.child("soluotXem").getValue().toString();
 
-
-                        listPhim.add(new Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, Long.parseLong(luotxem)));
+                        Phim phim = snapshot.getValue(Phim.class);
+                        String tenthuong = phim.getTenPhim().toLowerCase();
+                            if(tenthuong.contains(q)){
+                                listPhim.add(phim);
+                            }
                     }
                     adapterSearch.notifyDataSetChanged();
                 }
