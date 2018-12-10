@@ -3,6 +3,7 @@ package com.example.vu.morningofowl.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.media.MediaRecorder;
 import android.media.session.MediaController;
 import android.net.Uri;
@@ -33,6 +34,7 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MergingMediaSource;
 import com.google.android.exoplayer2.source.SingleSampleMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.text.CaptionStyleCompat;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
@@ -52,7 +54,7 @@ public class ExoPlayerActivity extends Activity  {
     private SimpleExoPlayerView simpleExoPlayerView;
     private SimpleExoPlayer player;
     private ProgressBar progressBar;
-
+    private long backTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,12 +121,21 @@ public class ExoPlayerActivity extends Activity  {
                     Format.NO_VALUE,
                     null,
                     null); // The subtitle language. May be null.
+
+
             MediaSource subtitleSource = new SingleSampleMediaSource(subtitleUri, dataSourceFactory, subtitleFormat, C.TIME_UNSET);
 
 
             MergingMediaSource mergedSource = new MergingMediaSource(videoSource, subtitleSource);
 
+            simpleExoPlayerView.getSubtitleView().setStyle(new CaptionStyleCompat(Color.WHITE,
+                    Color.TRANSPARENT, Color.TRANSPARENT, CaptionStyleCompat.EDGE_TYPE_OUTLINE, Color.BLACK,
+                    null));
+
+
             simpleExoPlayerView.setPlayer(player);
+
+
 
             if (!Link.equals("") && !Sub.equals("")) {
                 player.prepare(mergedSource);
@@ -198,15 +209,14 @@ public class ExoPlayerActivity extends Activity  {
 
     @Override
     public void onBackPressed() {
-
-        tapBack++;
-        if (tapBack == 2) {
-            tapBack = 0;
+        if (backTime + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();
             finish();
         } else {
             Toast.makeText(this, "Nhấn Back Một Lần Nữa Để Thoát", Toast.LENGTH_SHORT).show();
         }
+
+        backTime = System.currentTimeMillis();
     }
 
 

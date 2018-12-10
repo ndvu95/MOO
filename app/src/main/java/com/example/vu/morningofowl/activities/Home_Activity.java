@@ -117,45 +117,6 @@ public class Home_Activity extends AppCompatActivity implements BottomNavigation
     }
 
 
-//    private void push_Category() {
-//        mData = FirebaseDatabase.getInstance().getReference();
-//        mData.child("TheLoai").push().child("TenTheLoai").setValue("Hành Động");
-//        mData.child("TheLoai").push().child("TenTheLoai").setValue("Phiêu Lưu");
-//        mData.child("TheLoai").push().child("TenTheLoai").setValue("Kinh Dị");
-//        mData.child("TheLoai").push().child("TenTheLoai").setValue("Thiếu Nhi");
-//        mData.child("TheLoai").push().child("TenTheLoai").setValue("Hoạt Hình");
-//        mData.child("TheLoai").push().child("TenTheLoai").setValue("Khoa Học Viễn Tưởng");
-//        mData.child("TheLoai").push().child("TenTheLoai").setValue("Tài Liệu");
-//        mData.child("TheLoai").push().child("TenTheLoai").setValue("Tội Phạm");
-//        mData.child("TheLoai").push().child("TenTheLoai").setValue("Tâm Lý");
-//        mData.child("TheLoai").push().child("TenTheLoai").setValue("Tình Cảm");
-//
-//    }
-
-//    private void checkOffline() {
-//
-//        Calendar cal = Calendar.getInstance();
-//        int year = cal.get(Calendar.YEAR);
-//        int month = (cal.get(Calendar.MONTH) + 1);
-//        int day = cal.get(Calendar.DAY_OF_MONTH);
-//
-//        int hour = cal.get(Calendar.HOUR_OF_DAY);
-//        int minute = cal.get(Calendar.MINUTE);
-//
-//
-//        if(mAuth.getCurrentUser() != null){
-//        mData.child("Users").child(userID).child("Status").setValue("Offline");
-//        mData.child("Users").child(userID).child("Last_Active").setValue("Ngày "
-//                + day
-//                + " tháng "
-//                + month + " năm "
-//                + year
-//                + " lúc " + hour
-//                + "h:" + minute);
-//    }
-//}
-
-
     private boolean loadFragment(Fragment fragment) {
         //switching fragment
         if (fragment != null) {

@@ -44,7 +44,7 @@ public class LoginEmail_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_login_email_);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Window window = this.getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.gray));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.gray_dark));
         edtEmailLogin = (EditText) findViewById(R.id.edtEmailLogin);
         edtPasswordLogin = (EditText) findViewById(R.id.edtMatKhauLogin);
         tvForgotPassword = (TextView) findViewById(R.id.tvQuenMatKhau);
@@ -69,7 +69,6 @@ public class LoginEmail_Activity extends AppCompatActivity {
     }
 
     public void clickLogin(View view) {
-
         Login();
     }
 
@@ -105,7 +104,6 @@ public class LoginEmail_Activity extends AppCompatActivity {
 
                     }
                 });
-
 
     }
 

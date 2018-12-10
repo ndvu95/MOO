@@ -75,6 +75,8 @@
             android:drawableLeft="@drawable/person"
             android:id="@+id/edtDisplayName"
             android:layout_width="300dp"
+            android:inputType="text"
+            android:imeOptions="actionNext"
             android:layout_height="wrap_content"
             android:hint="Tên Hiển Thị" />
     </android.support.design.widget.TextInputLayout>
@@ -91,6 +93,8 @@
             android:id="@+id/edtDisplayEmail"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:inputType="text"
+            android:imeOptions="actionNext"
             android:drawableLeft="@drawable/ic_email_black_24dp"
             android:editable="false"
             android:hint="Email" />
@@ -111,6 +115,7 @@
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_phone_iphone_black_24dp"
             android:hint="Số Điện Thoại"
+            android:imeOptions="actionDone"
             android:inputType="number" />
     </android.support.design.widget.TextInputLayout>
 

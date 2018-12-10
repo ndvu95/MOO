@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -24,6 +25,8 @@ public class ForgotPassword_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password_);
+        Window w = this.getWindow();
+        w.setStatusBarColor(getResources().getColor(R.color.gray_dark));
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         edtForgot = (EditText) findViewById(R.id.edtEmailForgot);
         pgBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -36,7 +39,14 @@ public class ForgotPassword_Activity extends AppCompatActivity {
 
     public void clickReset(View view) {
         pgBar.setVisibility(View.VISIBLE);
-        reset();
+        if(!edtForgot.getText().toString().equals("")){
+            reset();
+        }else{
+            Toast.makeText(this, "Email không được để trống", Toast.LENGTH_SHORT).show();
+            edtForgot.requestFocus();
+            pgBar.setVisibility(View.GONE);
+        }
+
     }
 
     private void reset() {
@@ -46,7 +56,7 @@ public class ForgotPassword_Activity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(ForgotPassword_Activity.this, "Hoàn Tất Quá Trình, Vui Lòng Kiểm Tra Email.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ForgotPassword_Activity.this, "Hoàn Tất Quá Trình, Vui Lòng Kiểm Tra Email Để Cập Nhật Mật Khẩu Mới.", Toast.LENGTH_SHORT).show();
                         pgBar.setVisibility(View.GONE);
                     }
                 });

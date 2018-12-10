@@ -77,31 +77,35 @@ public class Start_Activity extends AppCompatActivity {
         loginFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showProgressDialog();
-                LoginManager.getInstance().logInWithReadPermissions(Start_Activity.this, Arrays.asList("email", "public_profile"));
-                LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-                        @Override
-                        public void onSuccess(LoginResult loginResult) {
-                            Log.d(TAG, "facebook:onSuccess:" + loginResult);
-                            handleFacebookAccessToken(loginResult.getAccessToken());
-                            closeProgressDialog();
-                        }
-
-                        @Override
-                        public void onCancel() {
-                            Log.d(TAG, "facebook:onCancel");
-                            closeProgressDialog();
-                        }
-
-                        @Override
-                        public void onError(FacebookException error) {
-                            Log.d(TAG, "facebook:onError", error);
-                            closeProgressDialog();
-                        }
-                });
+                loginwithFacebook();
             }
         });
 
+    }
+
+    private void loginwithFacebook() {
+        showProgressDialog();
+        LoginManager.getInstance().logInWithReadPermissions(Start_Activity.this, Arrays.asList("email", "public_profile"));
+        LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                handleFacebookAccessToken(loginResult.getAccessToken());
+                closeProgressDialog();
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d(TAG, "facebook:onCancel");
+                closeProgressDialog();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d(TAG, "facebook:onError", error);
+                closeProgressDialog();
+            }
+        });
     }
 
     @Override

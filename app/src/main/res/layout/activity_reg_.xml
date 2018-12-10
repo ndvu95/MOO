@@ -39,6 +39,8 @@
                 android:drawableLeft="@drawable/person"
                 android:id="@+id/edtHoTen"
                 android:hint="Họ Tên"
+                android:inputType="text"
+                android:imeOptions="actionNext"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content" />
         </android.support.design.widget.TextInputLayout>
@@ -53,6 +55,8 @@
                 android:drawableLeft="@drawable/ic_email_black_24dp"
                 android:id="@+id/edtEmail"
                 android:hint="Email"
+                android:inputType="text"
+                android:imeOptions="actionNext"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content" />
         </android.support.design.widget.TextInputLayout>
@@ -83,6 +87,7 @@
                 android:id="@+id/edtSDT"
                 android:inputType="number"
                 android:hint="Số Điện Thoại"
+                android:imeOptions="actionDone"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content" />
         </android.support.design.widget.TextInputLayout>

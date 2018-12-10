@@ -25,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class All_UserActivity extends AppCompatActivity {
     private ListView userRecycler;
@@ -78,23 +80,27 @@ public class All_UserActivity extends AppCompatActivity {
         });
     }
 
-    private void search_User(final String ten) {
-        mData= FirebaseDatabase.getInstance().getReference("Users");
-        Query query = mData.orderByChild("HoTen");
-
+    private void search_User(final String email) {
+        Query query = mData.orderByChild("Email");
 
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                usersList.clear();
                 if(dataSnapshot.exists() && dataSnapshot!= null){
+                    usersList.clear();
                     for(DataSnapshot ds: dataSnapshot.getChildren()){
                         Users users = ds.getValue(Users.class);
-                        String tenthuong = users.HoTen.toLowerCase();
-                        if(tenthuong.contains(ten)){
+                        String email_lowercase = users.Email.toLowerCase();
+                        if(email_lowercase.contains(email)){
                             usersList.add(users);
                         }
                     }
+                    Collections.sort(usersList, new Comparator<Users>() {
+                        @Override
+                        public int compare(Users users, Users t1) {
+                            return users.HoTen.compareTo(t1.HoTen);
+                        }
+                    });
                     adapter.notifyDataSetChanged();
                 }
 
@@ -119,7 +125,14 @@ public class All_UserActivity extends AppCompatActivity {
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         Users users = ds.getValue(Users.class);
                         usersList.add(users);
+                        Collections.sort(usersList, new Comparator<Users>() {
+                            @Override
+                            public int compare(Users users, Users t1) {
+                                return users.HoTen.compareTo(t1.HoTen);
+                            }
+                        });
                     }
+
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -131,7 +144,6 @@ public class All_UserActivity extends AppCompatActivity {
         });
 
     }
-
     public void clickBackToAdmin1(View view) {
         finish();
     }

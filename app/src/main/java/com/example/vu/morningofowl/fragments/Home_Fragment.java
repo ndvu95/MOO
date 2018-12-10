@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import me.relex.circleindicator.CircleIndicator;
 
@@ -61,7 +62,6 @@ public class Home_Fragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        listTheLoai = new ArrayList<>();
         circleIndicator = (CircleIndicator) view.findViewById(R.id.indicatorDefault);
         arrayList = new ArrayList<>();
         listKey = new ArrayList<>();
@@ -70,23 +70,34 @@ public class Home_Fragment extends Fragment {
         circleIndicator.setViewPager(viewPager);
         adapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
 
-        mDataCate = FirebaseDatabase.getInstance().getReference("TheLoai");
-
-
         getDataQuangCao();
+        populatePhim();
+        return view;
+    }
 
+    private void populatePhim() {
+        mDataCate = FirebaseDatabase.getInstance().getReference("TheLoai");
         mDataCate.orderByChild("TenTheLoai").addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listTheLoai = new ArrayList<>();
                 if(dataSnapshot.exists() && dataSnapshot != null){
                     listTheLoai.clear();
                     for(DataSnapshot ds:dataSnapshot.getChildren()){
                         String tentl = ds.child("TenTheLoai").getValue(String.class);
                         listTheLoai.add(tentl);
                     }
+                    Collections.sort(listTheLoai, new Comparator<String>() {
+                        @Override
+                        public int compare(String s, String t1) {
+                            return s.compareTo(t1);
+                        }
+                    });
                     for(int i = 0;i <listTheLoai.size(); i++){
                         initPhim(listTheLoai.get(i));
                     }
+                    Log.d("TAGGG", ""+listTheLoai);
                 }
             }
 
@@ -95,7 +106,6 @@ public class Home_Fragment extends Fragment {
 
             }
         });
-        return view;
     }
 
     private void initPhim(String theloai) {

@@ -36,6 +36,8 @@
                     android:clickable="false"
                     android:editable="false"
                     android:id="@+id/edtID"
+                    android:inputType="text"
+                    android:imeOptions="actionNext"
                     android:hint="ID Phim"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -47,6 +49,8 @@
                     <EditText
                         android:id="@+id/edtTen"
                         android:hint="Tên Phim"
+                        android:inputType="textMultiLine"
+                        android:imeOptions="actionNext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </android.support.design.widget.TextInputLayout>
@@ -57,6 +61,8 @@
                     <EditText
                         android:id="@+id/edtLink"
                         android:hint="Link Phim"
+                        android:inputType="textMultiLine"
+                        android:imeOptions="actionNext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </android.support.design.widget.TextInputLayout>
@@ -67,6 +73,8 @@
                     <EditText
                         android:id="@+id/edtLinkSub"
                         android:hint="Link Phụ Đề"
+                        android:inputType="textMultiLine"
+                        android:imeOptions="actionNext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </android.support.design.widget.TextInputLayout>
@@ -77,6 +85,8 @@
                     <EditText
                         android:id="@+id/edtPoster"
                         android:hint="Link Poster"
+                        android:inputType="textMultiLine"
+                        android:imeOptions="actionNext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </android.support.design.widget.TextInputLayout>
@@ -97,6 +107,8 @@
                         android:isScrollContainer="true"
                         android:id="@+id/edtMota"
                         android:hint="Mô Tả"
+                        android:inputType="textMultiLine"
+                        android:imeOptions="actionNext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </android.support.design.widget.TextInputLayout>
@@ -107,6 +119,8 @@
                     <EditText
                         android:id="@+id/edtDienVien"
                         android:hint="Diễn Viên"
+                        android:inputType="textMultiLine"
+                        android:imeOptions="actionDone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </android.support.design.widget.TextInputLayout>

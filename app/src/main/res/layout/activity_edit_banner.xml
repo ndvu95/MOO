@@ -24,6 +24,8 @@
                 android:padding="10dp"
                 android:id="@+id/edtlinkAnh"
                 android:hint="Link poster quảng cáo"
+                android:inputType="textMultiLine"
+                android:imeOptions="actionDone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </android.support.design.widget.TextInputLayout>

@@ -34,7 +34,7 @@ public class SplashScreen_Activity extends AppCompatActivity {
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.gray));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.gray_dark));
 
 
     mAuth = FirebaseAuth.getInstance();

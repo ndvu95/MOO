@@ -30,7 +30,8 @@ public class Watch_Later_Activity extends AppCompatActivity {
     private GridView gvWatchLater;
     ArrayList<Phim> arrayList;
     Adapter_WatchLater adapter;
-    DatabaseReference mData;
+    DatabaseReference mDataUser;
+    DatabaseReference mDataPhim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class Watch_Later_Activity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String key = arrayList.get(position).getIdPhim();
                 Intent intent = new Intent(Watch_Later_Activity.this, DetailActivity.class);
-                intent.putExtra("phim_UID",key);
+                intent.putExtra("phim_UID", key);
                 startActivity(intent);
             }
         });
@@ -57,40 +58,35 @@ public class Watch_Later_Activity extends AppCompatActivity {
 
     private void fillData() {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mData = FirebaseDatabase.getInstance().getReference();
-        mData.child("Users").child(userID).child("Watch_Later").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDataUser = FirebaseDatabase.getInstance().getReference("Users");
+        mDataPhim = FirebaseDatabase.getInstance().getReference("Phim");
+        mDataUser.child(userID).child("Watch_Later").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    final String idP = ds.getKey();
-
-                    mData.child("Phim").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                String idPhim = ds.child("idPhim").getValue().toString();
-                                String tenPhim = ds.child("tenPhim").getValue().toString();
-                                String linkPhim = ds.child("linkPhim").getValue().toString();
-                                String linkSub = ds.child("linksub").getValue().toString();
-                                String posterPhim = ds.child("posterPhim").getValue().toString();
-                                String theloaiPhim = ds.child("theloaiPhim").getValue().toString();
-                                String motaPhim = ds.child("motaPhim").getValue().toString();
-                                String dienvienPhim = ds.child("dienvienPhim").getValue().toString();
-                                String luotxem = ds.child("soluotXem").getValue().toString();
-
-                                if (idPhim.equals(idP)) {
-                                    arrayList.add(new Phim(idPhim, tenPhim, linkPhim, linkSub, posterPhim, theloaiPhim, motaPhim, dienvienPhim, Long.parseLong(luotxem)));
-                                    adapter.notifyDataSetChanged();
+                arrayList.clear();
+                if(dataSnapshot.exists() && dataSnapshot != null){
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        final String idP = ds.getKey();
+                        mDataPhim.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists() && dataSnapshot != null) {
+                                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                        Phim phim = ds.getValue(Phim.class);
+                                        if (phim.getIdPhim().equals(idP)) {
+                                            arrayList.add(phim);
+                                            adapter.notifyDataSetChanged();
+                                        }
+                                    }
                                 }
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        }
-                    });
+                            }
+                        });
+                    }
                 }
             }
 

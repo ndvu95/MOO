@@ -19,6 +19,8 @@
             android:id="@+id/edtlinkAnh"
             android:hint="Link poster quảng cáo"
             android:layout_width="match_parent"
+            android:inputType="text"
+            android:imeOptions="actionDone"
             android:layout_height="wrap_content" />
     </android.support.design.widget.TextInputLayout>
 
